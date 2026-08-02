@@ -56,6 +56,22 @@ class NepseClient:
     def disclosures(self) -> pd.DataFrame:
         return pd.DataFrame(self._retry(self._api.get_company_disclosures, "disclosures"))
 
+    def sector_indices(self) -> pd.DataFrame:
+        """The 17 tradable indices (ids 51-67), including NEPSE (58) and Sensitive (57)."""
+        path = self._api.endpoints["sector_index_api"]["api"]
+        return pd.DataFrame(self._retry(lambda: self._api.session.get(path).json(), "sector_index"))
+
+    def market_summary_history(self, start: str, end: str) -> pd.DataFrame:
+        """Market-wide turnover / traded shares / transactions / tradedScrips.
+
+        Same rolling-window caveat as index_history: the date arguments are
+        accepted and ignored. They are passed anyway so the call reads honestly
+        and starts working if NEPSE ever honours them.
+        """
+        path = self._api.endpoints["market_summary_history_api"]["api"]
+        rows = self._paged(path, {"startDate": start, "endDate": end}, "market_summary_history")
+        return _normalise_dates(pd.DataFrame(rows))
+
     # --- price history --------------------------------------------------
     #
     # Both history endpoints return a Spring Data page envelope
@@ -88,6 +104,14 @@ class NepseClient:
         return rows
 
     def index_history(self, start: str, end: str, index_id: int = NEPSE_INDEX_ID) -> pd.DataFrame:
+        """Daily index OHLC.
+
+        WARNING: `start` and `end` are ignored by NEPSE. The endpoint returns a
+        rolling ~225-session (~1 year) window no matter what range you request,
+        and does not error on an out-of-range one -- ask for 2018 and you get
+        last year's data with a 200. Verified in scripts/phase1_probe_depth.py.
+        Anything needing a longer sample must come from data/archive/.
+        """
         path = f"{self._api.endpoints['head_indices_api']['api']}/{index_id}"
         rows = self._paged(
             path, {"startDate": start, "endDate": end}, f"index_history({index_id})"

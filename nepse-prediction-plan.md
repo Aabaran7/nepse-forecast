@@ -38,24 +38,38 @@
 - Net-of-cost simulated PnL: net Sharpe at a stated capital base, net CAGR, max drawdown, turnover, % of PnL from top-5 days.
 - Never RMSE on price level.
 
-**Regime split — report every result twice:**
-- **2020-06 → 2021-12 (mania).**
-- **2022-01 → present (chop).**
+**Regime split — ~~report every result twice~~ NOT POSSIBLE (2026-08-02).**
+- ~~**2020-06 → 2021-12 (mania).**~~ **No data exists.** NEPSE's earliest servable session is 2025-07-30 (§3.4). The mania regime predates the retained window by four years and cannot be reconstructed from any endpoint.
+- ~~**2022-01 → present (chop).**~~ Only 2025-07 → present is available — a fragment of the chop regime, not the regime.
 
-A signal that exists in only one regime is labelled as such in the results table, not averaged away. Pooled numbers are reported alongside, never instead.
+The whole sample is ~12 months inside one regime. The split cannot be performed, which also **retires the §6 kill criterion** that abandons on "edge present only in the mania regime" — there is no mania data to detect that artifact with. That criterion existed precisely because a bull-market artifact is the most likely false positive here, and we have now lost the ability to test for it. That is a loss of a safeguard, not a simplification.
 
-**Power, computed before any model runs.** Roughly ~1500 usable daily observations, of which the walk-forward test set is ~1000 after the initial training window; non-overlapping weekly gives ~200 test blocks. That supports detecting roughly a 4pp daily edge and a 7pp weekly edge at α=0.05, 80% power — **TODO: compute exactly and put the numbers in the results table header.** Anything smaller than the detectable edge cannot be claimed, whatever the point estimate says.
+**Power, computed before any model runs. — COMPUTED 2026-08-02; the answer is fatal to the design as written.** Implemented in `scripts/phase1_power.py` (α=0.05 one-sided, 80% power, baseline = majority class at 54.5%).
+
+The original estimate assumed ~1500 usable daily observations. **NEPSE serves 225** (§3.4). The methodology was right — its 7pp weekly guess matches the 8.7pp this computes for the n=200 it assumed — but the sample was overstated ~7×:
+
+| Scenario | n | Min detectable edge |
+|---|---|---|
+| h=1 daily, full available sample | 225 | **8.2pp** |
+| h=1 daily, walk-forward test set | 75 | **14.0pp** |
+| h=5 weekly, non-overlapping blocks | 45 | **17.8pp** |
+| h=5 weekly, walk-forward test blocks | 15 | **29.2pp** |
+| *(§2's assumption, not achievable)* | *200* | *8.7pp* |
+
+Detecting the **2pp** edge that §6 abandons the project over requires **3,821 weekly blocks**. We have 45 — an **85× shortfall**, or ~85 years of archiving at 225 sessions/yr.
+
+**This is not "the edge is probably absent."** It is that no result, in either direction, would be informative: the §6 test cannot be run as written, because the threshold it tests sits an order of magnitude below the sample's noise floor. Any backtest accuracy this project reports on 45 weekly blocks is a draw from a distribution roughly ±18pp wide. A 60% point estimate would be entirely consistent with a coin.
 
 ---
 
 ## 3. Data correctness
 
-The part most likely to silently break everything.
+The part most likely to silently break everything. **It did — see §3.4, which now dominates every other consideration in this section.**
 
 ### 3.1 Sources
 | Data | Source | Notes |
 |---|---|---|
-| OHLCV, index + scrips | `polymorphisma/nepse_scraper` (PyPI) | Use the library's session, not raw HTTP: plain `curl` cannot complete a TLS handshake with NEPSE at all, so a connection failure is **not** evidence the API is down. History endpoints return Spring-Data page envelopes, not the bare lists the type hints claim — unwrap `content` and follow `totalPages`, or you silently get 20 rows of 225. Ticker history takes the security id as a **path** segment; `symbol` as a query param returns 400. |
+| OHLCV, index + scrips | `polymorphisma/nepse_scraper` (PyPI) | **Serves a rolling ~1 year only; `startDate`/`endDate` are accepted and ignored — see §3.4.** Use the library's session, not raw HTTP: plain `curl` cannot complete a TLS handshake with NEPSE at all, so a connection failure is **not** evidence the API is down. History endpoints return Spring-Data page envelopes, not the bare lists the type hints claim — unwrap `content` and follow `totalPages`, or you silently get 20 rows of 225. Ticker history takes the security id as a **path** segment; `symbol` as a query param returns 400. |
 | Index, sector indices, market summary | Same scraper | Exchange-computed and continuity-adjusted; the target and most features come from here. |
 | Breadth (advancers/decliners) | Dated `today_price` snapshots | One call per session, ~350 rows. Only feature touching raw scrip prices. |
 | Corporate actions | — | **Descoped at the Phase 0 gate** (§3.2). Sourcing tested and poor; correction does not move an index-level target. |
@@ -82,6 +96,41 @@ Implemented in `scripts/phase0_quality.py`; extend rather than replace.
 - No index return outside the ±6% cap; no scrip return outside ±10% that isn't flagged as a corporate-action candidate.
 - Breadth reconciles with index direction (a limit-up day cannot show majority decliners).
 - Tickers with a state transition are excluded from the breadth denominator on affected days.
+
+### 3.4 NEPSE retains one rolling year, and silently lies about it
+
+**Established 2026-08-02 by `scripts/phase1_probe_depth.py`. This is the single most consequential fact about the project and it invalidates §2's sample assumption.**
+
+The history endpoints **accept `startDate`/`endDate` and ignore them completely.** Probing one window per year from 2012 to 2026 returned *the identical 225 rows every time* — `totalElements: 225` on all fifteen. Requesting 2018 does not error, does not return empty, and does not warn: it returns last year's data with an HTTP 200. Alternative spellings (`fromDate`/`toDate`, `from`/`to`, `businessDate`) behave the same. Confirmed on index history, ticker history, and sector index history.
+
+**Phase 0 did not catch this because the coincidence was perfect.** It asked for 365 days and got 225 rows — exactly what one year of NEPSE sessions looks like. A successful-looking pull and a completely ignored parameter are indistinguishable at that one window. Any future endpoint that takes a date range is now assumed to ignore it until proven otherwise.
+
+**The window rolls, and aged-out sessions are unrecoverable.** Measured directly:
+
+| | |
+|---|---|
+| Phase 0 archive (pulled 2026-07-25) | 225 sessions, 2025-07-23 → 2026-07-24 |
+| API serves (2026-08-02) | 225 sessions, 2025-07-30 → 2026-07-31 |
+| **Sessions lost in 8 days of not archiving** | **5** (2025-07-23 … 2025-07-29) |
+
+Five in, five out, held constant at 225. The five oldest sessions in `data/raw/` **no longer exist anywhere upstream** — that pull is now the only copy. `today_price` is bounded identically (works to 2025-07-30, fails before it), so there is no backfill route around this on any endpoint.
+
+**Consequences, in order of severity:**
+1. The ~1500-observation sample is unobtainable. We have 225 and gain ~225/yr.
+2. The regime split (§2) is impossible — the mania regime predates the window by four years.
+3. **Every day not archived is a trading day destroyed.** This is the only irreversible item in the project.
+
+**Response — `data/archive/`, append-only, superseding "frozen dataset v1.0":** the frozen-dataset instinct in §3.2 was right for the wrong reason. The store is not frozen, it *accumulates*, and it is the only asset here that cannot be recreated. Implemented in `nepselab/ingest/archive.py` + `scripts/archive_pull.py`:
+- Writes only add rows; nothing deletes or overwrites.
+- Where upstream contradicts an archived row, **ours wins and the conflict is logged** — a silent upstream revision to a settled session is a data-integrity event, not something to merge away.
+- `scripts/archive_seed.py` folded `data/raw/` in first, preserving the five otherwise-lost sessions.
+- Captures all 17 indices, market summary, per-session `today_price` (breadth), and dated securities snapshots.
+
+**Throttling — the backfill is slow by necessity.** NEPSE tolerates a sustained sweep for roughly 75 calls at 0.7s spacing, then returns `HTTPError` for everything after. Those failures are **not** missing data: dates that failed mid-sweep returned ~340 rows each when retried in isolation minutes later. Two rules follow, both now in the ingest: **a run of failures means back off, never "no data"**, and the sweep commits every 10 sessions rather than at the end — an interrupted backfill must keep what it paid for. Defaults are 1.6s spacing with a 120s cool-down; a full backfill takes several runs and that is fine, because incremental mode re-queues whatever is still missing.
+
+**`scripts/archive_pull.py` must run every trading day.** It is no longer a Phase 5 convenience; it is the data collection strategy, and it is the one task with a real deadline.
+
+**UNRESOLVED — the archive has no backup.** `data/` is gitignored (correctly; parquet does not belong in git), so the only copy of the only irreplaceable asset in this project currently exists on one disk, in one directory, with no redundancy. A disk failure destroys strictly more than the five sessions already lost. The §8.1 decision does not affect this: **the archive needs an off-machine copy under every option**, and it needs one now rather than after the sample is large enough to matter. Cheapest sufficient fix is a periodic copy to cloud storage or a separate physical disk, versioned by pull date. **TODO: pick a target and wire it into the daily job.**
 
 ---
 
@@ -154,6 +203,24 @@ Conclusions carried forward: usable as an **index-level attention and sentiment 
 - **Alt-data gate:** if +Reddit and +news each add <1pp over price-only in the ablation, drop those modules. The project may continue on price-only if it still clears the above.
 - **Capital gate:** deploy only after ≥60 forward trading days logged *and* forward accuracy not more than 5pp below backtest accuracy.
 
+### 6.1 The thresholds are not testable on 225 sessions — and they stay frozen anyway (2026-08-02)
+
+§9 names the exact failure mode this section is about to invite: *"overfitting via repeated threshold-adjacent tuning — High (know thyself)."* So, explicitly:
+
+**The §6 numbers are not being changed.** The finding in §3.4 is a reason the project may be unable to *run* its test, not a reason to move the bar until the test passes. Relaxing "+2pp over majority-class" to something a 45-block sample can resolve (~18pp) would not be a weaker threshold — it would be a threshold no real equity-index signal has ever met, i.e. an unfalsifiable one dressed as a strict one. Tightening or loosening either way after seeing §3.4 is the tuning §9 forbids.
+
+**What actually changed** is that three of the five thresholds have lost the data needed to evaluate them:
+
+| §6 threshold | Status after §3.4 |
+|---|---|
+| h=5 accuracy ≤ majority + 2pp → abandon | **Untestable.** Needs 3,821 weekly blocks; 45 exist. |
+| Net Sharpe < 0.4 after costs | **Untestable for a second, independent reason** — every cost constant in `market_params.yaml` is still `null` (§4). |
+| Edge only in the mania regime → abandon | **Retired.** No mania data exists (§2). Safeguard lost. |
+| Alt-data gate: <1pp from Reddit/news → drop | Testable as a *point estimate*, but 1pp is far below the noise floor; the ablation cannot distinguish 1pp from 0. |
+| Capital gate: ≥60 forward days | Unaffected — and now the only threshold that still does its job. |
+
+**The honest position:** on the sample NEPSE will give us, a backtest cannot produce evidence that clears §6. That is a finding about feasibility, not about NEPSE's predictability, and it is the kind of null result §1 committed to documenting. **The open decision is in §8.1 — it is about the project's scope, not about these numbers.**
+
 ---
 
 ## 7. Forward run
@@ -169,13 +236,32 @@ Conclusions carried forward: usable as an **index-level attention and sentiment 
 | Phase | Work | Effort |
 |---|---|---|
 | 0 | ~~Scraper running; 1yr index + 5 scrips; corporate-action sourcing; seed `market_params`~~ | **DONE** |
-| 1 | Full ingestion (index, breadth, sector, market summary), calendar, circuit flags, macro with publication dates, sanity suite, frozen dataset v1.0 | **5 days** (was 10; adjustment layer descoped) |
-| 2 | Walk-forward engine, cost model, fill logic (settlement + circuits), metrics, regime split, baselines, power calculation | **6 days** |
-| 3 | Four feature modules behind the common interface; LLM sentiment pass with on-disk cache | **8 days** |
-| 4 | Logistic regression + GBM; ablation table; regime table; apply §6 thresholds | **6 days** |
-| 5 | Daily forward job, immutable log, scoring script | **3 days to build**, then months of runtime |
+| 1a | ~~Depth probe; exact power calculation; append-only archive + daily job~~ | **DONE 2026-08-02** |
+| 1b | **Daily `archive_pull.py` run.** Not effort — calendar time, indefinitely, starting now | **continuous** |
+| 1c | Deep-history sourcing probe (§8.1 option D) — decides everything below | **1 day** |
+| — | *everything below is **blocked** on the §8.1 decision* | — |
+| 2 | Walk-forward engine, cost model, fill logic, metrics, baselines, ~~regime split~~ | 6 days |
+| 3 | Four feature modules; LLM sentiment pass with on-disk cache | 8 days |
+| 4 | Logistic regression + GBM; ablation table; ~~regime table~~; apply §6 thresholds | 6 days |
+| 5 | ~~Daily forward job~~ — **merged into 1b**; log + scoring script remain | 2 days |
 
-**Total ≈ 28 effort-days remaining**, plus the forward run's calendar time. Phase 0 came in on estimate and removed ~8 days from Phase 1 by descoping the adjustment layer (§3.2) — the largest single item in the original plan.
+Phase 1a came in well under its 5-day estimate because it stopped at the first thing that mattered. The effort-days below are unchanged and still accurate; what changed is that **spending them is no longer obviously worthwhile** — see §8.1.
+
+### 8.1 OPEN DECISION: what this project is now
+
+§3.4 removed ~6/7ths of the assumed sample and §2 showed the remainder cannot resolve the effect §6 tests for. Four coherent responses; **they are not mutually exclusive, and (D) should be resolved before choosing among the rest.**
+
+**(D) Source deep history elsewhere — do this first, ~1 day.** NEPSE's API is not the only place NEPSE history exists. ShareSansar, MeroLagani, Nepse Alpha and assorted Kaggle dumps all publish index history well before 2025, and the Reddit dump already covers 2020-06 onward. If a clean, verifiable daily index series back to 2020 can be obtained, **the original plan survives essentially intact** and every number in §2 reverts. This is the only branch that recovers the project as designed, it is cheap to test, and it is therefore the next task. Caveats: provenance and continuity-adjustment become the user's problem rather than the exchange's, and any such series must be reconciled against our 225 archived sessions before it is trusted — an unverifiable series is worse than no series.
+
+**(A) Continue as an engineering exercise; defer modelling.** Build Phases 2–4 against the honest 225-session sample, report every result with its ±18pp interval, and treat the harness — not the results — as the deliverable. §1 already frames the harness as the primary objective ("*the harness is what makes any result believable*"), so this is defensible. Risk: §9's "know thyself" — running models on a sample that cannot resolve them, month after month, is precisely the setup where a 60% point estimate quietly becomes a belief.
+
+**(B) Stop modelling; write up the feasibility null.** §1 committed to documenting a "no edge found" outcome; this is the adjacent, more honest result — *no edge is testable*. Keep 1b running forever, revisit in a few years when the archive is large enough. Cheapest, and intellectually clean.
+
+**(C) Change the target to fit the sample.** More observations per unit time, not more calendar time: floorsheet/intraday data (§3.1 flags depth as an open TODO) would multiply n substantially. But §4 is blunt that manual TMS execution makes intraday strategies unimplementable, so this risks building something well-powered and untradeable.
+
+**Recommendation: (D) now, then (B) if D fails.** (D) is one day and either restores the project or definitively closes the question of whether the sample can be fixed. If it fails, (B) is the outcome the plan already committed in advance to accepting — and (A) is the option §9 warns about by name.
+
+**Not yet decided. The archive (1b) runs regardless of the outcome**, since it is the only irreversible item and it costs one cron entry.
 
 ```
 nepse-lab/
@@ -206,7 +292,8 @@ nepse-lab/
 | Market-structure constants unverifiable early in sample | Medium | TODOs tracked; start sample at first fully-sourced date |
 | Reddit attention leaks a time trend | High if unhandled | Normalize as share of sub activity or trailing-90d z-score |
 | Macro lookahead via reference dates | High if unhandled | Publication-date gating, enforced in the feature layer |
-| NEPSE endpoints change/break mid-project | Medium | Freeze dataset v1.0 early; ingestion resumable |
+| ~~NEPSE endpoints change/break mid-project~~ **MATERIALISED, worse than written** | ~~Medium~~ **Certain** | The risk was framed as endpoints *breaking*. What happened is subtler and was not on this table: they work, return 200, and silently ignore the date range (§3.4). "Freeze dataset v1.0 early" was the right mitigation for the wrong reason — the fix is a *continuously accumulating* archive, not a frozen one, and the freeze framing would have left the window rolling while we built. |
+| **Sample too small to resolve the effect under test** — **not on the original table** | **Certain** | Unmitigable; §2 power table. The original plan carried a power calculation as a TODO rather than a gate. Had it been computed at Phase 0 against real row counts instead of an assumption, §3.4 surfaces a week earlier and five sessions are not lost. **Compute power before building, not after.** |
 | No edge found | High-ish | Thresholds in §6 fixed in advance; abandon rather than tune |
 | Overfitting via repeated threshold-adjacent tuning | High (know thyself) | §6 numbers are frozen; changing them invalidates the run |
 
