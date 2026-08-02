@@ -1,0 +1,102 @@
+# Date-indexed market structure and cost constants.
+#
+# Every entry carries `source`. Entries marked `source: EMPIRICAL` were derived
+# from pulled price data (see scripts/phase0_quality.py) and are good enough to
+# build against, but are NOT a substitute for the circular — they describe the
+# 2025-07..2026-07 window only. Entries marked TODO are unresolved: do not
+# guess them, and do not let a backtest run against a TODO cost.
+#
+# Seeded: Phase 0, 2026-07-25.
+
+meta:
+  seeded: 2026-07-25
+  sample_verified_from: 2025-07-23
+  sample_verified_to: 2026-07-24
+
+# --- trading calendar ------------------------------------------------------
+# The trading WEEK changed inside our sample. This is not a detail: h=5 ("one
+# week ahead") spans a different weekday set either side of the boundary, and
+# any day-of-week feature is not comparable across it.
+trading_week:
+  - effective_from: null          # TODO: when did Sun-Thu begin? predates our sample
+    effective_to: 2026-04-05
+    days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
+    source: EMPIRICAL             # last Sunday session observed 2026-04-05
+  - effective_from: 2026-04-10
+    effective_to: null
+    days: [Monday, Tuesday, Wednesday, Thursday, Friday]
+    source: EMPIRICAL             # first Friday session observed 2026-04-10
+    note: >
+      Clean switch, no overlap: no Sunday session after 2026-04-05, no Friday
+      session before 2026-04-10. 2026-04-06..09 has Mon-Thu sessions.
+      TODO: confirm the effective date and the reason against a NEPSE circular;
+      also confirm whether trading HOURS changed at the same time.
+
+trading_hours:
+  - effective_from: null
+    effective_to: null
+    open: null                    # TODO: verify per era (NEPSE circulars).
+    close: null                   #       Session length has changed historically.
+    timezone: Asia/Kathmandu
+    source: TODO
+
+# --- circuit breakers ------------------------------------------------------
+scrip_circuit_pct:
+  - effective_from: null
+    effective_to: null
+    limit: 0.10
+    source: EMPIRICAL
+    note: >
+      Confirmed: daily returns cluster hard at +-9.99% and stop. Two 2025-07..
+      2026-07 observations exceed it (NRIC +14.99% 2026-06-01, HDL -14.18%
+      2025-11-06) and therefore CANNOT be ordinary price moves -- they are
+      corporate actions. This gives the adjustment layer a free cross-check:
+      any |return| > circuit limit must reconcile to a bonus/rights/split.
+      TODO: confirm the limit and whether it has changed over the full sample.
+
+index_circuit:
+  - effective_from: null
+    effective_to: null
+    daily_cap: 0.06
+    intraday_halt_thresholds: null   # TODO: the 4%/5%/6% tiered halt durations
+    source: EMPIRICAL
+    note: >
+      Index daily returns top out at +6.0070% / -6.0002% -- a hard +-6% cap.
+      TODO: confirm the tiered halt schedule and durations against a circular.
+
+# --- costs -----------------------------------------------------------------
+# NOT YET SOURCED. The cost model (plan section 4) must not run against
+# placeholder values -- leave these null so a backtest fails loudly rather
+# than silently reporting an optimistic Sharpe.
+settlement_cycle:
+  - effective_from: null
+    effective_to: null
+    days: null
+    source: TODO
+    note: >
+      Known to have moved T+3 -> T+2 inside the sample. TODO: effective date
+      from NEPSE/CDSC circulars. Fill logic gates exits on this.
+
+broker_commission:
+  - effective_from: null
+    tiers: null
+    source: TODO                  # SEBON circulars; equity tiers + every revision date
+
+sebon_fee_rate:
+  - effective_from: null
+    rate: null
+    source: TODO                  # current and historical
+
+dp_charge_npr:
+  - effective_from: null
+    amount: null
+    charged_on: null              # buy | sell | both -- materially changes round-trip cost
+    source: TODO                  # CDSC. FLAT per scrip per settlement, does not scale.
+
+cgt_rate:
+  - effective_from: null
+    individual_short: null        # < 365 days
+    individual_long: null         # >= 365 days
+    institutional: null
+    finance_act_year: null
+    source: TODO                  # levied on REALIZED GAINS, not turnover
