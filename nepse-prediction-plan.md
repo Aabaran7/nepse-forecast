@@ -34,7 +34,7 @@
 - h=5 labels overlap — use non-overlapping weekly blocks for significance, and block bootstrap for confidence intervals. Naive CIs on overlapping labels are far too tight.
 
 **Metrics:**
-- Directional accuracy and F1, vs. **both** 50% and the majority class (NEPSE has long directional runs; majority-class is the harder baseline and the one that matters). In the verified 2025-07→2026-07 window only **45.5%** of index days were up — so the majority class is *down* at 54.5%, and the §6 "+2pp over majority-class" bar means clearing ~56.5%, not ~52%. Compute the majority baseline per regime; do not assume it sits near 50%.
+- Directional accuracy and F1, vs. **both** 50% and the majority class (NEPSE has long directional runs; majority-class is the harder baseline and the one that matters). In the verified 2025-07→2026-07 window only **45.5%** of index days were up. *(Superseded as the operative figure — on the 2016+ deep sample it is 47.8% up, majority down at 52.2%; see below and §3.6.)* Compute the majority baseline **per regime**: §3.6 measured it flipping to *up at 56.6%* inside the mania window, so a single pooled number sets the wrong bar in every regime at once.
 - Net-of-cost simulated PnL: net Sharpe at a stated capital base, net CAGR, max drawdown, turnover, % of PnL from top-5 days.
 - Never RMSE on price level.
 
