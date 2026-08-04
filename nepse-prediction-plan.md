@@ -486,6 +486,37 @@ Three commitments come with it, and they are the price of the promotion being ho
 
 ---
 
+### 6.3 PRE-REGISTRATION: low-turnover decision rule (written 2026-08-04, BEFORE running)
+
+§6.2 stands as recorded. This is a **new experiment**, not a re-run, and it is written down before it executes precisely because §9 names "overfitting via repeated threshold-adjacent tuning" as this project's top risk and because everything below is being proposed by someone who has already seen §6.2. Pre-registration is the only thing separating this from the failure mode.
+
+**Hypothesis, derived from arithmetic rather than from results.** §6.2's models lose to costs, not to inaccuracy. Break-even directional accuracy against a 65.5 bps round trip at NEPSE's 0.94% mean daily move:
+
+| Holding period | Break-even accuracy | Model has |
+|---|---|---|
+| 1 session | 85.0% | 55.5% |
+| 5 sessions | 57.0% | 55.5% |
+| **21 sessions** | **51.7%** | **55.5%** |
+| 63 sessions | 50.6% | 55.5% |
+
+The 30pp gap at daily frequency is unreachable by any classifier. At 21 sessions the gap reverses. **This table depends on no result from §6.2** — it is the cost model and the volatility of the series, both known before any model ran. The claim under test is therefore that the *decision rule*, not the classifier, is what failed.
+
+**The change.** A position layer between probability and trade:
+- **Deadband δ:** go long when `p_up > 0.5 + δ`, go flat when `p_up < 0.5 − δ`, otherwise **hold the current position**. Hysteresis is what collapses turnover — a signal oscillating around 0.5 currently generates a trade every time it crosses.
+- **Minimum holding period:** once a position changes, it cannot change again for `m` sessions.
+
+**How δ and m are chosen, and why this is not peeking.** They are selected **inside each walk-forward fold, on that fold's training window only**, by maximising in-sample net-of-cost Sharpe. They are model parameters, not researcher choices. No test row influences any parameter, and I do not see a test result before the choice is made. A grid scanned by hand against the pooled test set would be the forbidden thing; this is not that.
+
+**What is NOT changing:** the classifiers, the features, the folds, the embargo, the cost model, the capital base, and §6's thresholds. Same harness throughout.
+
+**Success criterion — §6(b) unchanged: net Sharpe ≥ 0.4** at NPR 1,000,000, 1× friction.
+
+**Two additional pre-registered guards, because the obvious way to pass is to cheat toward buy-and-hold:**
+1. The rule must **beat buy-and-hold** on the same window (+0.30 net Sharpe). Merely matching it means the model added nothing.
+2. The rule must be **meaningfully different from buy-and-hold** — time-in-market below 90% and at least 6 round trips. A rule that holds 99.5% of the time *is* buy-and-hold wearing a classifier, and passing that way would be a measurement artifact, not a result.
+
+**Declared in advance: if this fails, it fails.** §6.2's verdict stands, §6.3 is written up as a second null, and there is no third attempt. A rule that needs a third redesign to clear a fixed bar is fitting the bar, not the market.
+
 ---
 
 ## 7. Forward run
