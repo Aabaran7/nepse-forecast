@@ -31,21 +31,40 @@ import pandas as pd
 
 @dataclass(frozen=True)
 class Rule:
-    """Deadband + minimum-hold. `delta=0, min_hold=1` reproduces §6.2's rule."""
+    """Deadband + minimum-hold, symmetric or asymmetric.
+
+    `delta=0, min_hold=1, asymmetric=False` reproduces §6.2's rule.
+
+    **Asymmetric mode (§6.4)** holds LONG by default and requires a strong
+    signal to leave, rather than requiring a strong signal to enter. The
+    motivation is structural, not empirical: NEPSE compounded at ~9.6%/yr net
+    across this sample, so a symmetric rule that starts flat has to earn its way
+    into a rising market and pays the drift as the price of every hour it spends
+    in cash. With a weak signal on a drifting asset, the sound use of the signal
+    is to reduce exposure occasionally, not to justify holding it at all.
+    """
 
     delta: float = 0.0
     min_hold: int = 1
-    start_long: bool = False
+    asymmetric: bool = False
+    exit_delta: float = 0.10
 
     def positions(self, prob_up: np.ndarray) -> np.ndarray:
         p = np.asarray(prob_up, dtype=float)
         pos = np.zeros(len(p), dtype=int)
-        cur = 1 if self.start_long else 0
+        cur = 1 if self.asymmetric else 0
         last_change = -10**9
 
         for i, pi in enumerate(p):
             want = cur
-            if pi > 0.5 + self.delta:
+            if self.asymmetric:
+                # Long unless the model is confidently bearish; re-enter as soon
+                # as it stops being so.
+                if pi < 0.5 - self.exit_delta:
+                    want = 0
+                elif pi > 0.5 - self.exit_delta + self.delta:
+                    want = 1
+            elif pi > 0.5 + self.delta:
                 want = 1
             elif pi < 0.5 - self.delta:
                 want = 0
@@ -63,6 +82,23 @@ class Rule:
 # the point of this experiment is turnover, not precision in delta.
 DELTAS = (0.0, 0.02, 0.05, 0.10, 0.15)
 MIN_HOLDS = (1, 5, 21, 63)
+# Rule FAMILY is also fitted per fold rather than chosen by hand. Adding the
+# asymmetric family after seeing §6.3 fail is a researcher decision and is
+# recorded as such in §6.4; which family gets used on any given test fold is
+# not -- that is decided in-sample, like delta and min_hold.
+ASYMMETRIC = (False, True)
+EXIT_DELTAS = (0.05, 0.10)
+
+# Selection runs a full ledger per grid point per fold, which is O(n) Python.
+# The full grid over an expanding window is ~27,000 backtests and does not
+# finish in reasonable time. Two compute decisions, neither of which touches a
+# test row: the grid is coarse (above), and selection uses the most recent
+# SELECT_WINDOW training sessions rather than the whole expanding history. The
+# CLASSIFIER still trains on everything -- only the rule's parameters are
+# chosen on the recent window, which is also the more defensible choice on its
+# own terms, since the relevant question is what turnover the current regime
+# supports rather than what 2017 supported.
+SELECT_WINDOW = 750
 
 
 def _net_sharpe(frame: pd.DataFrame, positions: np.ndarray, cost) -> float:
@@ -86,13 +122,19 @@ def select_params(train_frame: pd.DataFrame, train_prob: np.ndarray, cost,
     preferring it on ties means the choice is not driven by noise in a
     third decimal place of Sharpe.
     """
+    if len(train_frame) > SELECT_WINDOW:
+        train_frame = train_frame.iloc[-SELECT_WINDOW:].reset_index(drop=True)
+        train_prob = np.asarray(train_prob)[-SELECT_WINDOW:]
+
     best, best_score = Rule(), float("-inf")
-    for d, m in product(deltas, min_holds):
-        r = Rule(delta=d, min_hold=m)
-        sc = _net_sharpe(train_frame, r.positions(train_prob), cost)
-        if sc > best_score + 1e-9 or (
-                abs(sc - best_score) <= 1e-9 and (m, d) > (best.min_hold, best.delta)):
-            best, best_score = r, sc
+    for d, m, asym in product(deltas, min_holds, ASYMMETRIC):
+        for xd in (EXIT_DELTAS if asym else (0.10,)):
+            r = Rule(delta=d, min_hold=m, asymmetric=asym, exit_delta=xd)
+            sc = _net_sharpe(train_frame, r.positions(train_prob), cost)
+            if sc > best_score + 1e-9 or (
+                    abs(sc - best_score) <= 1e-9
+                    and (m, d) > (best.min_hold, best.delta)):
+                best, best_score = r, sc
     return best
 
 
@@ -135,6 +177,8 @@ def run_walk_forward_strategy(frame: pd.DataFrame, model_factory, horizon: int,
             "prob_up": p_test,
             "delta": rule.delta,
             "min_hold": rule.min_hold,
+            "asymmetric": rule.asymmetric,
+            "exit_delta": rule.exit_delta,
             "y_true": y[sp.test],
         }))
 
@@ -145,7 +189,9 @@ def run_walk_forward_strategy(frame: pd.DataFrame, model_factory, horizon: int,
     # boundary and manufacture a trade there -- an artifact that would inflate
     # turnover by ~100 round trips and quietly sabotage the thing being tested.
     stitched = Rule(delta=float(preds["delta"].median()),
-                    min_hold=int(preds["min_hold"].median()))
+                    min_hold=int(preds["min_hold"].median()),
+                    asymmetric=bool(preds["asymmetric"].mean() > 0.5),
+                    exit_delta=float(preds["exit_delta"].median()))
     preds["position"] = stitched.positions(preds["prob_up"].to_numpy())
     preds.attrs["stitched_rule"] = stitched
     return preds

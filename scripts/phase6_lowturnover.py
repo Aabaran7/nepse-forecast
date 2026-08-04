@@ -127,6 +127,29 @@ def main() -> None:
             any_pass = True
             print(f"    ALL FOUR PASS")
 
+    hr("4. REGIME BREAKDOWN -- the decisive check (§6(c))")
+    print("§6.2 found the classifier's edge was confined to 2020-21. A strategy")
+    print("that only works there is the same artifact wearing a decision rule.")
+    print(f"\n{'model':<12}{'regime':<26}{'net Sh':>9}{'net CAGR':>10}"
+          f"{'B&H CAGR':>10}{'trades':>8}")
+    print("-" * 78)
+    REG = {"pre-mania 2017..2020-02": ("2017-01-01", "2020-02-29"),
+           "mania 2020-06..2021-12": ("2020-06-01", "2021-12-31"),
+           "chop 2022+": ("2022-01-01", "2030-01-01")}
+    for label, (preds, _, _, test) in results.items():
+        for rname, (lo, hi) in REG.items():
+            m = ((test["date"] >= pd.Timestamp(lo))
+                 & (test["date"] <= pd.Timestamp(hi))).to_numpy()
+            if m.sum() < 60:
+                continue
+            sub = test[m].reset_index(drop=True)
+            pos = preds["position"].to_numpy()[m]
+            r = portfolio.run_backtest(sub, pos, cost)
+            b = portfolio.buy_and_hold(sub, cost)
+            print(f"{label:<12}{rname:<26}{r.stats['net_sharpe']:>9.2f}"
+                  f"{r.stats['net_cagr']:>10.1%}{b.stats['net_cagr']:>10.1%}"
+                  f"{r.stats['n_trades']:>8}")
+
     hr("VERDICT")
     if any_pass:
         print("  §6.3's criteria are met by at least one model.")
