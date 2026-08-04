@@ -235,6 +235,48 @@ The check asserts the violations are *flagged*, not that they are absent. "Zero 
 
 ---
 
+### 3.7 Phase 2a: the harness, and what it says before any model exists (2026-08-04)
+
+`nepselab/eval/{labels,splits,metrics,baselines}.py`, driven by `scripts/phase2_walkforward.py`, tested in `tests/test_eval.py`. **Phase 2a is done; Phase 2b (cost model, fill logic, PnL) remains blocked on §4.**
+
+**The harness passes its own self-checks.** 100 monthly folds at h=1, 1,930 pooled test rows, embargo enforced and asserted per fold. A coin scores 0.4896 with a CI covering 0.50; the majority baseline ties itself at exactly 0.00pp. The load-bearing test is `test_no_edge_on_a_random_walk` over five seeds — leakage does not announce itself, it looks like a discovery, and a synthetic series with no predictable sign is the only check that covers leaks nobody wrote an assertion for.
+
+Four design decisions that turned out to matter more than expected:
+
+1. **h is measured in sessions, not calendar days, and labels spanning a closure are dropped.** A "5-session-ahead" label across the 51-day COVID gap is not the same target as its neighbours. 17 such labels at h=5, 2 at h=1.
+2. **Flat closes are dropped, not bucketed as up.** `>` vs `>=` differs by ~0.1% of days — negligible next to intuition, not negligible next to a 2pp threshold.
+3. **The baseline is the majority-class predictor *walked forward*, not a majority recomputed from a fixed window.** It refits at every retrain, so it changes its mind when the regime turns. Edges are measured paired, on identical rows, because §6 asks about a *difference* — comparing two separate CIs is a different and wrong question.
+4. **The bootstrap block must be longer than the horizon.** This is the finding worth carrying forward.
+
+**Block length decides significance, so it is fixed in advance.** For the h=5 momentum baseline (edge +5.60pp, n=1,911):
+
+| Block | Edge 95% CI | Excludes 0? |
+|---|---|---|
+| 1 | [+2.51, +8.69]pp | yes |
+| 5 (= horizon) | [+1.25, +10.12]pp | yes |
+| **13 (= n^⅓, used)** | **[+0.10, +10.83]pp** | **barely** |
+| 25 | [−0.21, +11.49]pp | no |
+
+Setting `block = horizon` covers the label overlap but not the persistence of the market itself — trends and regimes do not reset every five sessions. `recommended_block = max(horizon, n^⅓)` is now the default and is **fixed before Phase 4 runs**, for the same reason §6's thresholds are: choosing it after seeing a result would be picking the number that gives the nicer answer. **Any significance claim must state its block length.**
+
+**A naive momentum rule already beats the majority class**, which is worth stating plainly and not overstating:
+
+| | h=1 | h=5 |
+|---|---|---|
+| Majority-class accuracy | 0.5259 | 0.4976 |
+| Momentum accuracy | 0.5591 | 0.5536 |
+| Edge (paired 95% CI) | +3.32pp [+0.31, +6.32] | +5.60pp [+0.10, +10.83] |
+| Mania-regime edge | +13.15pp | +10.14pp |
+
+This is **not** evidence of a tradeable edge, and three things stand between it and one:
+- **No costs.** §4's constants are all `null`; a daily-rebalancing rule facing flat DP charges and manual TMS execution is exactly what §4 predicts will not survive them. This is the whole point of Phase 2b.
+- **The mania concentration is the §6 kill criterion, visible in the baselines.** The edge is largest in 2020-06→2021-12 in both horizons — precisely the bull-market artifact §6 abandons on. The criterion was retired on 2026-08-02 for want of data and reinstated by §3.5; here is the first evidence it will have real work to do.
+- **The interval straddles the bar.** ±2.1–2.3pp against a 2pp threshold.
+
+**Phase 2a's actual deliverable is that last row.** Any Phase 4 accuracy will carry a ~±2pp interval at h=1 and a block-sensitive one at h=5. That is now measured rather than projected, and it is the number §6 has to be read against.
+
+---
+
 ## 4. Costs and market structure
 
 **Every constant is a date-indexed lookup, never a scalar.** The settlement cycle moved T+3 → T+2 inside our sample, and CGT rates and commission tiers have also changed. Build a `market_params` table keyed by effective date; fill logic and cost model read it per trade date. Lives in `configs/market_params.yaml`, one source-citation field per row.
@@ -368,7 +410,8 @@ Three commitments come with it, and they are the price of the promotion being ho
 | 1a | ~~Depth probe; exact power calculation; append-only archive + daily job~~ | **DONE 2026-08-02** |
 | 1b | **Daily `archive_pull.py` run.** Not effort — calendar time, indefinitely, starting now. Cron installed 2026-08-02, 15:30 + 20:30 local. **Open item: the `today_price` breadth backfill (§3.4) is racing the rolling window.** | **continuous** |
 | 1c | ~~Deep-history sourcing probe (§8.1 option D)~~ | **DONE 2026-08-04** |
-| 2 | Walk-forward engine, cost model, fill logic, metrics, baselines, regime split (restored) | 6 days |
+| 2a | ~~Walk-forward engine, metrics, baselines, regime split~~ | **DONE 2026-08-04** (§3.7) |
+| 2b | Cost model, fill logic, net PnL/Sharpe | **BLOCKED on §4** — every cost constant is still `null` |
 | 3 | Four feature modules; LLM sentiment pass with on-disk cache | 8 days |
 | 4 | Logistic regression + GBM; ablation table; regime table (restored); apply §6 thresholds | 6 days |
 | 5 | ~~Daily forward job~~ — **merged into 1b**; log + scoring script remain | 2 days |
