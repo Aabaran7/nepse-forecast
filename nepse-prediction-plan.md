@@ -146,7 +146,13 @@ Five in, five out, held constant at 225. The five oldest sessions in `data/raw/`
 
 **`scripts/archive_pull.py` must run every trading day.** It is no longer a Phase 5 convenience; it is the data collection strategy, and it is the one task with a real deadline.
 
-**UNRESOLVED — the archive has no backup.** `data/` is gitignored (correctly; parquet does not belong in git), so the only copy of the only irreplaceable asset in this project currently exists on one disk, in one directory, with no redundancy. A disk failure destroys strictly more than the five sessions already lost. The §8.1 decision does not affect this: **the archive needs an off-machine copy under every option**, and it needs one now rather than after the sample is large enough to matter. Cheapest sufficient fix is a periodic copy to cloud storage or a separate physical disk, versioned by pull date. **TODO: pick a target and wire it into the daily job.** Survey done 2026-08-04 — the machine has one disk, no second mount, no cloud CLI (`rclone`/`gsutil`/`aws` all absent) and `rsync` + an authenticated `gh` are the only usable tools present. The archive is 1.8 MB and grows ~5 MB/yr, so a **private GitHub repo pushed from the daily cron** is the obvious fit. Awaiting the go-ahead, since it puts the data on a third party's servers.
+**~~UNRESOLVED — the archive has no backup.~~ RESOLVED 2026-08-04.** `data/` is gitignored (correctly; parquet does not belong in git), so the only copy of the only irreplaceable asset in this project existed on one disk with no redundancy. Fixed: `scripts/archive_backup.py` mirrors `data/archive/` and `data/deep/` to a **private GitHub repo** (`Aabaran7/nepse-archive`), called from `cron_archive.sh` on every run, inside the same lock as the pull.
+
+Two design points, both about the backup being genuinely useful rather than merely existing:
+- **CSV, not parquet.** Parquet is a compressed blob rewritten whole on each merge, so git stores a fresh copy daily — `today_price` alone reaches ~8 MB, i.e. ~2 GB/yr of commits. The CSVs are sorted on the archive's own keys, so a day's rows land as an insertion git deltas to near-nothing. CSV also restores without pyarrow or a matching pandas; a backup with dependencies is a weaker backup.
+- **It runs even when the pull fails**, since a partial pull still added rows worth protecting, and a failed push leaves the commit local rather than reporting a failed backup — the next run carries both.
+
+First push 2026-08-04: 6 datasets, 36,525 rows.
 
 **Breadth backfill is the live race (2026-08-04).** `today_price` — the only breadth source, and the one dataset that must be pulled one session at a time — was archived for just 48 of 231 sessions. The other ~183 are still upstream *for now* and expire at ~1/day. Throttling means a single run recovers only ~40 before giving up, so closing the gap takes many runs. Nothing else in the project has a deadline like this: the deep-history series in §3.5 restores index OHLC back to 2016, but **it carries no breadth at all**, so any advancers/decliners feature is capped forever at what this backfill saves.
 
@@ -268,7 +274,8 @@ Conclusions carried forward: usable as an **index-level attention and sentiment 
 
 **Abandonment thresholds — fixed now, before any results are seen.** If the backtest fails these, the project is abandoned and written up as a null result rather than tuned further:
 
-- **h=5 directional accuracy ≤ (majority-class baseline + 2pp)** on the pooled walk-forward test → abandon.
+- **PRIMARY (decided 2026-08-04, before any model ran — see §6.1): h=1 directional accuracy ≤ (majority-class baseline + 2pp)** on the pooled walk-forward test → abandon. Majority class on the deep sample is **52.3% (down)**, so the bar is **54.3%**.
+- **h=5 directional accuracy ≤ (majority-class baseline + 2pp)** on the pooled walk-forward test → abandon. Still binding, still reported, but its confidence interval (~±6pp) cannot resolve 2pp and never will — so a *pass* here is not evidence of an edge, only an absence of contrary evidence.
 - **Net Sharpe < 0.4** after realistic costs at the declared capital base → no capital, regardless of accuracy.
 - **Edge present only in the 2020-06 → 2021-12 mania regime** → abandon; that is a bull-market artifact, not a signal.
 - **Alt-data gate:** if +Reddit and +news each add <1pp over price-only in the ablation, drop those modules. The project may continue on price-only if it still clears the above.
@@ -296,6 +303,13 @@ Conclusions carried forward: usable as an **index-level attention and sentiment 
 **The honest position, restated for the deep sample.** §6 as written specifies h=5. That test needs ~3,800 weekly blocks and will not be runnable in this project's lifetime. What *is* now runnable is the **h=1 daily** test at 2.5pp against a 2pp bar — marginal, but interpretable, which it was never going to be at 14pp.
 
 This is a real temptation and worth naming: the obvious move is to quietly promote h=1 to the primary threshold because it is the one the data can support. That is §9's "threshold-adjacent tuning" wearing a different hat — choosing the test by what the sample can pass. If h=1 becomes primary it must be **because it was always a stated target (§2 names h=1 and h=5 equally), decided now, before any model runs**, with the h=5 result still reported and still governed by the same +2pp rule even though its CI will be uninformative. Recording the decision here, in advance, is what makes it legitimate; discovering it after seeing results would not be.
+
+**DECIDED 2026-08-04: h=1 is the primary threshold.** Taken on the terms above — before any model has been fitted, before any accuracy number exists, and with the h=5 test retained rather than dropped. What this buys is a primary test whose noise floor (2.5pp) sits below the effect it tests for (2pp), instead of one eight times above it.
+
+Three commitments come with it, and they are the price of the promotion being honest rather than convenient:
+1. **h=5 is still reported, still governed by +2pp, and still capable of abandoning the project.** It is demoted in precedence, not deleted.
+2. **A pass on h=5 is not evidence.** Its CI is ~±6pp; it cannot distinguish +2pp from 0. Any write-up must say so next to the number rather than in a footnote.
+3. **This is the last time either threshold moves.** The §6 numbers were frozen on 2026-08-02 and remain frozen; what changed here is precedence between two pre-existing targets, decided in advance and recorded. A further revision after results exist would invalidate the run — that is §9's kill criterion, not a guideline.
 
 **The numbers stay frozen.** More data is not a reason to move a threshold, in either direction.
 

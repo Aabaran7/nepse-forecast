@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Daily archival run, for cron. See plan §3.4.
+# Daily archival run + off-machine backup, for cron. See plan §3.4.
 #
 # NEPSE retains a rolling ~1 year, so a trading day that is never archived is
 # destroyed permanently. This wrapper exists because that failure is SILENT:
@@ -36,7 +36,14 @@ fi
 {
   echo "=== $(date -Is) (KTM $(TZ=Asia/Kathmandu date '+%F %T')) ==="
   "$PY" scripts/archive_pull.py 2>&1
-  echo "--- exit=$? ---"
+  echo "--- pull exit=$? ---"
+
+  # Off-machine copy, every run. Runs even when the pull failed: a partial pull
+  # still added rows worth protecting, and the backup is idempotent when it
+  # didn't. Deliberately inside the lock -- it reads the same parquet files the
+  # pull writes, so it must not run while a merge is mid-flight.
+  "$PY" scripts/archive_backup.py 2>&1
+  echo "--- backup exit=$? ---"
 } >> "$LOG" 2>&1
 
 # Keep the log from growing without bound; the archive itself is the record.
