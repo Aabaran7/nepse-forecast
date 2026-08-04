@@ -68,7 +68,14 @@ def run_backtest(frame: pd.DataFrame, signal: np.ndarray, cost: CostModel,
     px = frame[price_col].to_numpy(dtype=float)
     dates = pd.to_datetime(frame["date"])
     day_ret = frame["close"].pct_change().to_numpy()
-    work = frame.assign(day_return=day_ret)
+
+    # Precompute the per-session circuit cap. Doing this inside the loop meant
+    # a linear era scan plus a Timestamp construction on EVERY row, which is
+    # most of the ledger's runtime (73ms per 750-row run, and the §6.4 grid
+    # search calls it ~5,500 times per model). The caps change on a handful of
+    # dates, so this is the same numbers computed once instead of n times.
+    caps = np.array([cost.params.index_circuit(d) for d in dates], dtype=float)
+    date_list = list(dates)
 
     cash = cost.capital
     units = 0.0
@@ -82,16 +89,27 @@ def run_backtest(frame: pd.DataFrame, signal: np.ndarray, cost: CostModel,
     blocked = 0
     settle_blocked = 0
 
+    def _blocked(i: int, direction: int) -> bool:
+        """Inlined fill_blocked, reading precomputed arrays. Same semantics."""
+        r = day_ret[i]
+        if r is None or np.isnan(r):
+            return False
+        tol = 1e-4
+        if direction > 0 and r >= caps[i] - tol:
+            return True
+        if direction < 0 and r <= -caps[i] + tol:
+            return True
+        return False
+
     for i in range(len(frame)):
         want = int(signal[i])
         holding = units > 0
-        row = work.iloc[i]
 
         if bankrupt:
             want = 0 if not holding else want
 
         if want == 1 and not holding and not bankrupt:
-            fee_est = cost.trade_cost(cash, dates.iloc[i], "buy")
+            fee_est = cost.trade_cost(cash, date_list[i], "buy")
             if cash <= 0 or fee_est >= cash:
                 # Ruined, or the flat charge alone exceeds the account. Without
                 # this the ledger "buys" a negative number of units and equity
@@ -100,31 +118,31 @@ def run_backtest(frame: pd.DataFrame, signal: np.ndarray, cost: CostModel,
                 # at 2x friction than at 1x. An account cannot spend money it
                 # does not have, and a bankrupt one stops trading.
                 bankrupt = True
-            elif fill_blocked(row, +1, cost.params):
+            elif _blocked(i, +1):
                 blocked += 1
             else:
                 notional = cash
-                fee = cost.trade_cost(notional, dates.iloc[i], "buy")
+                fee = cost.trade_cost(notional, date_list[i], "buy")
                 units = (notional - fee) / px[i]
                 cash = 0.0
                 entry_price, entry_idx = px[i], i
-                trades.append(Trade(dates.iloc[i], "buy", notional, fee))
+                trades.append(Trade(date_list[i], "buy", notional, fee))
 
         elif want == 0 and holding:
             # Settlement: cannot sell until entry + settlement_cycle trading days.
-            settle = cost.params.settlement_days(dates.iloc[entry_idx])
+            settle = cost.params.settlement_days(date_list[entry_idx])
             if i - entry_idx < settle:
                 settle_blocked += 1
-            elif fill_blocked(row, -1, cost.params):
+            elif _blocked(i, -1):
                 blocked += 1
             else:
                 notional = units * px[i]
-                fee = cost.trade_cost(notional, dates.iloc[i], "sell")
+                fee = cost.trade_cost(notional, date_list[i], "sell")
                 gain = (px[i] - entry_price) * units - fee
-                hold_days = int((dates.iloc[i] - dates.iloc[entry_idx]).days)
-                tax = cost.capital_gains_tax(gain, hold_days, dates.iloc[i])
+                hold_days = int((date_list[i] - date_list[entry_idx]).days)
+                tax = cost.capital_gains_tax(gain, hold_days, date_list[i])
                 cash = max(0.0, notional - fee - tax)
-                trades.append(Trade(dates.iloc[i], "sell", notional, fee,
+                trades.append(Trade(date_list[i], "sell", notional, fee,
                                     gain=gain, tax=tax, holding_days=hold_days))
                 units, entry_price, entry_idx = 0.0, 0.0, None
                 if cash <= 0:
