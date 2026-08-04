@@ -277,6 +277,28 @@ This is **not** evidence of a tradeable edge, and three things stand between it 
 
 ---
 
+### 3.8 Phase 3: feature modules (2026-08-04)
+
+`nepselab/features/{base,price,reddit}.py`. Three toggleable modules behind one interface, so the §5 ablation is a config change.
+
+| Module | Columns | From | Notes |
+|---|---|---|---|
+| `price` | 25 | 2016-01 | returns/momentum at several lags, realized vol and vol-ratio, distance from 52w high/low, position-in-range, MA ratios, run length, intraday range (masked on the 16 bad bars) |
+| `turnover` | 6 | **2017-01** | log-ratios to trailing windows, z-score, turnover×return interaction. Separate module purely so it cannot be dragged across the 420× units break |
+| `reddit` | 9 | 2020-06 | attention z-scores and ratios, comments-per-post, acceleration |
+
+**Reddit is attention only, and every column is scale-free.** §9 rates "Reddit attention leaks a time trend" as *High if unhandled*: the subreddit grew across the sample, so a raw count encodes the calendar and a model will happily use the calendar to predict a market that also trended. Nothing in the module emits a level — only z-scores against a trailing 90-session window, log-ratios to that window, and composition ratios.
+
+Two alignment details that would each have leaked silently:
+- **Reddit's clock is not NEPSE's.** `created_utc` is UTC; NEPSE closes 15:00 NPT = 09:15 UTC. Attention for session *t* counts only what was posted before that session's close — otherwise the feature knows how the day went. Only **44%** of daily comment volume falls before the close, so this is not a rounding detail.
+- **Non-trading-day activity is carried forward, not dropped.** A closure does not stop people posting, and the loudest days on a stock subreddit are often the ones the market is shut.
+
+**Sentiment is not built.** §5 requires an LLM pass with a constrained schema, an on-disk cache, and validation against ~200 hand-labelled code-switched comments before use, and explicitly forbids VADER/TextBlob (they score romanized Nepali as neutral noise). None of that is done, so the ablation measures **attention only** and the §6(d) gate is read on that basis.
+
+**A bug worth recording, because it cost 37% of the sample and nothing errored.** Rolling windows were written with default `min_periods`, which returns NaN if *any* input in the window is NaN. The 16 masked OHLC bars (§3.6) therefore poisoned 63 rows each — 2018 lost 117 of 240 sessions, 2017–2019 lost ~60% — and the survivors looked entirely healthy. It was caught only because the regime table came back missing its pre-mania row, i.e. because §6(c) needed data that had quietly disappeared. Fixing `min_periods` recovered the price frame from 1,721 to **2,352** sessions.
+
+---
+
 ## 4. Costs and market structure
 
 **Every constant is a date-indexed lookup, never a scalar.** The settlement cycle moved T+3 → T+2 inside our sample, and CGT rates and commission tiers have also changed. Build a `market_params` table keyed by effective date; fill logic and cost model read it per trade date. Lives in `configs/market_params.yaml`, one source-citation field per row.
@@ -339,11 +361,11 @@ A config mixing a 2016 feature with a 2025 one silently yields a 2025 sample. Ph
 
 Conclusions carried forward: usable as an **index-level attention and sentiment series only**; ticker-level cross-section is dead; weekly frequency is solid, daily workable but thinner. Features: daily and weekly post/comment counts, unique authors, normalized attention z-score, comment-to-post ratio. **Attention must be normalized as a share of total subreddit activity or z-scored against a trailing 90-day window** — the sub grew across the sample, so raw counts trend mechanically and will leak a time trend into any model.
 
-**3. News.** ShareSansar / MeroLagani headline counts plus LLM-scored sentiment.
+**3. News. NOT BUILT.** ShareSansar / MeroLagani headline counts plus LLM-scored sentiment. Never reached: §6(d) dropped the alt-data branch on Reddit attention alone (−2.34pp), and §6(b)/(c) abandoned the project before news could change the answer.
 
 **Sentiment scoring (Reddit and news).** The corpus is code-switched English / romanized Nepali — **do not use VADER or TextBlob**; they will score romanized Nepali as neutral noise. Use an LLM scoring pass with a constrained label schema (structured outputs, so every response parses). **Cache all scores to disk keyed by comment/headline id** — the pass runs once per document, ever. Route it through the Message Batches API (50% of standard token price) and cache the shared few-shot prefix. Note the prompt-cache minimum is model-dependent — 512 tokens on Opus 5, 1024 on Sonnet 5, 4096 on Haiku 4.5 — so a short few-shot prefix silently won't cache on the cheapest model. **TODO: pick the model and estimate total cost** from the actual document count before committing; validate whichever model is chosen against a hand-labelled sample of ~200 code-switched comments.
 
-**4. Macro.** NRB rates, CPI, remittance inflows, liquidity. **Must use publication lags, not reference dates.** These publish weeks to months late; store `reference_date` *and* `publication_date`, and let features read only rows where `publication_date <= t`. Reference-dated macro at time *t* is lookahead and will manufacture an edge that does not exist.
+**4. Macro. NOT BUILT** — same reason as news. **If ever revisited:** NRB rates, CPI, remittance inflows, liquidity. **Must use publication lags, not reference dates.** These publish weeks to months late; store `reference_date` *and* `publication_date`, and let features read only rows where `publication_date <= t`. Reference-dated macro at time *t* is lookahead and will manufacture an edge that does not exist.
 
 ---
 
@@ -394,10 +416,70 @@ Three commitments come with it, and they are the price of the promotion being ho
 
 ---
 
+### 6.2 RESULTS (2026-08-04) — the thresholds fire, and the project abandons
+
+§6's numbers were frozen on 2026-08-02, before any model ran. They are applied here unchanged and the outcome is reported as found.
+
+**Ablation, h=1, common window (from 2020-06, n≈1,400). Edge = accuracy − walked-forward majority-class predictor, paired, block bootstrap.**
+
+| Feature set | LR edge | LR 95% CI | GBM edge (5 seeds) |
+|---|---|---|---|
+| price-only | **+5.16pp** | [+0.48, +10.06] | +6.52 ± 0.41 |
+| +turnover | +4.87pp | [+0.00, +9.96] | +6.72 ± 0.30 |
+| +reddit | +2.82pp | [−1.77, +7.88] | +5.40 ± 0.40 |
+| all | +2.20pp | [−2.41, +7.22] | +5.40 ± 0.44 |
+
+**The regime table is the finding.** Price-only, logistic, on the widest window (2016-04 → 2026-07):
+
+| Regime | n | Edge (h=1) | 95% CI | Edge (h=5) |
+|---|---|---|---|---|
+| pre-mania 2016 → 2020-02 | 511 | **+0.20pp** | [−5.47, +5.69] | −1.96pp |
+| **mania 2020-06 → 2021-12** | 364 | **+13.19pp** | [+5.16, +22.01] | **+15.93pp** |
+| chop 2022+ | 1,063 | **+0.56pp** | [−3.20, +4.52] | −4.58pp |
+
+**Every point of edge lives in the mania regime.** Outside it the model is indistinguishable from the majority class at h=1 and *worse than it* at h=5. This is exactly the bull-market artifact §6(c) abandons on — the criterion that was retired on 2026-08-02 for want of data and reinstated by §3.5. It earned its place back on the first run that could test it.
+
+**Net-of-cost PnL, h=1, NPR 1,000,000, 1× friction:**
+
+| Model | Gross Sharpe | Net Sharpe | Net CAGR | Max DD |
+|---|---|---|---|---|
+| LR (all features) | 0.66 | **−1.36** | −19.1% | −58.8% |
+| GBM (all features) | 1.32 | **−0.69** | −11.2% | −41.6% |
+| LR (price-only) | 0.78 | **−1.06** | −15.7% | −53.2% |
+| **buy-and-hold** | 0.32 | **+0.30** | +4.0% | −20.2% |
+
+**The thresholds, applied:**
+
+| §6 threshold | Result | Verdict |
+|---|---|---|
+| (a) h=1 accuracy > majority + 2pp | best of 8 combos: GBM/price-only **+7.30pp**, CI [+2.61, +11.98] | point estimate and CI both clear — **but see below** |
+| (b) Net Sharpe ≥ 0.4 after costs | −1.36 / −0.69 / −1.06 | **FAIL** |
+| (c) Edge only in the mania regime | +13.19pp mania vs +0.20 / +0.56 elsewhere | **TRIGGERS — abandon** |
+| (d) Reddit adds ≥ 1pp | **−2.34pp** | **DROP the Reddit module** |
+| (e) ≥ 60 forward days | 1 | not met (Phase 5 just built) |
+
+**(a) is the one that must not be over-read, and the reason is §9's "know thyself".** The +7.30pp is the *maximum over 8 model × feature-set combinations*, and its interval is not corrected for that selection. A best-of-8 point estimate is biased upward by construction; the honest reading is the per-set table above, where the single pre-specified configuration (price-only, LR) gives +5.16pp with a CI whose lower bound is +0.48pp — i.e. barely distinguishable from zero, let alone from +2pp. And (c) explains where even that comes from.
+
+**Verdict: the project abandons on §6(b) and §6(c).** No capital is deployed. This is the "documented no edge found" outcome §1 committed to in advance, and it arrives with the mechanism identified rather than as a shrug:
+
+1. **The apparent edge is a regime artifact.** It is a 2020–21 bull-market phenomenon and does not exist in the four years before or the four years after.
+2. **What edge there is cannot survive costs.** Gross Sharpe 0.66–1.32 becomes net −0.69 to −1.36. The flat DP charge and 300+ round trips do it, exactly as §4 predicted — and buy-and-hold, which pays that charge twice in total, beats every model.
+3. **Alt-data adds nothing.** Reddit attention *subtracts* 2.34pp. §5's own EDA pointed this way; the ablation confirms it.
+
+**What is NOT claimed:** that NEPSE is unpredictable. What is shown is that *this* target, on *this* sample, with *these* features, does not clear a bar fixed in advance. §6.1's h=5 caveat still stands — its intervals remain too wide to resolve 2pp either way.
+
+---
+
+---
+
 ## 7. Forward run
 
-- **Daily job:** pull new data, generate predictions for t+1 and t+5, append to an **immutable prediction log** — timestamp, features, model version, git hash. **Never overwrite a past prediction.** The log accumulates indefinitely.
-- **Scoring script:** reads the log, reports rolling accuracy and simulated PnL as outcomes arrive.
+**BUILT 2026-08-04** — `nepselab/forward/log.py` + `scripts/phase5_forward.py`, wired into `cron_archive.sh` after the pull and before the backup.
+
+- **Daily job:** pull new data, generate predictions for t+1 and t+5, append to an **immutable prediction log** — timestamp, features, model version, git hash. **Never overwrite a past prediction.** The log accumulates indefinitely. Enforced, not merely intended: a second run on the same date raises `PredictionExists` rather than replacing. The escape hatch is to bump `model_version`, never to edit history — because the rewrite that matters is the one applied *after* the outcome is known, which is exactly when it looks most reasonable.
+- **Scoring script:** `--score` reads the log, joins outcomes as they arrive, and reports resolved/open counts and rolling accuracy per horizon.
+- The log is backed up off-machine with the archive (§3.4). It is irreplaceable in a different way: §7 forbids rewriting it, so losing it cannot be repaired by re-running anything.
+- **It keeps running despite §6.2.** The project abandons on the backtest, but the forward job costs one cron line and is the only thing that would ever detect the backtest having been wrong.
 - **What the forward run is for.** ~40 trading days cannot distinguish 55% accuracy from 50%. Its purpose is **leak detection and pipeline validation** — catching a feature that silently used future information, a data source that changed shape, a fill rule that never fires in live data. **The backtest remains the primary evidence.** A forward log that agrees with the backtest confirms the pipeline; it does not independently prove an edge.
 
 ---
@@ -412,9 +494,9 @@ Three commitments come with it, and they are the price of the promotion being ho
 | 1c | ~~Deep-history sourcing probe (§8.1 option D)~~ | **DONE 2026-08-04** |
 | 2a | ~~Walk-forward engine, metrics, baselines, regime split~~ | **DONE 2026-08-04** (§3.7) |
 | 2b | Cost model, fill logic, net PnL/Sharpe | **BLOCKED on §4** — every cost constant is still `null` |
-| 3 | Four feature modules; LLM sentiment pass with on-disk cache | 8 days |
-| 4 | Logistic regression + GBM; ablation table; regime table (restored); apply §6 thresholds | 6 days |
-| 5 | ~~Daily forward job~~ — **merged into 1b**; log + scoring script remain | 2 days |
+| 3 | ~~Feature modules~~ **DONE 2026-08-04** (§3.8): price, turnover, Reddit attention. **LLM sentiment pass NOT built** — §5 requires validation against ~200 hand-labelled comments first; the §6(d) gate dropped Reddit on attention alone, so it was never reached | — |
+| 4 | ~~Logistic + GBM; ablation; regime table; §6 thresholds~~ | **DONE 2026-08-04** (§6.2) |
+| 5 | ~~Daily forward job, immutable log, scoring script~~ | **DONE 2026-08-04** (§7) |
 
 Phase 1a came in well under its 5-day estimate because it stopped at the first thing that mattered; 1c came in under its 1-day estimate for the same reason. Phases 2–5 are **unblocked** as of 2026-08-04 — see §8.1.
 
@@ -485,8 +567,8 @@ nepse-lab/
 | ~~NEPSE endpoints change/break mid-project~~ **MATERIALISED, worse than written** | ~~Medium~~ **Certain** | The risk was framed as endpoints *breaking*. What happened is subtler and was not on this table: they work, return 200, and silently ignore the date range (§3.4). "Freeze dataset v1.0 early" was the right mitigation for the wrong reason — the fix is a *continuously accumulating* archive, not a frozen one, and the freeze framing would have left the window rolling while we built. |
 | ~~**Sample too small to resolve the effect under test**~~ — **not on the original table; largely mitigated 2026-08-04** | ~~Certain~~ **Partial** | Was unmitigable against NEPSE's API; §3.5 sourced 2,434 cross-validated sessions elsewhere and §2's power table improved ~3×. **Still live for h=5** (486 blocks vs ~3,800 needed) and for every breadth feature (2025-07 onward only). The process lesson stands regardless: the original plan carried a power calculation as a TODO rather than a gate, and had it been computed at Phase 0 against real row counts, §3.4 surfaces a week earlier and five sessions are not lost. **Compute power before building, not after.** |
 | **Third-party history is silently wrong** — new, and now load-bearing | **Certain in some era** | Realised immediately: two independent scrapes of the same index disagree on 2.4% of pre-2016 daily return signs, and there is no authority to adjudicate them. Mitigation is the cross-source check in `scripts/phase1c_deep_history.py`, re-run on every refresh — **never trust a single deep source, and never accept a window where two disagree at a rate near the effect size.** The 2025-07+ archive is the only part of the sample with exchange provenance. |
-| No edge found | High-ish | Thresholds in §6 fixed in advance; abandon rather than tune |
-| Overfitting via repeated threshold-adjacent tuning | High (know thyself) | §6 numbers are frozen; changing them invalidates the run |
+| ~~No edge found~~ **MATERIALISED 2026-08-04** | ~~High-ish~~ **Realised** | Thresholds in §6 fixed in advance; abandoned rather than tuned. §6.2 records the outcome and the mechanism: the edge is a 2020–21 regime artifact, and what remains does not survive costs. |
+| Overfitting via repeated threshold-adjacent tuning | High (know thyself) | §6 numbers are frozen; changing them invalidates the run. **Survived the actual test:** §6.2 ran once, against thresholds set six days earlier, and reports a best-of-8 figure explicitly flagged as selection-biased rather than headlined. |
 
 **Kill criteria:**
 - ~~If the adjusted-price layer can't be validated, restrict to index-only.~~ **Resolved at the Phase 0 gate: index-only is now the design**, not a fallback (§3.2). The criterion is retired.

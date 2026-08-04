@@ -38,6 +38,13 @@ fi
   "$PY" scripts/archive_pull.py 2>&1
   echo "--- pull exit=$? ---"
 
+  # Forward predictions (plan §7). Runs BEFORE the backup so the day's
+  # predictions are included in the off-machine copy. Appending twice a day is
+  # harmless: the log refuses to overwrite an existing entry, and the second
+  # run simply reports that -- which is the §7 guarantee working, not an error.
+  "$PY" scripts/phase5_forward.py 2>&1
+  echo "--- forward exit=$? ---"
+
   # Off-machine copy, every run. Runs even when the pull failed: a partial pull
   # still added rows worth protecting, and the backup is idempotent when it
   # didn't. Deliberately inside the lock -- it reads the same parquet files the

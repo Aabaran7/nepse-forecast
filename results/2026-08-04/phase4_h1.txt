@@ -1,0 +1,102 @@
+
+==============================================================================
+PHASE 4: MODELS AND §6 THRESHOLDS (h=1)
+==============================================================================
+§6's numbers were frozen 2026-08-02, before any of this ran.
+
+==============================================================================
+1. ABLATION -- each feature set on its OWN maximal window
+==============================================================================
+Windows differ, so this table conflates features with sample. Read it
+for coverage, not for the alt-data gate.
+
+feature set   window                       n  feats   LR edge   GBM edge
+------------------------------------------------------------------------------
+price-only    2016-04-10..2026-07-31    2352     25    +2.66    +5.05±0.57
++turnover     2017-01-02..2026-07-31    2184     31    +2.63    +3.90±0.49
++reddit       2020-09-07..2026-07-23    1356     34    +2.82    +5.40±0.40
+all           2020-09-07..2026-07-23    1356     40    +2.20    +5.40±0.44
+
+==============================================================================
+2. ABLATION -- all sets restricted to the COMMON window (from 2020-06-01)
+==============================================================================
+This is the comparison §6's alt-data gate reads: same rows, same
+folds, only the feature set changes.
+
+feature set        n  feats   LR acc   LR edge         edge 95% CI    GBM edge
+------------------------------------------------------------------------------
+price-only      1427     25   0.5443     +5.16   [+0.48,+10.06]pp   +6.52±0.41
++turnover       1427     31   0.5414     +4.87   [+0.00,+9.96]pp   +6.72±0.30
++reddit         1356     34   0.5450     +2.82   [-1.77,+7.88]pp   +5.40±0.40
+all             1356     40   0.5387     +2.20   [-2.41,+7.22]pp   +5.40±0.44
+
+  Marginal contribution over price-only (LR):
+    +turnover     -0.29pp
+    +reddit       -2.34pp
+    all           -2.96pp
+
+==============================================================================
+3. BY REGIME (§2's split, restored by §3.5)
+==============================================================================
+logistic, price-only, 2016-04-10..2026-07-31 (widest window with mania coverage):
+                 regime    n  accuracy  majority  edge_pp  edge_lo_pp  edge_hi_pp
+pre-mania 2016..2020-02  511    0.5577    0.5558   0.1957     -5.4690      5.6866
+ mania 2020-06..2021-12  364    0.5632    0.4313  13.1868      5.1590     22.0109
+             chop 2022+ 1063    0.5503    0.5447   0.5644     -3.1988      4.5155
+
+==============================================================================
+4. NET-OF-COST PnL (capital = NPR 1,000,000, 1x friction)
+==============================================================================
+model                   gross Sh   net Sh  net CAGR    maxDD  trades
+------------------------------------------------------------------------------
+LR (all features)           0.66    -1.36   -19.1%   -58.8%     329
+GBM (all features)          1.32    -0.69   -11.2%   -41.6%     341
+LR (price-only)             0.78    -1.06   -15.7%   -53.2%     323
+buy-and-hold                0.32     0.30     4.0%   -20.2%       2
+
+==============================================================================
+5. §6 ABANDONMENT THRESHOLDS -- FROZEN 2026-08-02, APPLIED NOW
+==============================================================================
+
+  (a) PRIMARY: h=1 accuracy > majority + 2pp
+      best of 8 model x feature-set combinations:
+        GBM(seed0) / price-only  edge +7.30pp
+        95% CI [+2.61, +11.98]pp (block=11)
+      point estimate clears +2pp: YES
+      CI excludes +2pp:           YES
+      CI excludes ZERO:           YES
+      NOTE: picking the best of 8 combinations is
+      itself a multiple-comparisons problem. The CI above is not
+      corrected for it, so the true interval is WIDER than shown.
+
+  (b) Net Sharpe >= 0.4 after realistic costs at NPR 1,000,000
+      LR (all features)      -1.356  FAIL
+      GBM (all features)     -0.690  FAIL
+      LR (price-only)        -1.063  FAIL
+
+  (c) Edge present only in the mania regime -> abandon
+      pre-mania 2016..2020-02     +0.20pp  [-5.47,+5.69]
+      mania 2020-06..2021-12     +13.19pp  [+5.16,+22.01]
+      chop 2022+                  +0.56pp  [-3.20,+4.52]
+      edge confined to the mania regime: YES -- §6(c) TRIGGERS
+
+  (d) Alt-data gate: Reddit must add >= 1pp over price-only
+      +reddit vs price-only (common window): -2.34pp
+      gate: DROP reddit module
+
+  (e) Capital gate: >= 60 forward trading days logged
+      forward log entries: 1 -- gate NOT met (Phase 5 just built)
+
+==============================================================================
+VERDICT
+==============================================================================
+  §6(b) FAILS: no model clears net Sharpe 0.4 after costs.
+  Per §6 this means NO CAPITAL, regardless of accuracy.
+  §6(c) TRIGGERS: the edge lives in the mania regime and is absent
+  (or negative) elsewhere. §6 calls that a bull-market artifact and
+  abandons on it. This criterion was RETIRED on 2026-08-02 for want
+  of data and reinstated by §3.5 -- it earned its place back.
+
+  These numbers are reported as found. §6 and §9 forbid re-tuning
+  against them; a second run with adjusted thresholds is not a
+  better result, it is an invalidated one.

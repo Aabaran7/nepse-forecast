@@ -41,6 +41,10 @@ log = logging.getLogger("archive_backup")
 
 DEFAULT_DIR = Path.home() / ".local/share/nepse-archive-backup"
 SOURCES = [Path("data/archive"), Path("data/deep")]
+# The forward log is small, text, and irreplaceable in a different way from
+# the archive: §7 forbids rewriting it, so losing it cannot be repaired by
+# re-running anything. It is already CSV, so it is copied verbatim.
+EXTRA_DIRS = [Path("predictions")]
 
 
 def git(repo: Path, *args: str, check: bool = True) -> subprocess.CompletedProcess:
@@ -73,6 +77,18 @@ def export(repo: Path) -> list[str]:
         man = src / "_manifest.csv"
         if man.exists():
             (out_dir / "_manifest.csv").write_bytes(man.read_bytes())
+
+    for src in EXTRA_DIRS:
+        if not src.exists():
+            continue
+        out_dir = repo / src.name
+        out_dir.mkdir(parents=True, exist_ok=True)
+        n = 0
+        for f in sorted(src.glob("*.csv")):
+            (out_dir / f.name).write_bytes(f.read_bytes())
+            n += 1
+        if n:
+            written.append(f"{src.name}: {n} file(s)")
     return written
 
 

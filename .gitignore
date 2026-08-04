@@ -2,4 +2,9 @@ data/
 .venv/
 __pycache__/
 *.pyc
-results/
+
+# results/ is deliberately NOT ignored. §8 requires every result dir to carry
+# its config and git hash, and §1's fourth objective is a DOCUMENTED "no edge
+# found" outcome -- a null result that exists only on one disk is not
+# documented. They are small text files; the plan doc carries the narrative and
+# these carry the raw output it was written from.

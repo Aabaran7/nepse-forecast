@@ -1,0 +1,78 @@
+
+==============================================================================
+PHASE 2B: COSTS AND FILLS
+==============================================================================
+frame: 2430 sessions, 2016-01-04 .. 2026-07-31
+
+==============================================================================
+1. WHAT A ROUND TRIP COSTS, BY DATE AND CAPITAL BASE
+==============================================================================
+  capital (NPR)       2016-06       2024-06       2026-05
+         50,000        93.0bp        85.0bp        85.0bp
+        200,000        79.5bp        71.5bp        71.5bp
+      1,000,000        71.5bp        65.5bp        65.5bp
+     10,000,000        63.0bp        57.0bp        57.0bp
+
+  The flat DP charge is why the small base costs more. It does not
+  scale, so it is a larger share of a smaller trade -- §4's reason for
+  insisting the capital base is declared wherever a Sharpe appears.
+
+==============================================================================
+2. MOMENTUM SIGNAL, GROSS vs NET
+==============================================================================
+test window: 2018-03-06 .. 2026-07-31, 1930 sessions
+
+     capital  friction  gross Sh   net Sh  net CAGR    maxDD  trades  costs/cap
+------------------------------------------------------------------------------
+      50,000        0x      1.32     1.32    21.5%   -23.6%     741      0.0%
+      50,000        1x      1.32    -2.28   -35.8%   -97.9%     741    174.4%
+      50,000        2x      1.16    -2.06   -62.5%  -100.0%     324    128.0%
+     200,000        0x      1.32     1.32    21.5%   -23.6%     741      0.0%
+     200,000        1x      1.32    -1.06   -18.0%   -83.9%     741    178.2%
+     200,000        2x      1.16    -2.51   -65.9%  -100.0%     522    138.8%
+   1,000,000        0x      1.32     1.32    21.5%   -23.6%     741      0.0%
+   1,000,000        1x      1.32    -0.85   -14.8%   -77.9%     741    182.0%
+   1,000,000        2x      1.32    -3.26   -48.8%   -99.7%     741    145.1%
+  10,000,000        0x      1.32     1.32    21.5%   -23.6%     741      0.0%
+  10,000,000        1x      1.32    -0.57   -10.5%   -66.6%     741    183.9%
+  10,000,000        2x      1.32    -2.35   -36.7%   -98.1%     741    153.1%
+
+==============================================================================
+3. BUY AND HOLD, SAME COSTS (§1's third mandatory benchmark)
+==============================================================================
+     capital  net Sharpe  net CAGR    maxDD  trades
+------------------------------------------------------------------------------
+      50,000        0.50      8.5%   -43.3%       2
+     200,000        0.50      8.5%   -43.3%       2
+   1,000,000        0.50      8.5%   -43.3%       2
+  10,000,000        0.50      8.5%   -43.3%       2
+
+==============================================================================
+4. WHERE THE MONEY WENT (capital = 1,000,000, 1x friction)
+==============================================================================
+  round trips              371
+  turnover                 452.5x capital
+  total costs              NPR 1,819,571 (182.0% of capital)
+  time in market           56.4%
+  fills blocked by circuit 4
+  exits blocked by settlement 177
+  gross CAGR                21.51%
+  net CAGR                 -14.82%
+  cost drag                 36.32% /yr
+  %% of PnL from top 5 days    nan%
+  sessions/year (measured) 230
+
+==============================================================================
+5. §6 THRESHOLD: NET SHARPE >= 0.4 AFTER REALISTIC COSTS
+==============================================================================
+  momentum, 1,000,000 NPR, 1x friction: net Sharpe -0.849
+  §6 threshold: 0.400
+  VERDICT: FAILS -- no capital, per §6
+
+  Caveats that must travel with this number:
+   - market_params is SECONDARY-sourced, not circular-verified.
+   - n_scrips=1 assumes the index is tradeable as ONE instrument.
+     It is not; a real basket multiplies the flat DP charge.
+     This is therefore a LOWER BOUND on cost, i.e. optimistic.
+   - dp_charged_on='both' is the conservative reading of a point
+     the sources genuinely disagree on.
