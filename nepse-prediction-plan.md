@@ -20,7 +20,12 @@
 - Ticker-level cross-sectional prediction (Reddit EDA killed the alt-data case; see §5).
 - Publication of any kind.
 
-**Success criteria:** one command from raw data to cost-adjusted, regime-split results; every model benchmarked against 50%, majority-class, and buy-and-hold; a forward job that has never overwritten a past prediction.
+**Success criteria — all three met, 2026-08-04:**
+1. *One command from raw data to cost-adjusted, regime-split results* — `run_all.py`. Runs the gates first (§8), then Phases 2a/2b/4/5 at both horizons, in ~2 minutes.
+2. *Every model benchmarked against 50%, majority-class, and buy-and-hold* — §6.2. The majority-class baseline is walked forward and refit at every retrain, not computed once, and edges are measured paired on identical rows.
+3. *A forward job that has never overwritten a past prediction* — §7, enforced by `PredictionExists` rather than by intent.
+
+The fourth objective, a documented "no edge found" outcome, is **§6.2**. It is the result the project got.
 
 ---
 
@@ -541,17 +546,19 @@ nepse-lab/
 ├── nepselab/
 │   ├── ingest/            # scrapers, archive, deep_history, calendar, macro vintages
 │   ├── adjust/            # price adjustment, scrip state machine + tests
-│   ├── features/          # price.py, reddit.py, news.py, macro.py — toggleable
-│   ├── models/            # logistic, gbm, baselines
-│   ├── eval/              # walk-forward, cost model, fills, metrics, regimes
-│   └── forward/           # daily job, prediction log, scoring
+│   ├── features/          # base.py, price.py, reddit.py — toggleable
+│   │                      #   (news.py, macro.py never built — §5)
+│   ├── models/            # classifiers.py: logistic, gbm
+│   ├── eval/              # labels, splits, metrics, baselines, costs, portfolio
+│   ├── quality.py         # the §3.3 sanity suite, shared by script and tests
+│   └── forward/           # log.py: immutable prediction log + scoring
 ├── configs/               # yaml per experiment + market_params.yaml
 ├── predictions/           # append-only forward log; never rewritten
 ├── tests/                 # sanity suite runs in CI
 └── results/               # one dir per run, config + metrics + plots frozen
 ```
 
-**Rules:** config-driven experiments; no hardcoded fees or market-structure constants outside `market_params.yaml`; every result dir carries its config + git hash; sanity tests pass before any experiment runs. Python: pandas/polars, scikit-learn, lightgbm/xgboost, statsmodels, matplotlib.
+**Rules:** config-driven experiments; no hardcoded fees or market-structure constants outside `market_params.yaml`; every result dir carries its config + git hash; sanity tests pass before any experiment runs — enforced by `run_all.py`, which exits on a failing suite rather than continuing to results nobody should read. `results/` is deliberately not gitignored: a documented null result that exists on one disk is not documented. Python: pandas/polars, scikit-learn, lightgbm/xgboost, statsmodels, matplotlib.
 
 ---
 
