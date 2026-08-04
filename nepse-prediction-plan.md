@@ -164,7 +164,9 @@ First push 2026-08-04: 6 datasets, 36,525 rows.
 Two things surfaced while running it, both worse than "it is slow":
 
 - **The queue was ordered newest-first, i.e. exactly backwards.** `sessions_to_pull` sorted descending, which is right for the daily incremental (get today) and wrong for a backlog (the oldest sessions are the ones expiring). With NEPSE throttling each run down to ~15 fetches, that ordering would have spent weeks on sessions in no danger while the at-risk ones fell off the back of the window. **Nothing would have errored.** Fixed: the newest 2 sessions go first so a long backfill never delays today's data, then strictly oldest-first. Regression test in `tests/test_pull_order.py`.
-- **7 sessions are already unrecoverable** — 2025-07-23 → 2025-07-31 now sit outside the API's rolling window. They exist in `data/archive/indices` (seeded from the Phase 0 pull) but their `today_price` was never captured and cannot be. Breadth for those dates is gone permanently.
+- **7 sessions are permanently unrecoverable** — 2025-07-23 → 2025-07-31 sit outside the API's rolling window. They exist in `data/archive/indices` (seeded from the Phase 0 pull) but their `today_price` was never captured and cannot be. Breadth for those dates is gone.
+
+**BACKFILL COMPLETE 2026-08-04: 225 of 232 sessions.** The 7 missing are exactly the 7 above — the sweep converged on them and then stopped making progress, which is the confirmation that they are gone rather than merely throttled. Everything from 2025-08-03 onward is archived. Breadth is now available for the whole servable window and accumulates daily.
 
 **Throttling is harsher than §3.4's original measurement suggests once a sweep has been running all day**: runs degrade from ~15 successful fetches to *zero*, returning `HTTPError` on every call. The catch-up loop therefore spaces runs 25 minutes apart rather than 5. Expect the 146 recoverable sessions to take days, not hours.
 
