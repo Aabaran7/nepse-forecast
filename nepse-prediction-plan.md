@@ -517,6 +517,31 @@ The 30pp gap at daily frequency is unreachable by any classifier. At 21 sessions
 
 **Declared in advance: if this fails, it fails.** §6.2's verdict stands, §6.3 is written up as a second null, and there is no third attempt. A rule that needs a third redesign to clear a fixed bar is fitting the bar, not the market.
 
+**RESULT (2026-08-04, run once as pre-registered). The hypothesis was right and it is still not enough.**
+
+| Model / rule | Net Sharpe | Net CAGR | Max DD | Trades | Time in mkt | Costs |
+|---|---|---|---|---|---|---|
+| logistic / naive `p>0.5` | −0.46 | −8.0% | −54.3% | 515 | 43.1% | 162% |
+| **logistic / deadband+hold** | **+0.10** | +0.5% | −37.4% | 111 | 27.4% | 58% |
+| gbm / naive `p>0.5` | −0.66 | −11.5% | −61.6% | 638 | 49.5% | 160% |
+| **gbm / deadband+hold** | **+0.29** | +3.3% | −31.2% | 452 | 40.8% | 214% |
+| **buy-and-hold** | **+0.54** | +9.6% | −43.3% | 2 | 99.9% | 9% |
+
+**The turnover hypothesis is confirmed.** Hysteresis moved logistic from −0.46 to +0.10 and GBM from −0.66 to +0.29 — swings of 0.56 and 0.95 Sharpe from changing nothing but *when to act on the same probabilities*. Costs fell from 162% to 58% of capital. §6.3 predicted the decision rule was the binding constraint and it was.
+
+**And it fails anyway, on both pre-registered criteria:**
+- Net Sharpe 0.10 / 0.29 against the 0.4 bar. **FAIL.**
+- Buy-and-hold returns **0.54** on the same window. **No model beats simply owning the index.** FAIL.
+
+(Guards 3 and 4 pass — the rules are genuinely different from buy-and-hold, at 27–41% time in market. They did not pass by degenerating into it.)
+
+**Why it fails, and it is not subtle.** The models sit in cash 59–73% of the time. NEPSE compounded at ~9.6%/yr net across this window; being out of the market means forgoing that drift, and 55.5% daily directional accuracy does not identify *which* days to skip well enough to pay for missing the rest. The strategy is not losing to costs any more — it is losing to the index.
+
+**Per §6.3, this is the second null and there is no third attempt.** Recorded as found.
+
+*One honest note on what a third attempt would have tried, so the option is documented rather than quietly available: the rule is symmetric and starts flat, so it must earn its way into the market. An asymmetric rule — hold long by default, exit only on a strong down signal — would capture the drift and use the model only to sidestep drawdowns. That is a materially different and more plausible design. It is also exactly the "one more idea after seeing the result" that §6.3 pre-committed against, and the reason to write it down here rather than run it is that the pre-commitment is worth more than the idea.*
+
+
 ---
 
 ## 7. Forward run
