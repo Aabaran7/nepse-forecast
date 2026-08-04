@@ -154,7 +154,14 @@ Two design points, both about the backup being genuinely useful rather than mere
 
 First push 2026-08-04: 6 datasets, 36,525 rows.
 
-**Breadth backfill is the live race (2026-08-04).** `today_price` — the only breadth source, and the one dataset that must be pulled one session at a time — was archived for just 48 of 231 sessions. The other ~183 are still upstream *for now* and expire at ~1/day. Throttling means a single run recovers only ~40 before giving up, so closing the gap takes many runs. Nothing else in the project has a deadline like this: the deep-history series in §3.5 restores index OHLC back to 2016, but **it carries no breadth at all**, so any advancers/decliners feature is capped forever at what this backfill saves.
+**Breadth backfill is the live race (2026-08-04).** `today_price` — the only breadth source, and the one dataset that must be pulled one session at a time — was archived for just 48 of 231 sessions. Nothing else in the project has a deadline like this: §3.5 restores index OHLC back to 2016, but **it carries no breadth at all**, so any advancers/decliners feature is capped forever at what this backfill saves.
+
+Two things surfaced while running it, both worse than "it is slow":
+
+- **The queue was ordered newest-first, i.e. exactly backwards.** `sessions_to_pull` sorted descending, which is right for the daily incremental (get today) and wrong for a backlog (the oldest sessions are the ones expiring). With NEPSE throttling each run down to ~15 fetches, that ordering would have spent weeks on sessions in no danger while the at-risk ones fell off the back of the window. **Nothing would have errored.** Fixed: the newest 2 sessions go first so a long backfill never delays today's data, then strictly oldest-first. Regression test in `tests/test_pull_order.py`.
+- **7 sessions are already unrecoverable** — 2025-07-23 → 2025-07-31 now sit outside the API's rolling window. They exist in `data/archive/indices` (seeded from the Phase 0 pull) but their `today_price` was never captured and cannot be. Breadth for those dates is gone permanently.
+
+**Throttling is harsher than §3.4's original measurement suggests once a sweep has been running all day**: runs degrade from ~15 successful fetches to *zero*, returning `HTTPError` on every call. The catch-up loop therefore spaces runs 25 minutes apart rather than 5. Expect the 146 recoverable sessions to take days, not hours.
 
 ### 3.5 Deep history exists elsewhere, from 2016, and only because two sources agree
 

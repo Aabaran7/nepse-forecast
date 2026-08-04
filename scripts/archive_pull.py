@@ -57,24 +57,43 @@ def pull_indices(c: NepseClient) -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
 
 
-def sessions_to_pull(c: NepseClient, backfill: bool) -> list[str]:
-    """Trading dates we want today_price for, newest first.
+def sessions_to_pull(c: NepseClient, backfill: bool, fresh_first: int = 2) -> list[str]:
+    """Trading dates we want today_price for, ordered by EXPIRY RISK.
 
     The index history doubles as the trading calendar -- it lists exactly the
     sessions that happened. Incremental mode pulls only sessions not already
     archived; backfill re-sweeps the whole window to close gaps from missed runs.
+
+    Ordering is the part that matters and it used to be wrong. This queue was
+    newest-first, which is the correct order for exactly one purpose (get
+    today's session) and exactly backwards for the other (close a backlog before
+    the window rolls). With 153 sessions queued and NEPSE throttling every run
+    down to ~15 fetches, newest-first spends weeks on sessions that are in no
+    danger while the oldest ones -- the only ones actually expiring -- sit at the
+    back of the queue and fall off.
+
+    So: the newest `fresh_first` sessions go first, because a long backfill must
+    never delay today's data, and everything after them is oldest-first, because
+    that is the order they expire in.
     """
     idx = c.index_history("2000-01-01", date.today().isoformat())
     if idx.empty:
         return []
-    want = sorted(pd.to_datetime(idx["businessDate"]).dt.normalize().unique(), reverse=True)
+    all_sessions = sorted(pd.to_datetime(idx["businessDate"]).dt.normalize().unique())
 
+    want = all_sessions
     if not backfill:
         have_df = archive.load("today_price")
         if not have_df.empty:
             have = set(pd.to_datetime(have_df["businessDate"]).dt.normalize())
             want = [d for d in want if d not in have]
-    return [pd.Timestamp(d).date().isoformat() for d in want]
+
+    if fresh_first > 0:
+        head, tail = want[-fresh_first:], want[:-fresh_first]
+    else:
+        head, tail = [], want      # pure oldest-first
+    ordered = list(reversed(head)) + tail
+    return [pd.Timestamp(d).date().isoformat() for d in ordered]
 
 
 def main() -> None:
