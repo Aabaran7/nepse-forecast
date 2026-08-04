@@ -558,6 +558,43 @@ That history cannot be undone by careful methodology afterwards, so it is record
 
 **The honest discount.** This is the third rule tried against a fixed bar on one dataset by someone who has seen the first two fail. Even with in-sample parameter selection, the *family* was chosen with knowledge of what failed. A pass here is **weaker evidence than a pass in §6.2 would have been**, and the appropriate response to a pass is not deployment but the §6(e) capital gate: ≥60 forward trading days, logged prospectively, with forward accuracy within 5pp of backtest. That gate exists exactly for results like this one, and the forward log (§7) has been running since 2026-08-04.
 
+**RESULT (2026-08-04). The best rule yet, and it still never beats owning the index.**
+
+| Model / rule | Net Sharpe | Net CAGR | Max DD | Trades | Time in mkt |
+|---|---|---|---|---|---|
+| logistic / naive `p>0.5` | −0.46 | −8.0% | −54.3% | 515 | 43.1% |
+| logistic / symmetric deadband (§6.3) | +0.10 | +0.5% | −37.4% | 111 | 27.4% |
+| **logistic / asymmetric (§6.4)** | **+0.35** | +3.8% | **−21.5%** | **43** | 29.2% |
+| gbm / asymmetric (§6.4) | +0.20 | +1.8% | −27.0% | 320 | 30.3% |
+| **buy-and-hold** | **+0.54** | **+9.6%** | −43.3% | 2 | 99.9% |
+
+Each redesign improved it — −0.46 → +0.10 → +0.35, max drawdown halving from −54% to −21.5%, trades falling from 515 to 43. The direction of travel was right every time. **It still fails both criteria:** 0.35 against the 0.4 bar, and 0.54 for buy-and-hold.
+
+**The regime table ends this, and it is worse than §6.2's.**
+
+| Model | Regime | Strategy CAGR | Buy-and-hold CAGR | Trades |
+|---|---|---|---|---|
+| logistic | pre-mania 2017→2020-02 | **0.0%** | **+19.1%** | **0** |
+| logistic | mania 2020-06→2021-12 | +43.9% | +61.9% | 15 |
+| logistic | chop 2022+ | +0.3% | +0.7% | 29 |
+| gbm | pre-mania 2017→2020-02 | −6.4% | +19.1% | 50 |
+| gbm | mania 2020-06→2021-12 | +13.8% | +61.9% | 94 |
+| gbm | chop 2022+ | +1.6% | +0.7% | 176 |
+
+**The strategy loses to buy-and-hold in five of six regime-model cells**, and the one it wins (gbm/chop, +1.6% vs +0.7%) is a rounding error on a flat market. In the pre-mania stretch the logistic rule **sat in cash for three years and made 0% while the index compounded at 19.1%.** It did not mistime the market; it never entered.
+
+That is the finding, and it is no longer a cost or turnover problem. **A 55.5% daily directional signal cannot decide when to be OUT of a market that drifts up 9.6%/yr.** The cost of being wrong about absence — forgone drift — exceeds anything the signal recovers, at every rule frequency tried.
+
+### 6.5 Conclusion: the tradeable answer is buy-and-hold
+
+Three independent rule designs, each better than the last, none beating a two-trade strategy. Combined with §6.2's finding that the classifier's *accuracy* edge was itself confined to 2020–21, the evidence is consistent and points one way.
+
+**What this project produces as investment guidance: own the index.** Net Sharpe **0.54**, net CAGR **+9.6%** after realistic costs, and it beat every timing model in every regime tested. That is a real, actionable, cost-verified result. It is simply not a *predictive* one.
+
+**With a risk warning the Sharpe hides: maximum drawdown −43.3%.** Buy-and-hold on NEPSE means sitting through roughly a halving. The timing rules cut that to −21.5%, and if drawdown rather than Sharpe is the binding constraint for a given investor, §6.4's logistic rule is defensible on those grounds alone — at a cost of ~5.8pp/yr of return. **That is a risk preference, not an edge, and must never be reported as one.**
+
+**No fourth attempt.** The result is stable across three designs differing substantially in mechanism. Continuing would be searching for the rule that happens to clear 0.4 on this particular decade — §9's named failure mode, and the thing this project was built to avoid.
+
 ---
 
 ## 7. Forward run
