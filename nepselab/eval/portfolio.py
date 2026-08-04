@@ -236,3 +236,111 @@ def buy_and_hold(frame: pd.DataFrame, cost: CostModel,
     sig = np.ones(len(frame), dtype=int)
     sig[-1] = 0
     return run_backtest(frame, sig, cost, price_col=price_col)
+
+
+
+def run_backtest_weighted(frame: pd.DataFrame, weight: np.ndarray, cost: CostModel,
+                          price_col: str = "close",
+                          rebalance_threshold: float = 0.0) -> BacktestResult:
+    """Continuous exposure in [0, 1], for volatility targeting (plan §6.6).
+
+    Every backtest above this one is binary: in the index or out of it. That is
+    the right shape for a DIRECTIONAL signal, which says up or down and nothing
+    about magnitude. It is the wrong shape for a VOLATILITY signal, which says
+    nothing about direction and everything about how much exposure a given risk
+    budget can afford.
+
+    Mechanics that matter and are easy to get wrong:
+
+    - **Costs are charged on the traded notional**, `|target - current|`, not on
+      the whole position. A rebalance from 60% to 55% pays commission on 5% of
+      equity plus one flat DP charge, not on 55%.
+    - **`rebalance_threshold` suppresses trivial trades.** Without it a
+      continuously-varying target rebalances every single session and the flat
+      charge alone destroys it -- the same failure §6.2 hit, arriving by a
+      different route.
+    - **Settlement still binds.** Selling any part of the position requires the
+      most recent purchase to have settled, which is the conservative reading:
+      a real ledger could sell an older lot, so this understates achievable
+      turnover rather than overstating it.
+    - **Cost basis is weighted-average**, so partial sales realise a
+      proportional gain and CGT is charged on that alone.
+    """
+    frame = frame.reset_index(drop=True)
+    if len(weight) != len(frame):
+        raise ValueError(f"weight has {len(weight)} rows, frame has {len(frame)}")
+
+    px = frame[price_col].to_numpy(dtype=float)
+    dates = pd.to_datetime(frame["date"])
+    date_list = list(dates)
+    day_ret = frame["close"].pct_change().to_numpy()
+    caps = np.array([cost.params.index_circuit(d) for d in dates], dtype=float)
+
+    cash = float(cost.capital)
+    units = 0.0
+    avg_cost = 0.0
+    last_buy_idx: int | None = None
+
+    equity, gross_equity, exposure = [], [], []
+    gross = float(cost.capital)
+    trades: list[Trade] = []
+    blocked = settle_blocked = 0
+
+    for i in range(len(frame)):
+        w = float(np.clip(weight[i], 0.0, 1.0)) if not np.isnan(weight[i]) else 0.0
+        eq = cash + units * px[i]
+        target_notional = w * eq
+        current_notional = units * px[i]
+        delta = target_notional - current_notional
+
+        if abs(delta) > rebalance_threshold * max(eq, 1e-9) and eq > 0:
+            r = day_ret[i]
+            direction = 1 if delta > 0 else -1
+            limited = (not np.isnan(r)) and (
+                (direction > 0 and r >= caps[i] - 1e-4)
+                or (direction < 0 and r <= -caps[i] + 1e-4))
+
+            if limited:
+                blocked += 1
+            elif direction > 0:
+                notional = min(delta, cash)
+                fee = cost.trade_cost(notional, date_list[i], "buy")
+                if notional - fee > 0:
+                    bought = (notional - fee) / px[i]
+                    avg_cost = ((avg_cost * units + px[i] * bought) / (units + bought)
+                                if units + bought > 0 else 0.0)
+                    units += bought
+                    cash -= notional
+                    last_buy_idx = i
+                    trades.append(Trade(date_list[i], "buy", notional, fee))
+            else:
+                settle = cost.params.settlement_days(
+                    date_list[last_buy_idx if last_buy_idx is not None else i])
+                if last_buy_idx is not None and (i - last_buy_idx) < settle:
+                    settle_blocked += 1
+                else:
+                    notional = min(-delta, units * px[i])
+                    sold = notional / px[i]
+                    fee = cost.trade_cost(notional, date_list[i], "sell")
+                    gain = (px[i] - avg_cost) * sold - fee
+                    hold_days = int((date_list[i] - date_list[
+                        last_buy_idx if last_buy_idx is not None else i]).days)
+                    tax = cost.capital_gains_tax(gain, hold_days, date_list[i])
+                    units -= sold
+                    cash += notional - fee - tax
+                    trades.append(Trade(date_list[i], "sell", notional, fee,
+                                        gain=gain, tax=tax, holding_days=hold_days))
+
+        equity.append(cash + units * px[i])
+        exposure.append((units * px[i]) / equity[-1] if equity[-1] > 0 else 0.0)
+        if i > 0 and exposure[i - 1] > 0:
+            gross *= 1 + exposure[i - 1] * (px[i] / px[i - 1] - 1)
+        gross_equity.append(gross)
+
+    eq_s = pd.Series(equity, index=dates, name="equity")
+    ge_s = pd.Series(gross_equity, index=dates, name="gross_equity")
+    ex_s = pd.Series(exposure, index=dates, name="exposure")
+    return BacktestResult(equity=eq_s, gross_equity=ge_s, trades=trades,
+                          blocked_fills=blocked, settlement_blocked=settle_blocked,
+                          exposure=ex_s, capital=cost.capital,
+                          stats=summarise(eq_s, ge_s, trades, ex_s))

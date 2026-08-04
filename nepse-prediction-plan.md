@@ -585,6 +585,30 @@ Each redesign improved it — −0.46 → +0.10 → +0.35, max drawdown halving 
 
 That is the finding, and it is no longer a cost or turnover problem. **A 55.5% daily directional signal cannot decide when to be OUT of a market that drifts up 9.6%/yr.** The cost of being wrong about absence — forgone drift — exceeds anything the signal recovers, at every rule frequency tried.
 
+
+### 6.6 PRE-REGISTRATION: volatility targeting (written 2026-08-05, BEFORE running)
+
+**This is a different signal, not a fourth decision rule.** §6.2–§6.4 all predicted *direction* and differed only in when to act on it. Three designs agreeing that a 55.5% directional signal cannot pay is a result, and re-skinning it a fourth time would be the search §9 forbids. This section changes what is being predicted.
+
+**Why volatility, decided from properties of the series rather than from what failed:**
+
+| Quantity | Autocorrelation, lag 1 | lag 5 | lag 21 |
+|---|---|---|---|
+| daily return (what §6.2–6.4 predicted) | +0.103 | +0.017 | +0.005 |
+| **absolute return (volatility)** | **+0.232** | **+0.187** | +0.060 |
+
+Trailing 21-day vol predicts the next 21 days' vol at **r = 0.41**. And the payoff to knowing it is large: sorting sessions into trailing-vol quartiles gives annualised Sharpe **1.04** in the lowest quartile against 0.26 / 0.09 / 0.61 in the rest. Volatility is roughly twice as autocorrelated as direction and the low-vol state is where the return-per-unit-risk lives.
+
+**The mechanism needs no directional skill at all**, which is the point. Exposure is `clip(target_vol / predicted_vol, 0, 1)` — long-only, never levered. When the market is calm you own it; when it is violent you own less. Nothing here claims to know which way it goes.
+
+**This required a real extension, not a parameter:** `run_backtest_weighted` supports continuous exposure in [0,1], charges costs on the *traded* notional `|target − current|`, uses weighted-average cost basis for partial-sale CGT, and keeps the settlement and circuit rules. Verified against the binary ledger at w=1.
+
+**Parameters** — vol window ∈ {21, 63}, target vol ∈ {10%, 15%, 20%}, rebalance band ∈ {10%, 20%} — are selected **per fold on training data only**, exactly as in §6.3. A hand-picked best-of-18 would be worthless; a feasibility scan showing 18 combinations was run before this was written and is explicitly NOT the result.
+
+**Criteria, unchanged from §6.3:** net Sharpe ≥ **0.4** at NPR 1,000,000, 1× friction, **and** it must beat buy-and-hold. Plus the regime check: it must not depend on 2020–21.
+
+**Declared in advance.** If volatility targeting fails too, then across four attempts spanning two different predicted quantities and two position spaces, nothing beats owning the index — and that is the answer, not a prompt for a fifth.
+
 ### 6.5 Conclusion: the tradeable answer is buy-and-hold
 
 Three independent rule designs, each better than the last, none beating a two-trade strategy. Combined with §6.2's finding that the classifier's *accuracy* edge was itself confined to 2020–21, the evidence is consistent and points one way.
