@@ -468,7 +468,16 @@ Three commitments come with it, and they are the price of the promotion being ho
 **Verdict: the project abandons on §6(b) and §6(c).** No capital is deployed. This is the "documented no edge found" outcome §1 committed to in advance, and it arrives with the mechanism identified rather than as a shrug:
 
 1. **The apparent edge is a regime artifact.** It is a 2020–21 bull-market phenomenon and does not exist in the four years before or the four years after.
-2. **What edge there is cannot survive costs.** Gross Sharpe 0.66–1.32 becomes net −0.69 to −1.36. The flat DP charge and 300+ round trips do it, exactly as §4 predicted — and buy-and-hold, which pays that charge twice in total, beats every model.
+2. **What edge there is cannot survive costs.** Gross Sharpe 0.66–1.32 becomes net −0.69 to −1.36, and buy-and-hold beats every model.
+
+   **Correction (2026-08-04, after first writing this): it is not the DP charge.** §4 predicted the flat per-scrip charge would kill a high-turnover signal, and that framing was carried into the first draft of this section. Decomposed, it is wrong at any realistic capital base:
+
+   | Capital | Round trip | commission + SEBON | DP charge | DP share |
+   |---|---|---|---|---|
+   | 50,000 | 93.0 bps | 83.0 | 10.0 | 10.8% |
+   | 1,000,000 | 71.5 bps | 71.0 | 0.5 | **0.7%** |
+
+   Over 371 round trips at NPR 1,000,000 the variable cost is ~263% of capital and the DP charge ~1.85%. **The killer is ordinary commission × turnover**, not a Nepal-specific flat fee. Two consequences: §4's insistence that results depend on the declared capital base is much weaker than it claimed (net Sharpe moves only −0.57 → −0.85 from 10M down to 50k), and the finding generalises — any market charging ~32 bps a side destroys a signal that trades 371 times, which is not an exotic result. §4's DP argument survives only for very small accounts, where it is still a minority of the cost.
 3. **Alt-data adds nothing.** Reddit attention *subtracts* 2.34pp. §5's own EDA pointed this way; the ablation confirms it.
 
 **What is NOT claimed:** that NEPSE is unpredictable. What is shown is that *this* target, on *this* sample, with *these* features, does not clear a bar fixed in advance. §6.1's h=5 caveat still stands — its intervals remain too wide to resolve 2pp either way.
