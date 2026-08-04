@@ -93,7 +93,7 @@ The part most likely to silently break everything. **It did — see §3.4, which
   Sourcing was also tested and is poor: NEPSE's own disclosure endpoint returns 0 rows; MeroLagani publishes bonus % by Nepali fiscal year **with no ex-date** (the field the adjustment layer actually needs); ShareSansar carries actions as prose news and JS-loaded panels, not a clean dated table. Building a validated layer would be days of brittle scraping for a correction that does not move an index-level target.
   **Decision: no adjustment layer.** Revisit only if a future feature depends on scrip-level returns.
 - **Scrip state machine — downgraded with the adjustment layer.** Suspensions and BFI-merger ticker discontinuities distort scrip-level returns badly, but the only consumer left is the breadth count, where a suspended or merged ticker is one name out of ~350. Track state (`active | suspended | delisted | merged_into(X)`) well enough to *exclude* affected tickers from the daily breadth denominator; do not build the full continuous-entity resolution.
-- **Trading calendar — the week changed inside the sample.** Sun–Thu through **2026-04-05**; Mon–Fri from **2026-04-10** (verified in pulled data: clean switch, no overlap). The calendar is therefore date-indexed like every other constant, not a fixed rule. This is not cosmetic: h=5 "one week ahead" spans a different weekday set either side of the boundary, day-of-week features are not comparable across it, and Reddit weekly aggregation must align to trading weeks. Frequent unscheduled closures on top (6 gaps >4 calendar days in the verified year).
+- **Trading calendar — the week changed *three times*, and two of the changes were invisible in the 225-session window.** Sun–Thu; then **six days (Sun–Fri), 2022-05-20 → 2022-09-16**; then Sun–Thu again; then Mon–Fri from **2026-04-10**. The 2022 era was found only after the deep series arrived (§3.6) — the original two-era reading was not wrong about what it could see, it was wrong to generalise from one year. The calendar is date-indexed like every other constant, not a fixed rule, and the *number of eras* is not known either. This is not cosmetic: h=5 "one week ahead" spans a different weekday set either side of the boundary, day-of-week features are not comparable across it, and Reddit weekly aggregation must align to trading weeks. Frequent unscheduled closures on top (6 gaps >4 calendar days in the verified year).
 - **Circuit breakers block fills at both levels — both limits now confirmed empirically.** Scrip-level is **±10%** (daily returns cluster at ±9.99% and stop); index-level is a hard **±6%** daily cap (observed extremes +6.0070% / −6.0002%). Scrip-level matters more and is the single most likely source of phantom alpha — the days a signal fires hardest are the days you cannot get filled. On daily bars, detect via `close == prev_close × (1 ± limit)` and/or `high == low`.
 - **Free corporate-action detector, retained as a data check:** any `|return| > circuit limit` is *impossible* as an ordinary price move and must reconcile to a bonus, rights, or split. Unexplained breaches mean the price feed is wrong and the sanity suite should fail. (Two in the verified year: NRIC +14.99% on 2026-06-01, HDL −14.18% on 2025-11-06.)
 - SQLite or parquet store; ingestion idempotent and resumable. Frozen dataset v1.0, checksummed; everything downstream reads only that.
@@ -195,6 +195,36 @@ Pre-2016 the two scrapes also disagree about *which days were sessions at all* �
 **Provenance and storage.** The accepted series lands in `data/deep/nepse_index_deep.parquet`, deliberately **not** in `data/archive/`. The archive holds exchange-sourced rows and is irreplaceable; this series is third-party and re-downloadable, and mixing them would let a scrape contaminate the one asset that cannot be rebuilt. Two traps are recorded in `nepselab/ingest/deep_history.py` because both fail silently: MeroLagani's bar timestamps switch time-of-day mid-series (05:45 UTC early, 20:45 UTC later), so normalising them in Kathmandu local time shifts every modern bar a day forward and misaligns the entire recent half against the archive; and `raw.githubusercontent.com` serves the 131-byte LFS *pointer* rather than the CSV, which parses as a valid 3-row file.
 
 **Re-verify on every re-pull.** The reconciliation is not a one-off gate that has now been passed — it is the only check standing between the model and a silently revised third-party series. `scripts/phase1c_deep_history.py` should be re-run whenever the deep series is refreshed, and its agreement numbers should not get worse.
+
+### 3.6 What the sanity suite found in the deep series (2026-08-04)
+
+`scripts/phase1d_deep_quality.py` + `nepselab/quality.py`, tested in `tests/test_quality.py`. **All checks now pass**; three of them only pass because something was fixed or given a policy first.
+
+**1. The trading calendar had a third era nobody knew about.** §4 recorded two eras (Sun–Thu, then Mon–Fri from 2026-04-10) because that is all the 225-session window could show. Over 2016–2026 there are **15 Friday sessions in one contiguous block, 2022-05-20 → 2022-09-16, with Sundays continuing throughout** — a **six-day trading week**, 95 sessions in ~17 weeks. `market_params.yaml` now carries all four eras. This is not cosmetic: **h=5 "one week ahead" spans six sessions of calendar time inside that block**, and day-of-week features are incomparable across its boundaries. It is also the case for keeping the check permanently — a new era is invisible in the price data and announces itself only here.
+
+**2. The ±6% index circuit holds for a decade, which is evidence *for* the deep series.** Max |return| across 2016–2026 is **6.0610%**, with **zero** days beyond 6.1% and 12 sitting in the 6.0–6.1% overshoot band. The exchange-verified window shows the same shape (+6.0070%). A third-party feed that respects NEPSE's circuit across ten years is behaving like real NEPSE data — an independent corroboration the §3.5 cross-check could not provide. Any check must use a tolerance; asserting a hard 6% reports a dozen false positives.
+
+**3. 16 bars are internally inconsistent, and the policy is flag, never repair.** Of 2,434 sessions, 83 nominally violate OHLC ordering, but the deep feed stores high/low to 2dp while open/close carry more digits — at a 1e-4 tolerance that representation noise drops out and **16 real cases remain** (2 with a close outside its own [low, high]).
+
+Adjudicated against the second source: **the close agrees on all 16**, and on 13 the two sources carry the *identical* bad bar — so the defect is upstream in NEPSE's published data, not a scraping artifact. Consequences:
+- **The label is safe.** The target is close-to-close sign; no close is in question.
+- **Range-derived features are not** — realized vol from high−low, distance-from-high — on 0.66% of days.
+- The series carries an **`ohlc_consistent`** column. Feature modules must read it; nothing repairs the bars, because a silently repaired bar is indistinguishable from a correct one downstream.
+
+The check asserts the violations are *flagged*, not that they are absent. "Zero violations" is a bar this data will never clear, and a permanently-red gate is an ignored gate.
+
+**4. The majority class flips between regimes — do not use one pooled baseline.**
+
+| Window | n | Up share | Majority class |
+|---|---|---|---|
+| Full 2016+ | 2,433 | 47.8% | **down, 52.2%** |
+| Pre-mania 2016 → 2020-02 | 988 | 47.3% | down, 52.7% |
+| Mania 2020-06 → 2021-12 | 364 | 56.6% | **up, 56.6%** |
+| Chop 2022+ | 1,063 | 45.5% | down, 54.5% |
+
+§2 warned about this; here is the magnitude. §6's bar is "majority + 2pp", so it is **54.2% pooled but 58.6% in the mania window** — a pooled baseline sets the wrong bar in every regime, and the mania bar is high enough that clearing it is a serious ask. Report accuracy against the regime's own majority class, always.
+
+**5. Closures.** 32 gaps >4 calendar days; the long ones are 2020-05-12 (51 days) and 2020-06-29 (47 days) — COVID — plus 2023-11-20 (11 days). Real closures, not missing data.
 
 ---
 

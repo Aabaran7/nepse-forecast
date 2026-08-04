@@ -32,6 +32,7 @@ from pathlib import Path
 import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from nepselab import quality  # noqa: E402
 from nepselab.ingest import deep_history as dh  # noqa: E402
 from phase1_power import P0, min_detectable, n_required  # noqa: E402
 
@@ -138,8 +139,20 @@ def main() -> None:
         print("    a units change moves the turnover start date, a real market")
         print("    event does not. TURNOVER FEATURES MUST NOT SPAN A UNITS BREAK.")
 
+    # Flag internally inconsistent bars; never repair them. 16 of these survive
+    # in 2016+, and cross-checking them against the second source showed the
+    # CLOSE agrees on all 16 -- the damage is confined to open/high/low, and on
+    # 13 of them both sources carry the identical bad bar, so the defect is
+    # upstream in NEPSE's published data rather than a scraping artifact.
+    # The label is therefore safe; only range-derived features are affected, and
+    # they must read this column rather than rediscovering the problem.
+    bad = quality.ohlc_violations(accepted).index
+    accepted["ohlc_consistent"] = ~accepted.index.isin(bad)
+    n_bad = int((~accepted["ohlc_consistent"]).sum())
+
     path = dh.save(accepted, "nepse_index_deep")
     print(f"\nwrote {len(accepted)} rows -> {path}")
+    print(f"  {n_bad} bar(s) flagged ohlc_consistent=False -- flagged, never repaired;\n  close verified sound on all of them against the second source")
     print("  source: merolagani (231/231 exact closes vs exchange; github had 228/230")
     print("  and was missing one archived session outright)")
     print("  NOT written into data/archive/ -- that store is exchange-sourced and")

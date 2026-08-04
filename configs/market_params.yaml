@@ -19,9 +19,32 @@ meta:
 # any day-of-week feature is not comparable across it.
 trading_week:
   - effective_from: null          # TODO: when did Sun-Thu begin? predates our sample
+    effective_to: 2022-05-19
+    days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
+    source: EMPIRICAL             # holds across the deep series from 2016-01
+
+  # Found 2026-08-04 by nepselab.quality.weekday_violations over the 2016-2026
+  # deep series (plan §3.5) -- NOT visible in the 225-session window this file
+  # was seeded from, which is why the two-era version above was wrong.
+  # 15 Friday sessions in one contiguous block, Sundays continuing throughout:
+  # a six-day trading week, not a shifted five-day one.
+  - effective_from: 2022-05-20    # first Friday session observed
+    effective_to: 2022-09-16      # last Friday session observed
+    days: [Sunday, Monday, Tuesday, Wednesday, Thursday, Friday]
+    source: EMPIRICAL
+    note: >
+      95 sessions in ~17 weeks: Mon-Thu 17 each, Fri 15, Sun 12. Bounds are the
+      observed first and last Friday, so the true effective dates lie somewhere
+      in 2022-05-19..20 and 2022-09-16..18.
+      TODO: confirm both dates and the reason against a NEPSE circular.
+      MATTERS FOR h=5: "one week ahead" spans six sessions of calendar time
+      here, not five, and any day-of-week feature is incomparable across it.
+
+  - effective_from: 2022-09-17
     effective_to: 2026-04-05
     days: [Sunday, Monday, Tuesday, Wednesday, Thursday]
     source: EMPIRICAL             # last Sunday session observed 2026-04-05
+
   - effective_from: 2026-04-10
     effective_to: null
     days: [Monday, Tuesday, Wednesday, Thursday, Friday]
@@ -58,10 +81,19 @@ index_circuit:
   - effective_from: null
     effective_to: null
     daily_cap: 0.06
+    observed_overshoot: 0.0007       # see note; check with tolerance, not equality
     intraday_halt_thresholds: null   # TODO: the 4%/5%/6% tiered halt durations
     source: EMPIRICAL
     note: >
-      Index daily returns top out at +6.0070% / -6.0002% -- a hard +-6% cap.
+      Index daily returns top out at +6.0070% / -6.0002% in the exchange-verified
+      window -- a hard +-6% cap. Re-checked 2026-08-04 across the full 2016-2026
+      deep series: max |return| 6.0610%, and ZERO days beyond 6.1%. The cap holds
+      unchanged for a decade, with a consistent sub-0.1pp overshoot (12 days sit
+      between 6.0% and 6.1%), so any check must allow tolerance or it reports a
+      dozen false positives.
+      This doubles as corroboration of the deep series itself (§3.5): a
+      third-party feed that respects NEPSE's circuit across ten years is
+      behaving like real NEPSE data.
       TODO: confirm the tiered halt schedule and durations against a circular.
 
 # --- costs -----------------------------------------------------------------
