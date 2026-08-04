@@ -542,6 +542,22 @@ The 30pp gap at daily frequency is unreachable by any classifier. At 21 sessions
 *One honest note on what a third attempt would have tried, so the option is documented rather than quietly available: the rule is symmetric and starts flat, so it must earn its way into the market. An asymmetric rule — hold long by default, exit only on a strong down signal — would capture the drift and use the model only to sidestep drawdowns. That is a materially different and more plausible design. It is also exactly the "one more idea after seeing the result" that §6.3 pre-committed against, and the reason to write it down here rather than run it is that the pre-commitment is worth more than the idea.*
 
 
+
+### 6.4 Attempt three: the asymmetric rule — and what its result can and cannot mean
+
+**Disclosure first, because it determines how everything below should be read.** §6.3 pre-committed to no third attempt, in writing, before running. This section breaks that commitment. It was requested after §6.3's result was known, and the rule family it adds — hold long by default, exit only on a confident bearish signal — is precisely the idea §6.3 named as "what a third attempt would have tried" and declined to run.
+
+That history cannot be undone by careful methodology afterwards, so it is recorded rather than smoothed over. **§6.2 and §6.3 remain exactly as written; neither was re-run, re-scored, or edited.**
+
+**What was done to preserve what discipline remains:**
+- The rule *family* is added to the same per-fold grid as `delta` and `min_hold`, and is **selected in-sample on training data**. Which family a given test fold uses is a fitted parameter, not a researcher choice.
+- The classifier, features, folds, embargo, cost model, capital base and thresholds are all unchanged.
+- The regime breakdown is reported alongside, because §6.2's central finding was that the classifier's edge lived entirely in 2020–21. A rule that only works there is the same artifact wearing new clothes.
+
+**Two compute decisions, neither touching test data:** the grid is coarse, and rule selection uses the most recent 750 training sessions rather than the full expanding window (the classifier still trains on everything). The full grid over an expanding window is ~27,000 ledger runs and does not terminate in reasonable time.
+
+**The honest discount.** This is the third rule tried against a fixed bar on one dataset by someone who has seen the first two fail. Even with in-sample parameter selection, the *family* was chosen with knowledge of what failed. A pass here is **weaker evidence than a pass in §6.2 would have been**, and the appropriate response to a pass is not deployment but the §6(e) capital gate: ≥60 forward trading days, logged prospectively, with forward accuracy within 5pp of backtest. That gate exists exactly for results like this one, and the forward log (§7) has been running since 2026-08-04.
+
 ---
 
 ## 7. Forward run
