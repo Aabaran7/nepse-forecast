@@ -16,7 +16,7 @@
 
 **Non-goals:**
 - Index *price level* prediction (lag-1 wins; dead end). Never report RMSE on price level.
-- Sequence models — ~1500 usable daily observations is far too few. No LSTM/GRU/transformer.
+- Sequence models — 2,434 usable daily observations (§3.5) is far too few. No LSTM/GRU/transformer. *Unchanged by the deep-history find: the sample grew ~10× and is still two orders of magnitude short of what a sequence model on noisy daily returns would need.*
 - Ticker-level cross-sectional prediction (Reddit EDA killed the alt-data case; see §5).
 - Publication of any kind.
 
@@ -132,9 +132,9 @@ The history endpoints **accept `startDate`/`endDate` and ignore them completely.
 Five in, five out, held constant at 225. The five oldest sessions in `data/raw/` **no longer exist anywhere upstream** — that pull is now the only copy. `today_price` is bounded identically (works to 2025-07-30, fails before it), so there is no backfill route around this on any endpoint.
 
 **Consequences, in order of severity:**
-1. The ~1500-observation sample is unobtainable. We have 225 and gain ~225/yr.
-2. The regime split (§2) is impossible — the mania regime predates the window by four years.
-3. **Every day not archived is a trading day destroyed.** This is the only irreversible item in the project.
+1. ~~The ~1500-observation sample is unobtainable. We have 225 and gain ~225/yr.~~ **Superseded by §3.5** — obtainable elsewhere, back to 2016. Still true of every dataset except index OHLC.
+2. ~~The regime split (§2) is impossible — the mania regime predates the window by four years.~~ **Superseded by §3.5** — restored for the index; still impossible for breadth and sector features.
+3. **Every day not archived is a trading day destroyed.** This is the only irreversible item in the project. **§3.5 raised its stakes rather than lowering them:** deep history covers the index and nothing else, so `today_price` is the only route to breadth that will ever exist.
 
 **Response — `data/archive/`, append-only, superseding "frozen dataset v1.0":** the frozen-dataset instinct in §3.2 was right for the wrong reason. The store is not frozen, it *accumulates*, and it is the only asset here that cannot be recreated. Implemented in `nepselab/ingest/archive.py` + `scripts/archive_pull.py`:
 - Writes only add rows; nothing deletes or overwrites.
@@ -270,7 +270,7 @@ Conclusions carried forward: usable as an **index-level attention and sentiment 
 
 ## 6. Models and abandonment thresholds
 
-**Logistic regression and gradient boosting only.** ~1500 daily observations does not support anything deeper. Multiple seeds where stochastic; report mean ± sd.
+**Logistic regression and gradient boosting only.** 2,434 daily observations (§3.5) does not support anything deeper — and note that the *walk-forward test set* is ~1,900 of those, while any Reddit-inclusive model is capped at the ~1,430 sessions from 2020-06. Multiple seeds where stochastic; report mean ± sd.
 
 **Abandonment thresholds — fixed now, before any results are seen.** If the backtest fails these, the project is abandoned and written up as a null result rather than tuned further:
 
@@ -281,7 +281,7 @@ Conclusions carried forward: usable as an **index-level attention and sentiment 
 - **Alt-data gate:** if +Reddit and +news each add <1pp over price-only in the ablation, drop those modules. The project may continue on price-only if it still clears the above.
 - **Capital gate:** deploy only after ≥60 forward trading days logged *and* forward accuracy not more than 5pp below backtest accuracy.
 
-### 6.1 The thresholds are not testable on 225 sessions — and they stay frozen anyway (2026-08-02, revised 2026-08-04)
+### 6.1 Which thresholds the sample can actually test — and why they stay frozen either way (2026-08-02, revised 2026-08-04)
 
 > **Revision after §3.5.** The deep-history series changes the *inputs* to this section, not its argument. Three of the five thresholds were listed below as untestable or retired; two of those recover. The numbers themselves are still not being changed, for the reason given below, which is unaffected by having more data. Updated status table follows the original reasoning — read both.
 
