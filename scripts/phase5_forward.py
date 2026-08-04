@@ -41,6 +41,14 @@ RULE = "=" * 74
 MODEL_VERSION = "lr-price-turnover-v1"
 HORIZONS = (1, 5)
 
+# §6.7's deployable strategy. Logged alongside the directional predictions
+# because §6(e)'s capital gate needs a PROSPECTIVE record: 60 trading days of
+# exposures decided before the outcome was known. A backtest cannot supply that
+# no matter how clean it is, which is the entire point of the gate.
+VT_VERSION = "voltarget-w63-t10-b10-v1"
+VT_WINDOW, VT_TARGET, VT_BAND = 63, 0.10, 0.10
+ANN = 230.0
+
 
 def hr(t: str) -> None:
     print(f"\n{RULE}\n{t}\n{RULE}")
@@ -72,6 +80,23 @@ def predict_once(horizon: int, frame: pd.DataFrame, feats: list[str]) -> dict:
     prob = float(model.predict_proba(latest[feats])[0])
     return {"horizon": horizon, "prediction": pred, "prob_up": round(prob, 6),
             "n_train": len(train), "close": float(latest["close"].iloc[0])}
+
+
+def vol_target_exposure(frame: pd.DataFrame) -> dict:
+    """Today's risk-budgeted exposure. Uses only closes up to the prior session.
+
+    The `.shift(1)` is not decoration: an unshifted trailing vol sizes the
+    position using a return it has not earned yet, which inflates a backtest and
+    is undetectable in live output.
+    """
+    import numpy as np
+
+    r = frame["close"].pct_change()
+    vol = r.rolling(VT_WINDOW).std().shift(1) * np.sqrt(ANN)
+    raw = float(np.clip(VT_TARGET / vol.iloc[-1], 0.0, 1.0))
+    return {"horizon": 0, "prediction": int(round(raw)), "exposure": round(raw, 4),
+            "realised_vol_ann": round(float(vol.iloc[-1]), 4),
+            "close": float(frame["close"].iloc[-1])}
 
 
 def main() -> None:
@@ -109,12 +134,19 @@ def main() -> None:
         print(f"  h={r['horizon']}: {'UP' if r['prediction'] else 'DOWN'} "
               f"(p_up={r['prob_up']:.4f}, trained on {r['n_train']} sessions)")
 
-    try:
-        path = flog.append(as_of, rows, model_version=MODEL_VERSION)
-        print(f"\n  appended -> {path}")
-    except flog.PredictionExists as e:
-        print(f"\n  NOT LOGGED: {e}")
-        print("  This is the §7 guarantee working, not a failure.")
+    vt = vol_target_exposure(frame)
+    print(f"\n  VOL-TARGET exposure: {vt['exposure']:.1%} "
+          f"(realised 63d vol {vt['realised_vol_ann']:.1%} annualised, "
+          f"target {VT_TARGET:.0%})")
+
+    for tag, payload, ver in (("directional", rows, MODEL_VERSION),
+                              ("vol-target", [vt], VT_VERSION)):
+        try:
+            path = flog.append(as_of, payload, model_version=ver)
+            print(f"  appended {tag} -> {path}")
+        except flog.PredictionExists as e:
+            print(f"  NOT LOGGED ({tag}): {e}")
+            print("  This is the §7 guarantee working, not a failure.")
 
 
 if __name__ == "__main__":

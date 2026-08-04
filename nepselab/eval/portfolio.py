@@ -305,7 +305,12 @@ def run_backtest_weighted(frame: pd.DataFrame, weight: np.ndarray, cost: CostMod
             elif direction > 0:
                 notional = min(delta, cash)
                 fee = cost.trade_cost(notional, date_list[i], "buy")
-                if notional - fee > 0:
+                # A trade whose fee exceeds its proceeds is not a trade anyone
+                # would place. Without this guard the flat DP charge on a tiny
+                # rebalance buys a NEGATIVE number of units and equity walks
+                # through zero -- the same class of bug the binary ledger had,
+                # found here by test_weighted_ledger_never_goes_negative.
+                if notional > 0 and notional - fee > 0:
                     bought = (notional - fee) / px[i]
                     avg_cost = ((avg_cost * units + px[i] * bought) / (units + bought)
                                 if units + bought > 0 else 0.0)
@@ -320,16 +325,20 @@ def run_backtest_weighted(frame: pd.DataFrame, weight: np.ndarray, cost: CostMod
                     settle_blocked += 1
                 else:
                     notional = min(-delta, units * px[i])
-                    sold = notional / px[i]
                     fee = cost.trade_cost(notional, date_list[i], "sell")
-                    gain = (px[i] - avg_cost) * sold - fee
-                    hold_days = int((date_list[i] - date_list[
-                        last_buy_idx if last_buy_idx is not None else i]).days)
-                    tax = cost.capital_gains_tax(gain, hold_days, date_list[i])
-                    units -= sold
-                    cash += notional - fee - tax
-                    trades.append(Trade(date_list[i], "sell", notional, fee,
-                                        gain=gain, tax=tax, holding_days=hold_days))
+                    # Same guard on the way out: selling for less than the fee
+                    # destroys value and no ledger should model it as possible.
+                    if notional > 0 and notional > fee:
+                        sold = notional / px[i]
+                        gain = (px[i] - avg_cost) * sold - fee
+                        hold_days = int((date_list[i] - date_list[
+                            last_buy_idx if last_buy_idx is not None else i]).days)
+                        tax = cost.capital_gains_tax(gain, hold_days, date_list[i])
+                        units -= sold
+                        cash = max(0.0, cash + notional - fee - tax)
+                        trades.append(Trade(date_list[i], "sell", notional, fee,
+                                            gain=gain, tax=tax,
+                                            holding_days=hold_days))
 
         equity.append(cash + units * px[i])
         exposure.append((units * px[i]) / equity[-1] if equity[-1] > 0 else 0.0)

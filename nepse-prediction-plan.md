@@ -609,6 +609,51 @@ Trailing 21-day vol predicts the next 21 days' vol at **r = 0.41**. And the payo
 
 **Declared in advance.** If volatility targeting fails too, then across four attempts spanning two different predicted quantities and two position spaces, nothing beats owning the index — and that is the answer, not a prompt for a fifth.
 
+**RESULT (2026-08-05). It clears both criteria, and it is the first thing in this project that does.**
+
+| Strategy | Gross Sh | **Net Sharpe** | Net CAGR | **Max DD** | Trades | Avg exposure |
+|---|---|---|---|---|---|---|
+| **vol-targeted** | 0.66 | **0.58** | 7.3% | **−35.6%** | 88 | 68.6% |
+| buy-and-hold | 0.53 | 0.50 | 8.6% | −43.3% | 2 | 99.9% |
+
+- §6(b) net Sharpe ≥ 0.4 — **PASS** (0.578)
+- Beats buy-and-hold — **PASS** (0.578 vs 0.501)
+
+**It is not a regime artifact — the failure mode that killed §6.2–§6.4:**
+
+| Regime | VT Sharpe | VT CAGR | B&H CAGR | VT maxDD | B&H maxDD |
+|---|---|---|---|---|---|
+| pre-mania 2016→2020-02 | 0.68 | 8.8% | 11.9% | **−19.4%** | −23.5% |
+| mania 2020-06→2021-12 | 2.00 | 40.6% | 61.9% | **−21.0%** | −28.7% |
+| chop 2022+ | 0.19 | 1.6% | 0.7% | **−28.6%** | −38.4% |
+
+It reduces drawdown in **all three** regimes and beats buy-and-hold's return in the chop. §6.4's rule, by contrast, made 0% for three years in the pre-mania window.
+
+**Hostile checks, run because a positive result is where a leak hides most comfortably:**
+
+| Check | Result |
+|---|---|
+| Lookahead (truncation invariance, whole grid) | **12/12 unchanged** |
+| Parameter robustness | **10/12 combinations beat buy-and-hold**; 12/12 cut drawdown |
+| Realistic basket cost (`n_scrips` 1→50) | still wins at 50 names (0.510 vs 0.501) |
+| Capital base (NPR 100k → 10M) | wins at all three |
+| Most recent 3 years only | **Sharpe 0.73 vs 0.51**, maxDD −12.3% vs −17.9% |
+
+A bug was found by these tests and fixed: the fractional ledger had no solvency guard, so a tiny rebalance whose fee exceeded its proceeds bought a negative number of units and walked equity through zero. The result above is post-fix.
+
+### 6.7 What this is, and what it is not
+
+**It is not a prediction of direction.** Four attempts established that a 55.5% directional signal cannot be traded on NEPSE at any frequency. This predicts *volatility*, which autocorrelates twice as strongly, and converts that into position size. It never claims to know which way the market goes.
+
+**The honest reading of the gain.** CAGR is *lower* than buy-and-hold (7.3% vs 8.6%). Every bit of the improvement is risk-adjusted: less exposure when the market is violent, which raises Sharpe and cuts the worst drawdown by 7.7pp. An investor indifferent to drawdown should buy and hold. An investor who would capitulate at −43% should not, and for them this is strictly better.
+
+**Caveats that travel with the number:**
+- `market_params` is SECONDARY-sourced, not circular-verified (§4). The cost model is good but unaudited.
+- This is attempt **four**, by someone who had seen three failures. The pre-registration in §6.6 and the robustness checks above are what stand against that, not a claim of innocence.
+- The margin over buy-and-hold narrows to 0.009 Sharpe at a 50-name basket. Execution matters.
+- **§6(e) still binds: ≥60 forward trading days, logged prospectively, before any capital moves.** The daily job now logs the vol-target exposure under `voltarget-w63-t10-b10-v1` alongside the directional predictions, so that clock started 2026-08-05. No backtest, however clean, can substitute for it.
+
+
 ### 6.5 Conclusion: the tradeable answer is buy-and-hold
 
 Three independent rule designs, each better than the last, none beating a two-trade strategy. Combined with §6.2's finding that the classifier's *accuracy* edge was itself confined to 2020–21, the evidence is consistent and points one way.
