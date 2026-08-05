@@ -45,8 +45,13 @@ HORIZONS = (1, 5)
 # because §6(e)'s capital gate needs a PROSPECTIVE record: 60 trading days of
 # exposures decided before the outcome was known. A backtest cannot supply that
 # no matter how clean it is, which is the entire point of the gate.
-VT_VERSION = "voltarget-w63-t10-b10-v1"
-VT_WINDOW, VT_TARGET, VT_BAND = 63, 0.10, 0.10
+# v2 (§6.8): EWMA(0.94) replaces close-to-close-63. The old estimator was
+# chosen by in-sample Sharpe and is the WORST volatility forecaster of the
+# eight available (corr 0.275 vs 0.452). Version bumped rather than edited --
+# §7 forbids rewriting history, and v1's logged exposures stay as they were.
+VT_VERSION = "voltarget-ewma094-t10-b20-v2"
+VT_TARGET, VT_BAND = 0.10, 0.20
+VT_LAMBDA = 0.94
 ANN = 230.0
 
 
@@ -91,8 +96,9 @@ def vol_target_exposure(frame: pd.DataFrame) -> dict:
     """
     import numpy as np
 
-    r = frame["close"].pct_change()
-    vol = r.rolling(VT_WINDOW).std().shift(1) * np.sqrt(ANN)
+    from nepselab.eval import volest
+
+    vol = volest.ewma(frame, VT_LAMBDA).shift(1)
     raw = float(np.clip(VT_TARGET / vol.iloc[-1], 0.0, 1.0))
     return {"horizon": 0, "prediction": int(round(raw)), "exposure": round(raw, 4),
             "realised_vol_ann": round(float(vol.iloc[-1]), 4),

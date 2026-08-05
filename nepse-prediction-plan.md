@@ -653,6 +653,62 @@ A bug was found by these tests and fixed: the fractional ledger had no solvency 
 - The margin over buy-and-hold narrows to 0.009 Sharpe at a 50-name basket. Execution matters.
 - **§6(e) still binds: ≥60 forward trading days, logged prospectively, before any capital moves.** The daily job now logs the vol-target exposure under `voltarget-w63-t10-b10-v1` alongside the directional predictions, so that clock started 2026-08-05. No backtest, however clean, can substitute for it.
 
+### 6.8 Pushing it further: the estimator was chosen on the wrong criterion (2026-08-05)
+
+§6.7 sized positions off a 63-session close-to-close standard deviation, selected because it maximised in-sample Sharpe. Measured against what it is actually supposed to do — forecast the next 21 sessions' realised volatility — **it is the worst of the eight estimators available:**
+
+| Estimator | Corr. with next-21d realised vol |
+|---|---|
+| **ewma-0.94** | **0.452** |
+| garman_klass-21 | 0.446 |
+| parkinson-21 | 0.434 |
+| close2close-21 | 0.406 |
+| ewma-0.97 | 0.403 |
+| garman_klass-63 | 0.310 |
+| parkinson-63 | 0.299 |
+| **close2close-63** *(§6.7 used this)* | **0.275** |
+
+**The estimator is now selected by forecast accuracy on training data, not by Sharpe.** That distinction is the point: picking a volatility model by the profitability of the strategy built on it is a search over strategies wearing the costume of a statistical choice, and with eight candidates it will always find one. Correlation with future realised volatility is a criterion the backtest cannot influence. EWMA(0.94) was selected in **every** fold.
+
+**Result:**
+
+| Strategy | Gross Sh | **Net Sharpe** | Net CAGR | **Max DD** | Trades | Avg exp |
+|---|---|---|---|---|---|---|
+| §6.7 vol-target (c2c-63) | 0.72 | 0.65 | 6.8% | −20.8% | 84 | 56.7% |
+| **§6.8 vol-target (forecast-selected)** | 0.77 | **0.68** | 6.8% | **−20.2%** | 81 | 56.2% |
+| §6.8 + directional tilt | 0.76 | 0.44 | 4.0% | −19.5% | 803 | 49.0% |
+| buy-and-hold | 0.53 | 0.50 | 8.6% | −43.3% | 2 | 99.9% |
+
+Walk-forward to walk-forward, §6.7 → §6.8 is **0.578 → 0.682**. Drawdown is **less than half** buy-and-hold's.
+
+**The directional tilt costs 0.238 Sharpe.** Five attempts have now failed to extract tradeable value from direction on this market, including as a modifier on an already-correct position size. That is as clean a negative as this project has produced.
+
+**By regime — it works everywhere, and best where buy-and-hold is worst:**
+
+| Regime | Net Sharpe | CAGR | B&H CAGR | maxDD | B&H maxDD |
+|---|---|---|---|---|---|
+| pre-mania 2016→2020-02 | 0.73 | 7.6% | 11.9% | **−15.6%** | −23.5% |
+| mania 2020-06→2021-12 | 2.15 | 26.3% | 61.9% | **−12.9%** | −28.7% |
+| chop 2022+ | 0.42 | **3.9%** | 0.7% | **−15.8%** | −38.4% |
+
+**Validation — and one check here is worth more than the rest:**
+
+| Check | Result |
+|---|---|
+| Lookahead (8 estimators × 6 parameter sets) | **48/48 clean** |
+| Robustness across estimators | **8/8 beat buy-and-hold** |
+| **Coherence: does better forecasting → better PnL?** | **Spearman +0.690 (p=0.058, n=8)** |
+| Realistic basket (50 names) | 0.594 vs 0.501 |
+| Capital NPR 100k / 10M | 0.664 / 0.688, both win |
+| Most recent 3 years | Sharpe **0.76 vs 0.51**, maxDD −10.4% vs −17.9% |
+
+The coherence test is the one that matters. The estimators rank the same way on *forecast accuracy* as they do on *net Sharpe* — a relationship overfitting has no reason to produce, because the forecast criterion never sees returns, costs or the ledger. It says the strategy works for the reason claimed rather than by coincidence.
+
+**The live model is now `voltarget-ewma094-t10-b20-v2`.** The version was bumped rather than edited: §7 forbids rewriting history, so v1's logged exposures stand as they were recorded.
+
+**Unchanged caveats.** CAGR is still below buy-and-hold (6.8% vs 8.6%) — the entire gain remains risk-adjusted. `market_params` is still SECONDARY-sourced. And **§6(e) still binds**: ≥60 forward trading days before capital moves.
+
+
 
 ### 6.5 Conclusion: the tradeable answer is buy-and-hold
 

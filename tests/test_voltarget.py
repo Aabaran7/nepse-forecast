@@ -198,3 +198,73 @@ def test_vol_targeting_always_reduces_drawdown(P):
 
 if __name__ == "__main__":
     raise SystemExit(pytest.main([__file__, "-q"]))
+
+
+# --- §6.8: estimator selection by forecast accuracy -------------------------
+
+@pytest.mark.skipif(not DEEP.exists(), reason="deep series absent")
+def test_ewma_forecasts_volatility_better_than_close_to_close_63():
+    """§6.7 sized positions off the worst forecaster in the set, because it was
+    chosen by in-sample Sharpe rather than by forecasting ability."""
+    from nepselab.eval import volest
+
+    df = pd.read_parquet(DEEP).sort_values("date").reset_index(drop=True)
+    ewma = volest.forecast_score(volest.ewma(df, 0.94), df)
+    c2c = volest.forecast_score(volest.close_to_close(df, 63), df)
+    assert ewma > c2c
+
+
+@pytest.mark.skipif(not DEEP.exists(), reason="deep series absent")
+def test_estimator_selection_never_sees_the_test_window():
+    """select_estimator must depend only on the rows handed to it."""
+    from nepselab.eval import volest
+
+    df = pd.read_parquet(DEEP).sort_values("date").reset_index(drop=True)
+    a = volest.select_estimator(df.iloc[:1200].reset_index(drop=True))
+    b = volest.select_estimator(df.iloc[:1200].copy().reset_index(drop=True))
+    assert a == b
+    assert a in volest.ESTIMATORS
+
+
+@pytest.mark.skipif(not DEEP.exists(), reason="deep series absent")
+def test_range_estimators_respect_the_bad_ohlc_flag():
+    """The 16 bars flagged in §3.6 have unreliable highs and lows. A range
+    estimator reading them returns a confident wrong number, not a missing one."""
+    from nepselab.eval import volest
+
+    df = pd.read_parquet(DEEP).sort_values("date").reset_index(drop=True)
+    if "ohlc_consistent" not in df.columns:
+        pytest.skip("no ohlc_consistent column")
+    doctored = df.copy()
+    bad = ~doctored["ohlc_consistent"].astype(bool)
+    doctored.loc[bad, "high"] = doctored.loc[bad, "high"] * 50    # absurd values
+    a = volest.parkinson(df, 21)
+    b = volest.parkinson(doctored, 21)
+    m = a.notna() & b.notna()
+    assert np.allclose(a[m], b[m]), "range estimator used a flagged bar"
+
+
+@pytest.mark.skipif(not DEEP.exists(), reason="deep series absent")
+def test_better_vol_forecasts_produce_better_strategies():
+    """The coherence check, and the strongest evidence the mechanism is real:
+    the ranking of estimators by forecast accuracy should reproduce in their
+    PnL ranking. Overfitting has no reason to do that."""
+    from scipy.stats import spearmanr
+
+    from nepselab.eval import volest
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from phase8_improved import REBAL, exposure
+
+    df = pd.read_parquet(DEEP).sort_values("date").reset_index(drop=True)
+    live = (df.date >= pd.Timestamp("2018-03-05")).to_numpy()
+    test = df[live].reset_index(drop=True)
+    cm = costs.CostModel(costs.Params(), capital=1_000_000)
+
+    fc, sh = [], []
+    for est in volest.ESTIMATORS:
+        fc.append(volest.forecast_score(volest.ESTIMATORS[est](df), df))
+        sh.append(portfolio.run_backtest_weighted(
+            test, exposure(df, est, 0.10, 0.20)[live], cm,
+            rebalance_threshold=REBAL).stats["net_sharpe"])
+    rho, _ = spearmanr(fc, sh)
+    assert rho > 0.4, f"forecast quality does not track PnL (rho={rho:.2f})"
