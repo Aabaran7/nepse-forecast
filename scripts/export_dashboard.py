@@ -54,6 +54,8 @@ MIN_RESOLVED = 30
 # all of it to a browser to render a 60-day bar chart would be silly.
 BREADTH_SESSIONS = 60
 CONCENTRATION_SESSIONS = 252
+# Headlines shipped to the page. The archive keeps everything; this is a window.
+NEWS_LIMIT = 300
 STALE_DAYS = 5
 
 FRESHNESS_LABELS = {
@@ -187,7 +189,7 @@ def main() -> int:
         "freshness": build_freshness(),
         "forwardLog": build_forward_log(closes),
         "indexData": [], "breadthData": [], "concentrationData": [],
-        "stocks": [], "session": None, "news": [],
+        "stocks": [], "session": None, "news": [], "stockSentiment": [],
     }
 
     if not closes.empty:
@@ -233,14 +235,37 @@ def main() -> int:
             "turnover": clean(r.get("totalTradedValue")),
         } for _, r in latest.iterrows()]
 
+    sent = dash.sentiment()
+    if not sent.empty:
+        by_hash = sent.set_index("url_hash")
+        news = news.join(
+            by_hash[["sentiment", "score", "symbol", "confidence"]]
+            .rename(columns={"score": "sent_score", "symbol": "sent_symbol"}),
+            on="url_hash")
+
+        # Per-company rollup: ~350 rows at most, whatever the headline count.
+        # Bounded on purpose -- see the headline cap below for the other half.
+        payload["stockSentiment"] = [
+            {"symbol": r["symbol"], "mentions": int(r["mentions"]),
+             "score": clean(r["score"]), "bullish": int(r["bullish"]),
+             "bearish": int(r["bearish"]), "neutral": int(r["neutral"])}
+            for _, r in dash.stock_sentiment(sent).iterrows()]
+
     if not news.empty:
+        # Newest first, capped. Full history stays in parquet; the page renders
+        # a window. Without a cap this array grows ~50 rows a day forever and
+        # the payload is 1.6 MB inside a year -- for headlines nobody scrolls to.
+        news = news.head(NEWS_LIMIT)
         payload["news"] = [{
             "session": clean(r.get("session")),
             "source": clean(r.get("source")),
             "headline": clean(r.get("title")),
             "publishedAt": clean(r.get("published")),
             "url": clean(r.get("url")),
-            "scored": False,     # flips when scripts/score_sentiment.py exists
+            "scored": bool(pd.notna(r.get("sentiment"))),
+            "sentiment": clean(r.get("sentiment")),
+            "sentimentScore": clean(r.get("sent_score")),
+            "symbol": clean(r.get("sent_symbol")),
             # Whether this would be sent to the scorer. Shipped so the filter is
             # visible and arguable on the page rather than an invisible decision
             # taken upstream -- the reason travels with the verdict.

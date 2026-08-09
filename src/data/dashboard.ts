@@ -52,6 +52,24 @@ export interface NewsItem {
   publishedAt: string | null
   url: string
   scored: boolean
+  /** Whether this headline was worth sending to the scorer, and why. */
+  relevant: boolean
+  relevanceReason: string | null
+  sentiment: 'bullish' | 'bearish' | 'neutral' | null
+  /** -1..1. Null when unscored. */
+  sentimentScore: number | null
+  /** Listed company the headline is about, validated against the exchange list. */
+  symbol: string | null
+}
+
+/** One row per company mentioned in the news. Bounded at ~350 rows. */
+export interface StockSentiment {
+  symbol: string
+  mentions: number
+  score: number | null
+  bullish: number
+  bearish: number
+  neutral: number
 }
 
 export interface FreshnessItem {
@@ -104,7 +122,9 @@ export interface Dashboard {
   concentrationData: { date: string; pct: number }[]
   stocks: Stock[]
   session: string | null
+  /** Most recent NEWS_LIMIT headlines. Full history stays in the parquet store. */
   news: NewsItem[]
+  stockSentiment: StockSentiment[]
 }
 
 /**

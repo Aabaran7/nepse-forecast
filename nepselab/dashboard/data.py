@@ -144,10 +144,48 @@ def headlines() -> pd.DataFrame:
     return df.sort_values("first_seen_utc", ascending=False).reset_index(drop=True)
 
 
-def sentiment() -> pd.DataFrame:
-    """Headline sentiment scores. Empty until scripts/score_sentiment.py exists."""
+def sentiment(version: str | None = None) -> pd.DataFrame:
+    """Headline sentiment scores, newest scorer version only unless asked.
+
+    The store keeps every version ever run (§7's habit applied to scoring: a
+    prompt change is a new version, not an overwrite). Showing all of them at
+    once would double-count headlines scored twice, so the default is the latest.
+    """
     path = NEWS / "sentiment.parquet"
-    return pd.read_parquet(path) if path.exists() else pd.DataFrame()
+    if not path.exists():
+        return pd.DataFrame()
+    df = pd.read_parquet(path)
+    if df.empty or "scorer_version" not in df.columns:
+        return df
+    if version is None:
+        version = sorted(df["scorer_version"].unique())[-1]
+    return df[df["scorer_version"] == version].reset_index(drop=True)
+
+
+def stock_sentiment(sent: pd.DataFrame | None = None) -> pd.DataFrame:
+    """One row per listed company mentioned in the news.
+
+    This is the cheap half of stock-level sentiment: ~350 rows regardless of how
+    many headlines exist, so it stays a fixed cost on the page while the headline
+    history grows without bound behind it.
+    """
+    sent = sentiment() if sent is None else sent
+    if sent.empty or "symbol" not in sent.columns:
+        return pd.DataFrame()
+    linked = sent[sent["symbol"].notna()]
+    if linked.empty:
+        return pd.DataFrame()
+
+    g = linked.groupby("symbol", observed=True)
+    out = pd.DataFrame({
+        "mentions": g.size(),
+        "score": g["score"].mean().round(3),
+        "bullish": g["sentiment"].apply(lambda s: int((s == "bullish").sum())),
+        "bearish": g["sentiment"].apply(lambda s: int((s == "bearish").sum())),
+        "neutral": g["sentiment"].apply(lambda s: int((s == "neutral").sum())),
+        "last_scored": g["scored_utc"].max(),
+    }).reset_index()
+    return out.sort_values("mentions", ascending=False).reset_index(drop=True)
 
 
 def forward_log() -> pd.DataFrame:
