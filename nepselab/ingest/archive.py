@@ -46,6 +46,10 @@ KEYS: dict[str, list[str]] = {
     # sectorName and company metadata, which `securities` does not carry.
     # Dated because a company can be reclassified or change name.
     "company_info": ["snapshot_date", "symbol"],
+    # Live order book, keyed on the capture instant: the same scrip appears many
+    # times a day on both sides, and each snapshot is a distinct observation
+    # rather than a revision of the last. Pass root=data/orderbook.
+    "orderbook": ["captured_utc", "side", "symbol"],
 }
 
 

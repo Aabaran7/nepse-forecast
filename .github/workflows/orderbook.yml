@@ -1,0 +1,74 @@
+# Order book snapshots, taken DURING the session.
+#
+# Separate from daily.yml because it has to run at a completely different time.
+# daily.yml runs after the close, which is correct for prices and useless here:
+# NEPSE serves an empty book outside market hours, so an after-close capture
+# returns nothing. Measured 2026-08-09 (Sunday) and 2026-08-10 01:45 NPT
+# (pre-open): both empty.
+#
+# This is also the only data in the project with no history whatsoever. The
+# price archive serves a rolling year, which is bad enough; the book serves NOW.
+# A snapshot not taken never existed, so this job's failure mode is worse than
+# daily.yml's and its retry posture is more aggressive: five captures a session,
+# each independent, any four can fail without losing the day's shape.
+
+name: orderbook
+
+on:
+  schedule:
+    # NEPSE trades 11:00-15:00 NPT = 05:15-09:15 UTC, Mon-Fri
+    # (configs/market_params.yaml, effective 2026-04-20).
+    # Five captures spread across the session: a book is a time series inside
+    # the day, and one snapshot at the close throws away its shape.
+    - cron: "30 5 * * 1-5"    # 11:15 NPT, just after the open
+    - cron: "30 6 * * 1-5"    # 12:15
+    - cron: "30 7 * * 1-5"    # 13:15
+    - cron: "30 8 * * 1-5"    # 14:15
+    - cron: "05 9 * * 1-5"    # 14:50, just before the close
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  # Queue rather than cancel. Two captures minutes apart are two observations,
+  # not a duplicate -- cancelling one loses it permanently.
+  group: orderbook
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # The book lives in its own store and does not touch data/archive, so
+      # there is nothing to rehydrate and no risk to the price archive here.
+      - name: Capture the book
+        run: python scripts/snapshot_orderbook.py
+
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name  "nepse-bot"
+          git config user.email "noreply@github.com"
+          python scripts/archive_backup.py --dir data-mirror --no-git
+          git add data-mirror
+          git diff --cached --quiet || git commit -m "orderbook: $(date -u +%FT%H:%MZ)"
+          # Five jobs a day race with daily.yml for the same branch. Rebase and
+          # retry rather than failing: a lost push here is a lost snapshot.
+          for i in 1 2 3; do
+            git pull --rebase -q origin master && git push -q origin master && exit 0
+            sleep 5
+          done
+          echo "push failed after 3 attempts; the snapshot is committed locally "
+          echo "on the runner and will be lost. Raw payload is in the run log."
+          exit 1

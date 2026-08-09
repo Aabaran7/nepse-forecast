@@ -41,7 +41,12 @@ logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 log = logging.getLogger("archive_backup")
 
 DEFAULT_DIR = Path.home() / ".local/share/nepse-archive-backup"
-SOURCES = [Path("data/archive"), Path("data/deep")]
+# data/orderbook is here despite being the fastest-growing of the three: it is
+# the only source with NO history at all -- NEPSE serves an empty book outside
+# the session, so a snapshot not backed up is gone in a way even the rolling-year
+# data is not. If it outgrows the repo, the answer is to thin old snapshots
+# deliberately, not to leave the recent ones unbacked.
+SOURCES = [Path("data/archive"), Path("data/deep"), Path("data/orderbook")]
 # The forward log is small, text, and irreplaceable in a different way from
 # the archive: §7 forbids rewriting it, so losing it cannot be repaired by
 # re-running anything. It is already CSV, so it is copied verbatim.

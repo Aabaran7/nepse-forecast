@@ -50,6 +50,17 @@ class NepseClient:
     def securities(self) -> pd.DataFrame:
         return pd.DataFrame(self._retry(self._api.get_securities_list, "securities_list"))
 
+    def supply_demand(self) -> dict:
+        """The live order book: {supplyList, demandList}. LIVE ONLY -- no history.
+
+        Returns dicts rather than a DataFrame on purpose. The field names are
+        still unknown (every probe hit a closed market), and the caller writes
+        the raw payload to disk before parsing it. Coercing to a frame here
+        would put a schema assumption in front of the one endpoint whose
+        responses cannot be re-requested.
+        """
+        return self._retry(self._api.get_supply_demand, "supply_demand") or {}
+
     def company_info(self) -> pd.DataFrame:
         """Every listing with its SECTOR. Not the same call as securities().
 
