@@ -11,6 +11,17 @@ __pycache__/
 node_modules/
 dist/
 
+# --- secrets ---
+# Added BEFORE any .env exists, deliberately. A key that reaches even one commit
+# has to be treated as leaked and rotated, because the repo is public and git
+# history keeps it after deletion. Ignoring the file first makes that
+# unrecoverable mistake impossible rather than merely unlikely.
+.env
+.env.*
+!.env.example
+*.key
+secrets.json
+
 # results/ is deliberately NOT ignored. §8 requires every result dir to carry
 # its config and git hash, and §1's fourth objective is a DOCUMENTED "no edge
 # found" outcome -- a null result that exists only on one disk is not
