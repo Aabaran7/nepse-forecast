@@ -50,6 +50,17 @@ class NepseClient:
     def securities(self) -> pd.DataFrame:
         return pd.DataFrame(self._retry(self._api.get_securities_list, "securities_list"))
 
+    def company_info(self) -> pd.DataFrame:
+        """Every listing with its SECTOR. Not the same call as securities().
+
+        `get_securities_list` returns ids and names only. This one adds
+        sectorName, companyName, instrumentType and regulatoryBody -- and the
+        sector is the piece that makes the other 16 archived sector indices
+        usable, and a P/E readable (19.6 means nothing until you know the
+        banking median). 645 rows including debentures and mutual funds.
+        """
+        return pd.DataFrame(self._retry(self._api.get_all_securities, "all_securities"))
+
     def sectors(self) -> pd.DataFrame:
         return pd.DataFrame(self._retry(self._api.get_sectors, "sectors"))
 

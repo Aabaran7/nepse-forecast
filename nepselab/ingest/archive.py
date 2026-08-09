@@ -40,6 +40,12 @@ KEYS: dict[str, list[str]] = {
     # lands in _conflicts/ instead of quietly replacing the text we scored.
     "headlines": ["source", "url_hash"],
     "sentiment": ["url_hash", "scorer_version"],
+    # Reconstructed from the archive itself, not fetched (adjust/actions.py).
+    # One row per company per ex-date.
+    "corporate_actions": ["symbol", "ex_date"],
+    # sectorName and company metadata, which `securities` does not carry.
+    # Dated because a company can be reclassified or change name.
+    "company_info": ["snapshot_date", "symbol"],
 }
 
 

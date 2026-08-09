@@ -1,4 +1,23 @@
 {
+ "company_info": {
+  "companyName": "object",
+  "instrumentType": "object",
+  "regulatoryBody": "object",
+  "sectorName": "object",
+  "securityName": "object",
+  "snapshot_date": "datetime64[ms]",
+  "status": "object",
+  "symbol": "object"
+ },
+ "corporate_actions": {
+  "ex_date": "datetime64[ns]",
+  "factor": "float64",
+  "implied_pct": "float64",
+  "kind": "object",
+  "prior_close": "float64",
+  "restated_close": "float64",
+  "symbol": "object"
+ },
  "indices": {
   "absChange": "float64",
   "businessDate": "datetime64[ns]",
