@@ -1,0 +1,31 @@
+{
+  "generated_utc": "2026-08-09T09:38:34+00:00",
+  "git_hash": "5b8e489",
+  "sessions": 228,
+  "scrips": 475,
+  "span": [
+    "2025-08-03",
+    "2026-08-07"
+  ],
+  "scrip_days": 76195,
+  "pct_days_under_10_trades": 0.1479,
+  "median_trades_per_scrip_day": 86.0,
+  "pct_3x_spikes_under_10_trades": 0.1926,
+  "limit_up_days": 364,
+  "limit_down_days": 70,
+  "limit_up_median_vol_ratio": 3.825,
+  "limit_down_median_vol_ratio": 2.288,
+  "ordinary_median_vol_ratio": 0.95,
+  "quadrant_share": {
+    "quiet_down": 0.4567,
+    "quiet_up": 0.3343,
+    "heavy_up": 0.0987,
+    "heavy_down": 0.0685,
+    "flat": 0.0418
+  },
+  "round_trip_bps": {
+    "25000": 95.0,
+    "50000": 85.0,
+    "100000": 74.0
+  }
+}
