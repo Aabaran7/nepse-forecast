@@ -19,11 +19,11 @@ lxml==6.1.1
 # actually goes client-side. See news.render_with_playwright.
 
 # --- sentiment ---
-openai==2.9.1
+openai==2.53.0
 
 # --- serving layer ---
-supabase==2.24.2
+supabase==2.31.0
 
 # --- dashboard (Streamlit Cloud reads this same file) ---
-streamlit==1.54.1
-plotly==6.5.0
+streamlit==1.61.1
+plotly==6.9.0
