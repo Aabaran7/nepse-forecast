@@ -82,6 +82,13 @@ class Source:
     date_selector: str | None = None
     render: Callable[[str], str] | None = None  # None = plain HTTP GET
     encoding: str | None = None
+    # Keep only articles whose own URL contains this. A section page is not a
+    # section: the Himalayan Times /business page carries a sidebar of "latest
+    # from everywhere", so a selector scoped to the page yielded sports results,
+    # weather and crime alongside the business stories. Filtering on the
+    # article's own path is also far more durable than CSS ancestry, which is
+    # one redesign away from silently letting the sidebar back in.
+    url_must_contain: str | None = None
 
     def page_url(self, page: int) -> str:
         if page <= 1 or not self.page_param:
@@ -125,6 +132,9 @@ SOURCES: dict[str, Source] = {
         url="https://thehimalayantimes.com/business",
         item_selector="h3.alith_post_title, h2.alith_post_title, h4.alith_post_title",
         title_selector=None,
+        # Without this, 13 of 31 stored headlines came from /nepal, /sports,
+        # /environment, /kathmandu and /opinion (measured 2026-08-09).
+        url_must_contain="/business/",
     ),
 }
 
@@ -275,6 +285,8 @@ def parse(source: Source, html: str, base_url: str) -> list[dict]:
         if not title or not link:
             continue
         url = urljoin(base_url, link["href"])
+        if source.url_must_contain and source.url_must_contain not in url:
+            continue
         published = None
         if source.date_selector:
             d = node.select_one(source.date_selector)

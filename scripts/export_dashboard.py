@@ -241,6 +241,11 @@ def main() -> int:
             "publishedAt": clean(r.get("published")),
             "url": clean(r.get("url")),
             "scored": False,     # flips when scripts/score_sentiment.py exists
+            # Whether this would be sent to the scorer. Shipped so the filter is
+            # visible and arguable on the page rather than an invisible decision
+            # taken upstream -- the reason travels with the verdict.
+            "relevant": bool(r.get("market_relevant", True)),
+            "relevanceReason": clean(r.get("relevance_reason")),
         } for _, r in news.iterrows()]
 
     args.out.parent.mkdir(parents=True, exist_ok=True)

@@ -132,6 +132,15 @@ def headlines() -> pd.DataFrame:
     sessions = news.trading_sessions(idx) if not idx.empty else []
     if sessions:
         df = news.attribute(df, sessions)
+
+    # Market relevance is derived here for the same reason `session` is: it
+    # depends on the listed-securities snapshot, which grows as companies list.
+    # Storing it would freeze today's answer against tomorrow's company list,
+    # and a headline about a firm that lists next month would stay marked
+    # irrelevant forever.
+    from nepselab.ingest import relevance
+    df = relevance.tag(df, archive.load("securities"))
+
     return df.sort_values("first_seen_utc", ascending=False).reset_index(drop=True)
 
 
