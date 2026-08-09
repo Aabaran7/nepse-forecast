@@ -35,6 +35,11 @@ KEYS: dict[str, list[str]] = {
     "today_price": ["businessDate", "securityId"],
     "securities": ["snapshot_date", "securityId"],
     "ticker_history": ["businessDate", "symbol"],
+    # Headlines live under data/news/, not data/archive/ -- pass root=. Keyed on
+    # the article URL so a re-scrape is a no-op and an in-place headline edit
+    # lands in _conflicts/ instead of quietly replacing the text we scored.
+    "headlines": ["source", "url_hash"],
+    "sentiment": ["url_hash", "scorer_version"],
 }
 
 
@@ -61,9 +66,17 @@ def _normalise(df: pd.DataFrame, keys: list[str]) -> pd.DataFrame:
     return df
 
 
-def _find_conflicts(old: pd.DataFrame, new: pd.DataFrame, keys: list[str]) -> pd.DataFrame:
-    """Rows present in both, keyed identically, but differing in some value."""
-    shared = [c for c in old.columns if c in new.columns and c not in keys]
+def _find_conflicts(old: pd.DataFrame, new: pd.DataFrame, keys: list[str],
+                    ignore: list[str] | None = None) -> pd.DataFrame:
+    """Rows present in both, keyed identically, but differing in some value.
+
+    `ignore` exempts columns that record the OBSERVATION rather than the fact --
+    e.g. when a row was scraped. Those differ on every re-run by construction, so
+    comparing them turns the conflict report into noise and buries the one thing
+    it exists to surface: an upstream value that actually changed.
+    """
+    skip = set(keys) | set(ignore or [])
+    shared = [c for c in old.columns if c in new.columns and c not in skip]
     if not shared or old.empty or new.empty:
         return pd.DataFrame()
     o = old[keys + shared].merge(new[keys + shared], on=keys, suffixes=("_archived", "_upstream"))
@@ -88,7 +101,8 @@ def _find_conflicts(old: pd.DataFrame, new: pd.DataFrame, keys: list[str]) -> pd
     return out
 
 
-def merge(dataset: str, new: pd.DataFrame, root: Path = ARCHIVE) -> MergeResult:
+def merge(dataset: str, new: pd.DataFrame, root: Path = ARCHIVE,
+          ignore: list[str] | None = None) -> MergeResult:
     """Fold `new` into the archived copy of `dataset`. Never removes a row."""
     if dataset not in KEYS:
         raise KeyError(f"unknown dataset {dataset!r}; add it to archive.KEYS")
@@ -111,7 +125,7 @@ def merge(dataset: str, new: pd.DataFrame, root: Path = ARCHIVE) -> MergeResult:
         return MergeResult(dataset, len(new), len(new), pd.DataFrame())
 
     old = _normalise(pd.read_parquet(path), keys)
-    conflicts = _find_conflicts(old, new, keys)
+    conflicts = _find_conflicts(old, new, keys, ignore)
 
     # keep="first" with old concatenated first is what makes this append-only:
     # an incoming row that collides with an archived one is discarded, not applied.

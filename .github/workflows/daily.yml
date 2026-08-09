@@ -1,0 +1,137 @@
+# Daily NEPSE pipeline. Replaces the local cron in scripts/cron_archive.sh.
+#
+# The design constraint is plan §3.4: NEPSE serves a rolling ~1 year, so a
+# trading day that is never archived is destroyed permanently, and the failure
+# is SILENT -- nothing errors, the archive just quietly has a hole. Three
+# consequences, all of which show up below:
+#
+#   1. STATE CANNOT LIVE ON THE RUNNER. A GitHub runner is wiped after every
+#      job, and actions/cache is evicted after 7 days. So the archive is
+#      rehydrated from committed CSV at the start and committed back at the end.
+#      Git history is the durability guarantee; the CSVs delta well because they
+#      are sorted on the same keys the archive sorts on (archive_backup.py).
+#
+#   2. A MISSED RUN MUST BE LOUD. `notify` opens a GitHub issue on failure,
+#      because the whole point is that silence is indistinguishable from success
+#      when the data is what goes missing.
+#
+#   3. SCHEDULES ARE NOT GUARANTEES. GitHub delays scheduled runs under load and
+#      disables them entirely after 60 days without repo activity. This job
+#      commits on most days, which keeps it alive -- but see the run-twice
+#      schedule below, and keep the local cron running in parallel for the first
+#      few weeks rather than trusting a cutover.
+
+name: daily
+
+on:
+  schedule:
+    # NEPSE closes 15:00 NPT = 09:15 UTC (configs/market_params.yaml, effective
+    # 2026-04-20). Mon-Fri because the trading week changed from Sun-Thu on
+    # 2026-04-10 -- if that ever reverts, this line reverts with it.
+    - cron: "45 9 * * 1-5"    # 15:30 NPT, just after the close
+    - cron: "30 13 * * 1-5"   # 19:15 NPT, rescues a throttled first run
+  workflow_dispatch:          # manual re-run, e.g. after fixing a scrape
+
+concurrency:
+  # The flock in cron_archive.sh, in YAML form. archive.merge() is a
+  # read-modify-write of a whole parquet file, so two overlapping runs can lose
+  # one side's rows outright. Queue, never cancel: a cancelled run is a lost day.
+  group: nepse-daily
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # commit the rehydrated archive back
+  issues: write     # raise the alarm when a day fails
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45     # NEPSE throttles; a slow run is normal, a stuck one is not
+    env:
+      TZ: UTC
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0     # archive_backup.py inspects history before committing
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      # --- state in -----------------------------------------------------
+      - name: Rehydrate archive from committed CSV
+        run: python scripts/archive_restore.py --from data-mirror
+
+      # --- the irreplaceable part, first and alone -----------------------
+      # Everything below this step is recoverable if it fails. This one is not,
+      # so it runs before anything that could burn the job's time budget, and
+      # nothing that follows is allowed to prevent the commit at the end.
+      - name: Pull NEPSE (plan §3.4)
+        run: python scripts/archive_pull.py
+
+      # --- the recoverable parts ----------------------------------------
+      # continue-on-error throughout: a ShareSansar outage or an OpenAI 429 must
+      # never cost a trading day of exchange data.
+      - name: Scrape headlines
+        continue-on-error: true
+        run: python scripts/scrape_news.py
+
+      - name: Score sentiment
+        continue-on-error: true
+        run: python scripts/score_sentiment.py
+
+      - name: Forward predictions (plan §7)
+        continue-on-error: true
+        run: python scripts/phase5_forward.py
+
+      - name: Push to Supabase
+        continue-on-error: true
+        run: python scripts/sync_supabase.py
+
+      # --- state out ----------------------------------------------------
+      # `always()`: a partial pull still added rows worth protecting, and the
+      # commit is a no-op when nothing changed. Same reasoning as the backup
+      # step in cron_archive.sh.
+      - name: Commit archive mirror
+        if: always()
+        run: |
+          python scripts/archive_backup.py --dir data-mirror --no-push
+          git config user.name  "nepse-bot"
+          git config user.email "noreply@github.com"
+          git add data-mirror predictions
+          git diff --cached --quiet || git commit -m "data: $(date -u +%F) archive + predictions"
+          git push
+
+      # --- alarm --------------------------------------------------------
+      - name: Raise an issue if the pull failed
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = `daily job failed: ${new Date().toISOString().slice(0,10)}`;
+            // Reuse one open issue rather than opening a new one per failure:
+            // a 40-issue backlog is a thing people mute, and a muted alarm on
+            // this job means silently losing sessions.
+            const open = await github.rest.issues.listForRepo({
+              ...context.repo, state: "open", labels: "daily-job"
+            });
+            const body = `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}\n\n`
+              + `A failed pull may mean a permanently lost session (plan §3.4). `
+              + `Re-run the workflow manually, and if NEPSE was down, run `
+              + `\`archive_pull.py --backfill\` from a local checkout before the window rolls.`;
+            if (open.data.length) {
+              await github.rest.issues.createComment({
+                ...context.repo, issue_number: open.data[0].number, body: `**${title}**\n\n${body}`
+              });
+            } else {
+              await github.rest.issues.create({
+                ...context.repo, title, body, labels: ["daily-job"]
+              });
+            }

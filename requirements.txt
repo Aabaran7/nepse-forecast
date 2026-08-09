@@ -1,0 +1,29 @@
+# Pinned to what the local .venv is verified against (Python 3.10.12), so CI
+# and this machine cannot silently diverge. Bump deliberately, not by drift.
+
+# --- ingest + analysis (existing pipeline) ---
+nepse-scraper==1.0.0
+pandas==2.3.3
+numpy==2.2.6
+pyarrow==25.0.0
+scikit-learn==1.7.2
+PyYAML==6.0.3
+requests==2.34.2
+
+# --- headline scraping ---
+beautifulsoup4==4.15.0
+lxml==6.1.1
+# playwright is NOT here on purpose: all three news sources are server-rendered
+# (verified 2026-08-09), and it costs a ~400MB browser download per CI run.
+# Add it, plus `playwright install --with-deps chromium`, only when a source
+# actually goes client-side. See news.render_with_playwright.
+
+# --- sentiment ---
+openai==2.9.1
+
+# --- serving layer ---
+supabase==2.24.2
+
+# --- dashboard (Streamlit Cloud reads this same file) ---
+streamlit==1.54.1
+plotly==6.5.0
