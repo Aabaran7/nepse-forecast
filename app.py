@@ -43,6 +43,13 @@ NEUTRAL, MUTED = "#6b7280", "#9ca3af"
 CATEGORICAL = ["#3b6fd4", "#c2571a", "#8b5cf6", "#3f8f5f"]
 GRID = "rgba(128,128,128,0.18)"
 
+# Below this many resolved predictions, an accuracy figure is noise wearing a
+# percent sign, and the chart is the most misleading thing on the page: one
+# correct call draws a bar at 100%. §7 puts the real bar higher still (60+ days
+# before §6's capital gate even applies); 30 is simply the point below which the
+# number should not be drawn as if it meant something.
+MIN_RESOLVED = 30
+
 QUADRANT_LABEL = {
     "heavy_up": "Rose, heavy volume",
     "quiet_up": "Rose, normal volume",
@@ -135,25 +142,52 @@ with tab_log:
                 rows.append({"horizon": f"t+{int(h)}", "n": len(sub),
                              "accuracy": sub["correct"].mean(), "baseline": base})
             acc = pd.DataFrame(rows)
+            thin_sample = int(acc["n"].max()) < MIN_RESOLVED
+
+            if thin_sample:
+                st.warning(
+                    f"**Too early to read this.** The best-covered horizon has "
+                    f"**{int(acc['n'].max())}** resolved prediction(s); this page "
+                    f"treats accuracy as unreadable below **{MIN_RESOLVED}**. "
+                    f"One correct call draws a bar at 100%, and that is a "
+                    f"property of the sample size, not of the model. The chart "
+                    f"below is shown greyed for that reason.")
 
             fig = go.Figure()
             fig.add_bar(x=acc["horizon"], y=acc["accuracy"], name="Model",
-                        marker_color=CATEGORICAL[0],
-                        text=[f"{v:.0%}" for v in acc["accuracy"]],
+                        marker_color=MUTED if thin_sample else CATEGORICAL[0],
+                        # The count rides on the label, so the number can never
+                        # be screenshotted away from its sample size.
+                        text=[f"{v:.0%}  (n={n})"
+                              for v, n in zip(acc["accuracy"], acc["n"])],
                         textposition="outside")
             fig.add_bar(x=acc["horizon"], y=acc["baseline"], name="Always-guess baseline",
                         marker_color=MUTED,
                         text=[f"{v:.0%}" for v in acc["baseline"]],
                         textposition="outside")
+            # Headroom above 1.0 so an outside label on a 100% bar is not clipped
+            # by the plot edge, and an explicit title position so the title stops
+            # printing on top of the legend.
             fig.update_layout(barmode="group", bargap=0.45, bargroupgap=0.08,
-                              yaxis_tickformat=".0%", yaxis_range=[0, 1.05],
-                              title="Accuracy vs. guessing the commoner direction")
-            st.plotly_chart(style(fig), width="stretch")
+                              yaxis_tickformat=".0%", yaxis_range=[0, 1.18],
+                              title=dict(
+                                  text="Accuracy vs. guessing the commoner direction",
+                                  y=0.97, yanchor="top"),
+                              margin=dict(t=78))
+            st.plotly_chart(style(fig, 360), width="stretch")
 
             st.dataframe(
                 acc.assign(accuracy=lambda x: (x["accuracy"] * 100).round(1),
                            baseline=lambda x: (x["baseline"] * 100).round(1)),
-                hide_index=True, width="stretch")
+                hide_index=True, width="stretch",
+                column_config={
+                    "horizon": "Horizon",
+                    "n": st.column_config.NumberColumn(
+                        "Resolved", format="%d",
+                        help="How many predictions this accuracy is computed from."),
+                    "accuracy": st.column_config.NumberColumn("Accuracy", format="%.1f%%"),
+                    "baseline": st.column_config.NumberColumn("Baseline", format="%.1f%%"),
+                })
 
         st.info(
             "**What this can and cannot show.** §7: the forward log is here to "
