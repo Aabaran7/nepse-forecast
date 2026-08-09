@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600&family=Inter:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* Tailwind was imported here by the design export and then never used -- the
+   components style everything inline against the custom properties below.
+   Dropped rather than kept "in case": an unused build dependency is one more
+   thing that can break CI at 09:45 UTC for no benefit. The `@variant dark`
+   directive went with it; the `.dark` class below is plain CSS and needs no
+   preprocessor. Verified: zero className usages across src/. */
+
+@layer base {
+  :root {
+    --bg: #f5f4f2;
+    --card: #ffffff;
+    --card-border: #e4e2de;
+    --text: #1a1918;
+    --text-muted: #6b6560;
+    --text-faint: #999390;
+    --border: #e0ddd9;
+    --rule: #ede9e5;
+    --up: #0d7d9e;
+    --down: #c2571a;
+    --s1: #3b6fd4;
+    --s2: #c2571a;
+    --s3: #8b5cf6;
+    --s4: #3f8f5f;
+    --baseline: #9b9590;
+    --focus: #3b6fd4;
+    --thin-flag: #c2571a;
+    --stale: #b45309;
+    --stale-bg: #fef3c7;
+  }
+
+  .dark {
+    --bg: #121110;
+    --card: #1c1b1a;
+    --card-border: #2e2c2a;
+    --text: #eeece9;
+    --text-muted: #8c8882;
+    --text-faint: #5c5a57;
+    --border: #2a2826;
+    --rule: #242220;
+    --up: #2ba3c4;
+    --down: #c9762a;
+    --s1: #5b93e6;
+    --s2: #c9762a;
+    --s3: #9575f0;
+    --s4: #4fa876;
+    --baseline: #6b6560;
+    --focus: #5b93e6;
+    --thin-flag: #c9762a;
+    --stale: #d97706;
+    --stale-bg: #2a1f0a;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  .font-serif { font-family: 'IBM Plex Serif', Georgia, serif; }
+  .font-mono  { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+
+  .tabnum { font-variant-numeric: tabular-nums; }
+
+  /* Axis / grid lines recede */
+  .recharts-cartesian-axis-tick-value { fill: var(--text-muted) !important; font-size: 11px; font-family: 'JetBrains Mono', monospace; }
+  .recharts-cartesian-grid-horizontal line,
+  .recharts-cartesian-grid-vertical line { stroke: var(--rule) !important; }
+  .recharts-tooltip-wrapper { outline: none; }
+}

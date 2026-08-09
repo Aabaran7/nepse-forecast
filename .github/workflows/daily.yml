@@ -49,6 +49,8 @@ concurrency:
 permissions:
   contents: write   # commit the rehydrated archive back
   issues: write     # raise the alarm when a day fails
+  pages: write      # publish the dashboard
+  id-token: write   # required by actions/deploy-pages
 
 jobs:
   daily:
@@ -98,9 +100,17 @@ jobs:
         continue-on-error: true
         run: python scripts/phase5_forward.py
 
-      - name: Push to Supabase
-        continue-on-error: true
-        run: python scripts/sync_supabase.py
+      # The dashboard's only input. Runs after the forward job so the page
+      # reflects the predictions made in the same run rather than yesterday's.
+      - name: Export dashboard JSON
+        run: python scripts/export_dashboard.py
+
+      - name: Upload dashboard data
+        uses: actions/upload-artifact@v4
+        with:
+          name: dashboard-data
+          path: public/data/dashboard.json
+          retention-days: 7
 
       # --- state out ----------------------------------------------------
       # `always()`: a partial pull still added rows worth protecting, and the
@@ -112,7 +122,7 @@ jobs:
           python scripts/archive_backup.py --dir data-mirror --no-push
           git config user.name  "nepse-bot"
           git config user.email "noreply@github.com"
-          git add data-mirror predictions
+          git add data-mirror predictions public/data
           git diff --cached --quiet || git commit -m "data: $(date -u +%F) archive + predictions"
           git push
 
@@ -142,3 +152,41 @@ jobs:
                 ...context.repo, title, body, labels: ["daily-job"]
               });
             }
+
+  # --- publish the dashboard ----------------------------------------------
+  # A separate job because actions/deploy-pages requires its own `environment`
+  # block, and because the split makes the dependency honest: publishing is
+  # downstream of the data and must never be able to hold it up.
+  #
+  # `needs: daily` without `if: success()` on purpose -- a run where the news
+  # scrape failed but the pull succeeded should still publish. Only a failed
+  # data job stops the deploy, which is the right threshold: better a page
+  # showing yesterday's numbers with a visible stale flag than no page.
+  deploy:
+    needs: daily
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The data job just committed the fresh JSON. Without this the deploy
+          # would check out the commit the workflow STARTED from and publish
+          # the previous day's numbers -- silently, and looking perfectly fine.
+          ref: ${{ github.ref }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build      # tsc --noEmit runs first; a type error fails here
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: pages
+        uses: actions/deploy-pages@v4

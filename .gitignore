@@ -1,7 +1,15 @@
-data/
+# Anchored to the repo root. Unanchored `data/` matches a directory of that name
+# at ANY depth, which silently swallowed public/data/dashboard.json -- the one
+# file the published dashboard reads. CI would have committed nothing and
+# deployed a page with no data, reporting success the whole way.
+/data/
 .venv/
 __pycache__/
 *.pyc
+
+# --- dashboard build ---
+node_modules/
+dist/
 
 # results/ is deliberately NOT ignored. §8 requires every result dir to carry
 # its config and git hash, and §1's fourth objective is a DOCUMENTED "no edge
