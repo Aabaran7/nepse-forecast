@@ -21,9 +21,16 @@ lxml==6.1.1
 # --- sentiment ---
 openai==2.53.0
 
-# --- serving layer ---
-supabase==2.31.0
-
-# --- dashboard (Streamlit Cloud reads this same file) ---
-streamlit==1.61.1
-plotly==6.9.0
+# The dashboard is a static React page fed by scripts/export_dashboard.py, so
+# nothing below the Python line is needed to serve it. Three packages were here
+# and are deliberately gone:
+#
+#   streamlit  pins pyarrow<25 against this project's pyarrow 25, which made
+#              `pip install -r requirements.txt` unsolvable and failed the daily
+#              job at step 3 -- before it ever reached the NEPSE pull. The whole
+#              job existed to protect that pull.
+#   plotly     only the Streamlit page used it; recharts draws the React charts.
+#   supabase   the serving layer is a committed JSON file. There is no database.
+#
+# The rule this cost us: every dependency in CI is a way for the daily job to
+# fail, and a job that fails is a trading session that may be lost for good.
