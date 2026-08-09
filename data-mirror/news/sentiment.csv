@@ -1,0 +1,33 @@
+url_hash,scorer_version,source,title,sentiment,score,confidence,company_raw,symbol,model,scored_utc
+4355c991fd65b4c6,gpt4omini-headline-v1,sharesansar,"Kumari Bank is Auctioning 3,20,948 Units Promoter Shares from Today",bearish,-0.5,0.8,Kumari Bank,KBL,gpt-4o-mini,2026-08-09T19:30:09+00:00
+4355c991fd65b4c6,gpt4omini-headline-v2,sharesansar,"Kumari Bank is Auctioning 3,20,948 Units Promoter Shares from Today",bearish,-0.5,0.8,Kumari Bank,KBL,gpt-4o-mini,2026-08-09T19:31:27+00:00
+17c7e76fb64eb38a,gpt4omini-headline-v1,sharesansar,Mahalaxmi Bikas Bank Launches Nursing Care and Day Care Facility for Women Employees,bullish,0.5,0.7,Mahalaxmi Bikas Bank,MLBL,gpt-4o-mini,2026-08-09T19:30:09+00:00
+17c7e76fb64eb38a,gpt4omini-headline-v2,sharesansar,Mahalaxmi Bikas Bank Launches Nursing Care and Day Care Facility for Women Employees,neutral,0.0,0.8,Mahalaxmi Bikas Bank,MLBL,gpt-4o-mini,2026-08-09T19:31:27+00:00
+4f6485af1bf0a87a,gpt4omini-headline-v2,himalayantimes,Standard Chartered reaffirms commitment to Nepal's growth during South Asia CEO visit,bullish,0.6,0.8,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
+9027608fbadf8f2b,gpt4omini-headline-v2,himalayantimes,"Standard Chartered, FIU-Nepal hold workshop to strengthen anti-money laundering compliance",neutral,0.0,0.7,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
+09172dc0b9b874b9,gpt4omini-headline-v1,sharesansar,Gumukhola Bhyakure Hydropower Appoints RBB Merchant Banking as IPO Issue and Sales Manager,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+09172dc0b9b874b9,gpt4omini-headline-v2,sharesansar,Gumukhola Bhyakure Hydropower Appoints RBB Merchant Banking as IPO Issue and Sales Manager,neutral,0.0,0.8,Gumukhola Bhyakure Hydropower,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+11fecdf75e5a4702,gpt4omini-headline-v1,merolagani,"डिजिटल भुक्तानीमा गम्भीर जोखिम: केवाईसी प्रमाणित नगरी सेवा दिँदै वालेट कम्पनी, राष्ट्र बैंकले बढायो निगरानी",bearish,-0.6,0.7,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+11fecdf75e5a4702,gpt4omini-headline-v2,merolagani,"डिजिटल भुक्तानीमा गम्भीर जोखिम: केवाईसी प्रमाणित नगरी सेवा दिँदै वालेट कम्पनी, राष्ट्र बैंकले बढायो निगरानी",bearish,-0.6,0.7,,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+1eb0378cb59d2f42,gpt4omini-headline-v1,himalayantimes,Property transaction revenue hits record high ahead of capital gains tax hike,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+1eb0378cb59d2f42,gpt4omini-headline-v2,himalayantimes,Property transaction revenue hits record high ahead of capital gains tax hike,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+28e8218f0ccc32d6,gpt4omini-headline-v1,sharesansar,Greenply Nepal to Issue 16.40 Lakhs Shares in Upcoming IPO,bullish,0.6,0.8,Greenply Nepal,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+28e8218f0ccc32d6,gpt4omini-headline-v2,sharesansar,Greenply Nepal to Issue 16.40 Lakhs Shares in Upcoming IPO,bullish,0.7,0.9,Greenply Nepal,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+31ee26464187bfe6,gpt4omini-headline-v1,himalayantimes,From Rs 10 crore loss to Rs 3 crore profit: Nepal Aushadhi Limited's turnaround after 25 years,bullish,0.7,0.9,Nepal Aushadhi Limited,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+31ee26464187bfe6,gpt4omini-headline-v2,himalayantimes,From Rs 10 crore loss to Rs 3 crore profit: Nepal Aushadhi Limited's turnaround after 25 years,bullish,0.7,0.9,Nepal Aushadhi Limited,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+4e0c6fd3e5e224a1,gpt4omini-headline-v1,sharesansar,"YADEA Launches GS70, GT70 and GT80 Electric Scooters in Nepal",bullish,0.5,0.7,YADEA,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+4e0c6fd3e5e224a1,gpt4omini-headline-v2,sharesansar,"YADEA Launches GS70, GT70 and GT80 Electric Scooters in Nepal",bullish,0.6,0.8,YADEA,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+4f6485af1bf0a87a,gpt4omini-headline-v1,himalayantimes,Standard Chartered reaffirms commitment to Nepal's growth during South Asia CEO visit,bullish,0.6,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+58d202d1c2a82fdb,gpt4omini-headline-v1,sharesansar,"BYD Opens Authorized Service Centre in Pokhara, Strengthening EV Support Network",bullish,0.5,0.7,BYD,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+58d202d1c2a82fdb,gpt4omini-headline-v2,sharesansar,"BYD Opens Authorized Service Centre in Pokhara, Strengthening EV Support Network",bullish,0.5,0.8,BYD,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+9027608fbadf8f2b,gpt4omini-headline-v1,himalayantimes,"Standard Chartered, FIU-Nepal hold workshop to strengthen anti-money laundering compliance",neutral,0.0,0.7,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+a2c18eb04c952f60,gpt4omini-headline-v1,sharesansar,NADA Auto Show 2026 to Open in Kathmandu With 50pc Early-Bird Ticket Discount,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+a2c18eb04c952f60,gpt4omini-headline-v2,sharesansar,NADA Auto Show 2026 to Open in Kathmandu With 50pc Early-Bird Ticket Discount,neutral,0.0,0.7,,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+c7a17333f0524d63,gpt4omini-headline-v1,sharesansar,Hulas Finserv Reports 84.45% Surge in Net Profit to Rs. 398.72 Million,bullish,0.7,0.9,Hulas Finserv,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+c7a17333f0524d63,gpt4omini-headline-v2,sharesansar,Hulas Finserv Reports 84.45% Surge in Net Profit to Rs. 398.72 Million,bullish,0.8,0.9,Hulas Finserv,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+ea3355d2bedc6b1f,gpt4omini-headline-v1,himalayantimes,CDSC to suspend Mero Share services for accounts with unpaid annual fees,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+ea3355d2bedc6b1f,gpt4omini-headline-v2,himalayantimes,CDSC to suspend Mero Share services for accounts with unpaid annual fees,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+f6eb25ea1077e855,gpt4omini-headline-v1,sharesansar,Gold Price Crosses Rs. 3 Lakh Again as Prices Rebound Strongly; Silver Follows Uptrend,bullish,0.6,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+f6eb25ea1077e855,gpt4omini-headline-v2,sharesansar,Gold Price Crosses Rs. 3 Lakh Again as Prices Rebound Strongly; Silver Follows Uptrend,bullish,0.7,0.8,,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+f8447e53cc0177f8,gpt4omini-headline-v1,sharesansar,"Reliable Samriddhi Yojana-2 Units Listed on NEPSE, Trading to Begin Shrawan 25",neutral,0.0,0.9,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+f8447e53cc0177f8,gpt4omini-headline-v2,sharesansar,"Reliable Samriddhi Yojana-2 Units Listed on NEPSE, Trading to Begin Shrawan 25",neutral,0.0,0.9,,,gpt-4o-mini,2026-08-09T19:31:27+00:00

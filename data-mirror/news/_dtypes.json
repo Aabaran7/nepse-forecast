@@ -1,0 +1,23 @@
+{
+ "headlines": {
+  "first_seen_utc": "object",
+  "published": "datetime64[ns]",
+  "source": "object",
+  "title": "object",
+  "url": "object",
+  "url_hash": "object"
+ },
+ "sentiment": {
+  "company_raw": "object",
+  "confidence": "float64",
+  "model": "object",
+  "score": "float64",
+  "scored_utc": "object",
+  "scorer_version": "object",
+  "sentiment": "object",
+  "source": "object",
+  "symbol": "object",
+  "title": "object",
+  "url_hash": "object"
+ }
+}

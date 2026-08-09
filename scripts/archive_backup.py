@@ -46,7 +46,8 @@ DEFAULT_DIR = Path.home() / ".local/share/nepse-archive-backup"
 # the session, so a snapshot not backed up is gone in a way even the rolling-year
 # data is not. If it outgrows the repo, the answer is to thin old snapshots
 # deliberately, not to leave the recent ones unbacked.
-SOURCES = [Path("data/archive"), Path("data/deep"), Path("data/orderbook")]
+SOURCES = [Path("data/archive"), Path("data/deep"), Path("data/orderbook"),
+           Path("data/fundamentals"), Path("data/news")]
 # The forward log is small, text, and irreplaceable in a different way from
 # the archive: §7 forbids rewriting it, so losing it cannot be repaired by
 # re-running anything. It is already CSV, so it is copied verbatim.
@@ -94,6 +95,23 @@ def export(repo: Path) -> list[str]:
         man = src / "_manifest.csv"
         if man.exists():
             (out_dir / "_manifest.csv").write_bytes(man.read_bytes())
+
+        # Raw payloads, where a store keeps them. The order book saves its JSON
+        # before parsing precisely because the schema is unknown, and that
+        # safeguard is worthless if the raw files are the one thing not backed
+        # up. Copied verbatim -- they are already small and already text.
+        raw = src / "_raw"
+        if raw.is_dir():
+            out_raw = out_dir / "_raw"
+            out_raw.mkdir(parents=True, exist_ok=True)
+            n = 0
+            for j in sorted(raw.glob("*.json")):
+                dst = out_raw / j.name
+                if not dst.exists():          # payloads are immutable once written
+                    dst.write_bytes(j.read_bytes())
+                    n += 1
+            if n:
+                written.append(f"{src.name}/_raw: {n} new payload(s)")
 
     for src in EXTRA_DIRS:
         if not src.exists():

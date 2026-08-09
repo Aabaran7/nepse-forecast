@@ -1,0 +1,28 @@
+{
+ "dividend_history": {
+  "dividend_pct": "float64",
+  "fiscal_year": "object",
+  "symbol": "object"
+ },
+ "fundamentals": {
+  "avg_120d": "float64",
+  "avg_180d": "float64",
+  "book_value": "float64",
+  "dividend_pct": "float64",
+  "dividend_pct_fy": "object",
+  "eps": "float64",
+  "eps_fy": "object",
+  "eps_quarter": "int64",
+  "market_cap": "float64",
+  "market_price": "float64",
+  "pbv": "float64",
+  "pe_ratio": "float64",
+  "sector": "object",
+  "shares_outstanding": "float64",
+  "snapshot_date": "datetime64[ns]",
+  "symbol": "object",
+  "week52_high": "float64",
+  "week52_low": "float64",
+  "yield_1y": "float64"
+ }
+}
