@@ -50,6 +50,11 @@ KEYS: dict[str, list[str]] = {
     # times a day on both sides, and each snapshot is a distinct observation
     # rather than a revision of the last. Pass root=data/orderbook.
     "orderbook": ["captured_utc", "side", "symbol"],
+    # Point-in-time fundamentals: one row per company per scrape, so the record
+    # says "as of this date, the reported EPS was X" rather than "EPS is X".
+    # Pass root=data/fundamentals.
+    "fundamentals": ["snapshot_date", "symbol"],
+    "dividend_history": ["symbol", "fiscal_year"],
 }
 
 
@@ -154,7 +159,14 @@ def record(results: list[MergeResult], root: Path = ARCHIVE) -> None:
              "rows_total": r.total, "conflicts": len(r.conflicts)} for r in results]
     df = pd.DataFrame(rows)
     root.mkdir(parents=True, exist_ok=True)
-    df.to_csv(MANIFEST, mode="a", header=not MANIFEST.exists(), index=False)
+    # Per-store, NOT the module-level MANIFEST. That constant points at
+    # data/archive/ and was used unconditionally, so every store added since --
+    # news, sentiment, orderbook, fundamentals -- wrote its provenance into the
+    # price archive's manifest and had none of its own. archive_backup.py copies
+    # `_manifest.csv` from each source directory, so those stores were also
+    # being backed up without their provenance trail.
+    manifest = root / "_manifest.csv"
+    df.to_csv(manifest, mode="a", header=not manifest.exists(), index=False)
 
     for r in results:
         if len(r.conflicts):
