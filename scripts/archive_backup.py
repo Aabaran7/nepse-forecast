@@ -25,6 +25,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import os
 import subprocess
@@ -60,8 +61,16 @@ def export(repo: Path) -> list[str]:
             continue
         out_dir = repo / src.name
         out_dir.mkdir(parents=True, exist_ok=True)
+        # CSV carries no types, and the types here cannot be guessed: securityId
+        # is int64 in today_price but object in securities; `id` is int64 in
+        # indices but object in today_price. A restore that guesses wrong makes
+        # archive.merge() fail outright, or worse, silently stop matching keys
+        # and append a duplicate copy of the whole history. So the schema rides
+        # along beside the data. Read by scripts/archive_restore.py.
+        dtypes: dict[str, dict[str, str]] = {}
         for pq in sorted(src.glob("*.parquet")):
             df = pd.read_parquet(pq)
+            dtypes[pq.stem] = {c: str(t) for c, t in df.dtypes.items()}
             # Sort by whatever date-ish columns exist so a backfilled session
             # inserts in place rather than reshuffling the file. Without this
             # the diff is the whole file and the size argument above collapses.
@@ -72,6 +81,9 @@ def export(repo: Path) -> list[str]:
                 df = df.sort_values(keys, kind="stable")
             df.to_csv(out_dir / f"{pq.stem}.csv", index=False)
             written.append(f"{src.name}/{pq.stem}: {len(df)} rows")
+
+        if dtypes:
+            (out_dir / "_dtypes.json").write_text(json.dumps(dtypes, indent=1, sort_keys=True))
 
         # The manifest is the provenance trail for every pull ever made.
         man = src / "_manifest.csv"
