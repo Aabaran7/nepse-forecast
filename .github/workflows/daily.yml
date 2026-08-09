@@ -165,6 +165,10 @@ jobs:
   deploy:
     needs: daily
     runs-on: ubuntu-latest
+    # Same group as pages.yml: two deploys landing on Pages at once is a race.
+    concurrency:
+      group: pages-deploy
+      cancel-in-progress: true
     environment:
       name: github-pages
       url: ${{ steps.pages.outputs.page_url }}
