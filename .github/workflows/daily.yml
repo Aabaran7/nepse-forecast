@@ -24,13 +24,20 @@
 name: daily
 
 on:
-  schedule:
-    # NEPSE closes 15:00 NPT = 09:15 UTC (configs/market_params.yaml, effective
-    # 2026-04-20). Mon-Fri because the trading week changed from Sun-Thu on
-    # 2026-04-10 -- if that ever reverts, this line reverts with it.
-    - cron: "45 9 * * 1-5"    # 15:30 NPT, just after the close
-    - cron: "30 13 * * 1-5"   # 19:15 NPT, rescues a throttled first run
-  workflow_dispatch:          # manual re-run, e.g. after fixing a scrape
+  # SCHEDULE IS OFF UNTIL THE PIPELINE IS COMPLETE. Three steps below call
+  # scripts that do not exist yet (archive_restore, score_sentiment,
+  # sync_supabase), so a scheduled run would fail nightly and open an issue
+  # every time -- training everyone to ignore the one alarm that matters.
+  # Uncomment both crons once `workflow_dispatch` has gone green end to end,
+  # and only then retire the local cron in scripts/cron_archive.sh.
+  #
+  # schedule:
+  #   # NEPSE closes 15:00 NPT = 09:15 UTC (configs/market_params.yaml,
+  #   # effective 2026-04-20). Mon-Fri because the trading week changed from
+  #   # Sun-Thu on 2026-04-10 -- if that reverts, these lines revert with it.
+  #   - cron: "45 9 * * 1-5"    # 15:30 NPT, just after the close
+  #   - cron: "30 13 * * 1-5"   # 19:15 NPT, rescues a throttled first run
+  workflow_dispatch:          # manual run: the only trigger until then
 
 concurrency:
   # The flock in cron_archive.sh, in YAML form. archive.merge() is a
