@@ -1,0 +1,23 @@
+{
+ "nepse_index_deep": {
+  "close": "float64",
+  "date": "datetime64[ns]",
+  "high": "float64",
+  "low": "float64",
+  "ohlc_consistent": "bool",
+  "open": "float64",
+  "source": "object",
+  "turnover": "float64"
+ },
+ "reddit_daily": {
+  "date": "datetime64[ns]",
+  "n_comments_authors_day": "float64",
+  "n_comments_authors_precls": "float64",
+  "n_comments_day": "float64",
+  "n_comments_precls": "float64",
+  "n_posts_authors_day": "float64",
+  "n_posts_authors_precls": "float64",
+  "n_posts_day": "float64",
+  "n_posts_precls": "float64"
+ }
+}

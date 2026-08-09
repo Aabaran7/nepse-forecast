@@ -1,0 +1,73 @@
+{
+ "indices": {
+  "absChange": "float64",
+  "businessDate": "datetime64[ns]",
+  "closingIndex": "float64",
+  "exchangeIndexId": "int64",
+  "fiftyTwoWeekHigh": "float64",
+  "fiftyTwoWeekLow": "float64",
+  "highIndex": "float64",
+  "id": "int64",
+  "indexCode": "object",
+  "lowIndex": "float64",
+  "openIndex": "float64",
+  "percentageChange": "float64",
+  "totalTransaction": "int64",
+  "turnoverValue": "float64",
+  "turnoverVolume": "int64"
+ },
+ "market_summary": {
+  "businessDate": "datetime64[ns]",
+  "totalTradedShares": "int64",
+  "totalTransactions": "int64",
+  "totalTurnover": "float64",
+  "tradedScrips": "int64"
+ },
+ "securities": {
+  "securityId": "object",
+  "securityName": "object",
+  "securitySymbol": "object",
+  "snapshot_date": "datetime64[ms]",
+  "symbol": "object"
+ },
+ "ticker_history": {
+  "averageTradedPrice": "float64",
+  "businessDate": "datetime64[ns]",
+  "closePrice": "float64",
+  "fiftyTwoWeekHigh": "float64",
+  "fiftyTwoWeekLow": "float64",
+  "highPrice": "float64",
+  "id": "int64",
+  "lastTradedPrice": "float64",
+  "lastUpdatedTime": "object",
+  "lowPrice": "float64",
+  "openPrice": "float64",
+  "previousDayClosePrice": "float64",
+  "securityId": "int64",
+  "symbol": "object",
+  "totalTradedQuantity": "int64",
+  "totalTradedValue": "float64",
+  "totalTrades": "int64"
+ },
+ "today_price": {
+  "averageTradedPrice": "float64",
+  "businessDate": "datetime64[ns]",
+  "closePrice": "float64",
+  "fiftyTwoWeekHigh": "float64",
+  "fiftyTwoWeekLow": "float64",
+  "highPrice": "float64",
+  "id": "object",
+  "lastUpdatedPrice": "float64",
+  "lastUpdatedTime": "object",
+  "lowPrice": "float64",
+  "marketCapitalization": "float64",
+  "openPrice": "float64",
+  "previousDayClosePrice": "float64",
+  "securityId": "int64",
+  "securityName": "object",
+  "symbol": "object",
+  "totalTradedQuantity": "int64",
+  "totalTradedValue": "float64",
+  "totalTrades": "int64"
+ }
+}

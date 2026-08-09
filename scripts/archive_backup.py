@@ -138,12 +138,21 @@ def main() -> None:
                     default=Path(os.environ.get("NEPSE_BACKUP_DIR", DEFAULT_DIR)))
     ap.add_argument("--no-push", action="store_true",
                     help="commit locally but do not push (for testing)")
+    ap.add_argument("--no-git", action="store_true",
+                    help="export the CSVs and stop; the caller owns the commit")
     args = ap.parse_args()
     repo = args.dir
 
-    if not (repo / ".git").is_dir():
-        log.error("%s is not a git repo. Set it up once with:\n"
-                  "  git clone git@github.com:Aabaran7/nepse-archive.git %s", repo, repo)
+    # --no-git exists because the mirror moved INSIDE this repository
+    # (data-mirror/) when the daily job moved to GitHub Actions. It is no longer
+    # a separate clone, so there is no .git of its own to commit into, and the
+    # outer repo's own commit step does that work. Without this the daily job
+    # would have failed on its very first run at the step whose entire purpose
+    # is protecting the one irreplaceable thing here.
+    if not args.no_git and not (repo / ".git").is_dir():
+        log.error("%s is not a git repo. Either clone one there, or pass "
+                  "--no-git if it lives inside this repository and the caller "
+                  "commits it.", repo)
         sys.exit(1)
 
     summary = export(repo)
@@ -151,6 +160,11 @@ def main() -> None:
         log.warning("nothing to back up -- no parquet found under %s",
                     ", ".join(str(s) for s in SOURCES))
         sys.exit(0)
+
+    if args.no_git:
+        write_readme(repo, summary)
+        log.info("exported (no commit): %s", "; ".join(summary))
+        return
 
     # Decide on the DATA before touching the README. The README carries a
     # timestamp, so writing it first dirties the tree unconditionally and turns

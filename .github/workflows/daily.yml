@@ -119,7 +119,7 @@ jobs:
       - name: Commit archive mirror
         if: always()
         run: |
-          python scripts/archive_backup.py --dir data-mirror --no-push
+          python scripts/archive_backup.py --dir data-mirror --no-git
           git config user.name  "nepse-bot"
           git config user.email "noreply@github.com"
           git add data-mirror predictions public/data
