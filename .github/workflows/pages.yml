@@ -4,11 +4,13 @@
 # case: a change to the page itself -- a styling fix, a copy correction -- which
 # should go live without pulling from NEPSE or rewriting the archive.
 #
-# The `push` trigger deliberately does NOT include public/data/. Commits made by
-# the daily job carry GITHUB_TOKEN, and GitHub refuses to trigger workflows from
-# those to prevent recursion -- so a data commit could never fire this anyway.
-# That path is handled by daily.yml's own deploy job. Listing it here would only
-# suggest a trigger that silently never fires.
+# public/data/ IS in the trigger list, and the reasoning for leaving it out was
+# wrong. It is true that the daily job's own commits cannot fire this -- they
+# carry GITHUB_TOKEN and GitHub blocks that to prevent recursion, which is why
+# daily.yml deploys for itself. But a HUMAN commit touching that file fires
+# normally, and the first one after this workflow was written did exactly that:
+# a data repair was pushed and the site kept serving the broken numbers, because
+# nothing redeployed. Two trigger sources, both real, only one of them obvious.
 
 name: pages
 
@@ -17,6 +19,7 @@ on:
     branches: [master]
     paths:
       - "src/**"
+      - "public/data/**"
       - "index.html"
       - "package.json"
       - "package-lock.json"
