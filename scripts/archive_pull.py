@@ -96,6 +96,45 @@ def sessions_to_pull(c: NepseClient, backfill: bool, fresh_first: int = 2) -> li
     return [pd.Timestamp(d).date().isoformat() for d in ordered]
 
 
+def incomplete_sessions(idx: pd.DataFrame) -> set:
+    """Dates NEPSE is still serving as in-progress. Never archive these.
+
+    Found the hard way on 2026-08-04. A pull ran while the session was open, so
+    NEPSE returned open=high=low and `closingIndex` 0 for all 17 indices, plus
+    109 of ~350 scrips and 1.2% of a normal day's turnover. All of it was
+    archived as if final.
+
+    What made that expensive is the archive's own guarantee: merge() keeps the
+    row it already holds and records the incoming one as a conflict (§3.4). That
+    rule is correct against an upstream REVISION -- but here our own first
+    capture was the broken one, so every subsequent pull dutifully rejected
+    NEPSE's real closing value and logged 17 conflicts, every run, forever.
+
+    A close of 0 alongside a non-zero open is not a market state that exists, so
+    it is safe to key off. And because a session is atomic, one such index row
+    condemns the WHOLE date across every dataset -- today_price and
+    market_summary captured in the same instant are partial too, and they carry
+    no equivalent tell of their own.
+    """
+    if idx.empty or "closingIndex" not in idx.columns:
+        return set()
+    bad = idx[(idx["closingIndex"] <= 0) & (idx["openIndex"] > 0)]
+    return set(pd.to_datetime(bad["businessDate"]).dt.normalize())
+
+
+def drop_incomplete(df: pd.DataFrame, dates: set, datecol: str, label: str) -> pd.DataFrame:
+    if df.empty or not dates or datecol not in df.columns:
+        return df
+    keep = ~pd.to_datetime(df[datecol]).dt.normalize().isin(dates)
+    dropped = int((~keep).sum())
+    if dropped:
+        log.warning("%s: withholding %d row(s) for in-progress session(s) %s -- "
+                    "they will be archived by a later run once NEPSE finalises "
+                    "the close", label, dropped,
+                    ", ".join(str(pd.Timestamp(d).date()) for d in sorted(dates)))
+    return df[keep]
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--backfill", action="store_true",
@@ -114,12 +153,24 @@ def main() -> None:
     results = []
 
     log.info("pulling all indices ...")
-    results.append(archive.merge("indices", pull_indices(c)))
+    idx_new = pull_indices(c)
+
+    # Decide what is in-progress BEFORE anything is written. A session captured
+    # mid-flight is partial in every dataset at once, so it is withheld from all
+    # of them together rather than dataset by dataset.
+    skip = incomplete_sessions(idx_new)
+    if skip:
+        log.warning("session(s) still in progress: %s",
+                    ", ".join(str(pd.Timestamp(d).date()) for d in sorted(skip)))
+    idx_new = drop_incomplete(idx_new, skip, "businessDate", "indices")
+    results.append(archive.merge("indices", idx_new))
 
     log.info("pulling market summary history ...")
     end = date.today().isoformat()
     start = (date.today() - timedelta(days=400)).isoformat()
-    results.append(archive.merge("market_summary", c.market_summary_history(start, end)))
+    ms = drop_incomplete(c.market_summary_history(start, end), skip,
+                         "businessDate", "market_summary")
+    results.append(archive.merge("market_summary", ms))
 
     log.info("pulling securities snapshot ...")
     secs = c.securities()
@@ -175,6 +226,7 @@ def main() -> None:
                               "stay queued -- just run again.", len(failed))
                     break
             continue
+        df = drop_incomplete(df, skip, "businessDate", "today_price")
         if not df.empty:
             frames.append(df)
         if i % args.chunk == 0:

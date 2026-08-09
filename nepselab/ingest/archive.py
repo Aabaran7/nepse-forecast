@@ -155,6 +155,90 @@ def record(results: list[MergeResult], root: Path = ARCHIVE) -> None:
                         r.dataset, len(r.conflicts), out)
 
 
+class RepairRefused(RuntimeError):
+    """A repair was attempted without the evidence this module requires."""
+
+
+def repair(dataset: str, new: pd.DataFrame, dates: list, reason: str,
+           root: Path = ARCHIVE) -> MergeResult:
+    """Replace archived rows for specific dates. THE ONLY WRITE THAT REMOVES DATA.
+
+    Everything else here is append-only by design (§3.4), and that is right
+    almost always: when upstream contradicts a session we already hold, the
+    archived copy wins and the disagreement is recorded. That rule defends
+    against an upstream revision quietly rewriting history.
+
+    It has one blind spot, and 2026-08-04 found it. If OUR OWN first capture was
+    broken -- a pull that ran mid-session and archived `closingIndex` 0 for all
+    17 indices -- then append-only permanently enshrines the broken value and
+    rejects the correct one forever after, logging the same conflicts every run.
+    No amount of re-pulling can fix it, because re-pulling is exactly what the
+    rule is designed to ignore.
+
+    So a repair path has to exist. It is deliberately awkward:
+
+      - It demands an explicit `reason`, recorded beside the data.
+      - It is scoped to named dates. There is no "repair everything".
+      - It writes the removed rows to `_repairs/` BEFORE removing them, so the
+        original observation survives even when it was wrong. What is being
+        undone is our capture of the session, never the fact of it.
+
+    Not for correcting data you dislike. For data that is provably not a market
+    state -- a close of zero, a session that never happened.
+    """
+    if dataset not in KEYS:
+        raise KeyError(f"unknown dataset {dataset!r}; add it to archive.KEYS")
+    if not reason or not reason.strip():
+        raise RepairRefused(
+            "repair() needs a reason. It is the only operation here that can "
+            "remove an archived row, and an unexplained one is indistinguishable "
+            "from the data loss this archive exists to prevent.")
+    if not dates:
+        raise RepairRefused("repair() needs explicit dates; there is no bulk repair.")
+
+    keys = KEYS[dataset]
+    datecol = next((k for k in keys if k.lower().endswith(("date", "_date"))), None)
+    if datecol is None:
+        raise RepairRefused(f"{dataset} has no date key; repair is not defined for it")
+
+    path = root / f"{dataset}.parquet"
+    if not path.exists():
+        raise RepairRefused(f"{path} does not exist; nothing to repair")
+
+    targets = {pd.Timestamp(d).normalize() for d in dates}
+    old = _normalise(pd.read_parquet(path), keys)
+    hit = pd.to_datetime(old[datecol]).dt.normalize().isin(targets)
+    removed = old[hit]
+
+    ts = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    if len(removed):
+        out = root / "_repairs" / f"{dataset}_{ts.replace(':', '')}.csv"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        stamped = removed.copy()
+        stamped["_repaired_utc"] = ts
+        stamped["_reason"] = reason
+        stamped.to_csv(out, index=False)
+        log.warning("%s: removing %d archived row(s) for %s -- previous values "
+                    "saved to %s", dataset, len(removed),
+                    ", ".join(str(pd.Timestamp(d).date()) for d in sorted(targets)), out)
+
+    kept = old[~hit]
+    incoming = _normalise(new, keys) if new is not None and not new.empty else pd.DataFrame()
+    if not incoming.empty:
+        incoming = incoming[
+            pd.to_datetime(incoming[datecol]).dt.normalize().isin(targets)
+        ].drop_duplicates(subset=keys, keep="last")
+
+    combined = (pd.concat([kept, incoming], ignore_index=True)
+                  .drop_duplicates(subset=keys, keep="first")
+                  .sort_values(keys)
+                  .reset_index(drop=True))
+    combined.to_parquet(path, index=False)
+    log.info("%s: %d row(s) removed, %d written back -> %d total",
+             dataset, len(removed), len(incoming), len(combined))
+    return MergeResult(dataset, len(incoming) - len(removed), len(combined), pd.DataFrame())
+
+
 def load(dataset: str, root: Path = ARCHIVE) -> pd.DataFrame:
     path = root / f"{dataset}.parquet"
     return pd.read_parquet(path) if path.exists() else pd.DataFrame()
