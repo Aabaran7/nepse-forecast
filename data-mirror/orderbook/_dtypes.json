@@ -1,0 +1,11 @@
+{
+ "orderbook": {
+  "captured_utc": "object",
+  "securityId": "int64",
+  "securityName": "object",
+  "side": "object",
+  "symbol": "object",
+  "totalOrder": "int64",
+  "totalQuantity": "int64"
+ }
+}

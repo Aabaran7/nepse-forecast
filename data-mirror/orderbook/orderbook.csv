@@ -1,0 +1,11 @@
+totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
+565900,5,8074,KDBY,Kumari Dhanabriddhi Yojana,supply,2026-08-10T06:49:35+00:00
+635600,6,8106,GIBF1,Global IME Balanced Fund-1,demand,2026-08-10T06:49:35+00:00
+559140,7,9174,PRSF,Prabhu Smart Fund,supply,2026-08-10T06:49:35+00:00
+613400,6,9174,PRSF,Prabhu Smart Fund,demand,2026-08-10T06:49:35+00:00
+659706,9,9241,KSY,Kumari Sabal Yojana,demand,2026-08-10T06:49:35+00:00
+717050,10,9257,MBLEF,MBL Equity Fund,supply,2026-08-10T06:49:35+00:00
+1094200,10,9259,RSY,Reliable Samriddhi Yojana,demand,2026-08-10T06:49:35+00:00
+697300,9,9269,GBIMESY2,Global IME Sammunat Yojana -2,demand,2026-08-10T06:49:35+00:00
+361560,5,9302,RBBF40,RBB Focus 40,supply,2026-08-10T06:49:35+00:00
+281157,25,9311,SOHL,Solu Hydropower Limited,supply,2026-08-10T06:49:35+00:00
