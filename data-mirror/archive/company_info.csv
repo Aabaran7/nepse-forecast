@@ -117,7 +117,7 @@ EHPL,Eastern Hydropower Limited,Eastern Hydropower Limited,Hydro Power,Equity,Ne
 EIC,Everest Insurance Co. Ltd.,Everest Insurance Co. Ltd.,Non Life Insurance,Equity,Nepal Insurance Board,D,2026-08-09
 EKBL,Ekata Bikas Bank Ltd.,Ekata Bikas Bank Ltd.,Development Banks,Equity,Nepal Rastra Bank,D,2026-08-09
 ENL,Emerging nepal limited,Emerging Nepal Limited,Investment,Equity,Nepal Rastra Bank,A,2026-08-09
-ESC,National Pro. And Eco. Dev. Centre,National Pro. And Eco. Dev. Centre,Others,Equity,N/A,D,2026-08-09
+ESC,National Pro. And Eco. Dev. Centre,National Pro. And Eco. Dev. Centre,Others,Equity,,D,2026-08-09
 FFCL,Fewa Finance Co. Ltd.,Fewa Finance Co. Ltd.,Finance,Equity,Nepal Rastra Bank,D,2026-08-09
 FHL,Fleur Himalayan Limited,Fleur Himalayan Limited,Manufacturing And Processing,Equity,Department of Industry,S,2026-08-09
 FMDBL,First Micro Finance Laghubitta Bittiya Sanstha Limited,First Micro Finance Laghubitta Bittiya Sanstha Limited,Microfinance,Equity,Nepal Rastra Bank,A,2026-08-09
@@ -179,7 +179,7 @@ HLBSL,Himalayan Laghubitta Bittiya Sanstha Limited,Himalayan Laghubitta Bittiya 
 HLI,Himalayan Life Insurance Limited,Himalayan Life Insurance Limited,Life Insurance,Equity,Nepal Insurance Board,A,2026-08-09
 HLICF,Himalayan Life Insurance Limited,HLI Large Cap Fund,Life Insurance,Mutual Funds,Nepal Insurance Board,A,2026-08-09
 HPPL,Himalayan Power Partner Ltd.,Himalayan Power Partner Ltd.,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
-HRL,Himalayan Reinsurance Limited,Himalayan Reinsurance Limited,Others,Equity,N/A,A,2026-08-09
+HRL,Himalayan Reinsurance Limited,Himalayan Reinsurance Limited,Others,Equity,,A,2026-08-09
 HTL,Himgiri Textile Industries Limited,Himgiri Textile Industries Limited,Manufacturing And Processing,Equity,Department of Industry,D,2026-08-09
 HURJA,Himalaya Urja Bikas Company Limited,Himalaya Urja Bikas Company Limited,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
 ICFC,ICFC Finance Limited,ICFC Finance Limited,Finance,Equity,Nepal Rastra Bank,A,2026-08-09
@@ -203,7 +203,7 @@ JBLB,Jeevan Bikas Laghubitta Bittiya Sanstha Ltd,Jeevan Bikas Laghubitta  Bittya
 JBNL,Janata Bank Nepal Ltd.,Janata Bank Nepal Ltd.,Commercial Banks,Equity,Nepal Rastra Bank,D,2026-08-09
 JEFL,Jebils Finance Ltd.,Jebils Finance Ltd.,Finance,Equity,Nepal Rastra Bank,D,2026-08-09
 JFL,Janaki Finance Company Limited,Janaki Finance Company Limited,Finance,Equity,Nepal Rastra Bank,A,2026-08-09
-JHAPA,Jhapa Energy Limited,Jhapa Energy Limited,Others,Equity,N/A,A,2026-08-09
+JHAPA,Jhapa Energy Limited,Jhapa Energy Limited,Others,Equity,,A,2026-08-09
 JHBL,Jhimruk Bikas Bank Ltd.,Jhimruk Bikas Bank Ltd.,Development Banks,Equity,Nepal Rastra Bank,D,2026-08-09
 JLI,Jyoti Life Insurance Company Limited,Jyoti Life Insurance Company Limited,Life Insurance,Equity,Nepal Insurance Board,D,2026-08-09
 JOSHI,Joshi Hydropower Development Company Ltd,Joshi Hydropower Development Company Ltd,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
@@ -282,7 +282,7 @@ MHCL,Molung Hydropower Company Limited,Molung Hydropower Company Limited,Hydro P
 MHL,Mandakini Hydropower Limited,Mandakini Hydropower Limited,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
 MHNL,Mountain Hydro Nepal Limited,Mountain Hydro Nepal Limited,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
 MIDBL,Mission Development Bank Ltd.,Mission Development Bank Ltd.,Development Banks,Equity,Nepal Rastra Bank,D,2026-08-09
-MKCL,Muktinath Krishi Company Limited,Muktinath Krishi Company Limited,Others,Equity,N/A,A,2026-08-09
+MKCL,Muktinath Krishi Company Limited,Muktinath Krishi Company Limited,Others,Equity,,A,2026-08-09
 MKHC,Maya Khola Hydropower Company Limited,Maya Khola Hydropower Company Limited,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
 MKHL,MaiKhola Hydropower Limited,Mai Khola Hydropower Limited,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
 MKJC,Mailung Khola Jal Vidhyut Company Limited,Mailung Khola Jal Vidhyut Company Limited,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
@@ -340,7 +340,7 @@ NDFL,Nava Durga Finance Co. Ltd.,Nava Durga Finance Co. Ltd.,Finance,Equity,Nepa
 NEF,Nabil Bank Limited,Nabil Equity Fund,Commercial Banks,Mutual Funds,Nepal Rastra Bank,D,2026-08-09
 NEFL,Nepal Express Finance Ltd.,Nepal Express Finance Ltd.,Finance,Equity,Nepal Rastra Bank,D,2026-08-09
 NESDO,NESDO Sambridha Laghubitta Bittiya Sanstha Limited,NESDO Sambridha Laghubitta Bittiya Sanstha Limited,Microfinance,Equity,Nepal Rastra Bank,A,2026-08-09
-NFD,Nepal Film Development Company Limited,Nepal Film Development Company Limited,Others,Equity,N/A,S,2026-08-09
+NFD,Nepal Film Development Company Limited,Nepal Film Development Company Limited,Others,Equity,,S,2026-08-09
 NFL,Narayani Finance Ltd.,Narayani Finance Ltd.,Finance,Equity,Nepal Rastra Bank,D,2026-08-09
 NFS,Nepal Finance Ltd.,Nepal Finance Ltd.,Finance,Equity,Nepal Rastra Bank,A,2026-08-09
 NGBL,Nilgiri Bikas Bank Limited,Nilgiri Bikas Bank Limited,Development Banks,Equity,Nepal Rastra Bank,D,2026-08-09
@@ -397,20 +397,20 @@ NMFBS,National  Laghubitta Bittiya Sanstha Limited,National Laghubitta Bittiya S
 NMIC,Nepal Micro Insurance Company Limited,Nepal Micro Insurance Company Limited,Non Life Insurance,Equity,Nepal Insurance Board,A,2026-08-09
 NMLBBL,Nerude Mirmire Laghubitta Bittiya Sanstha Ltd.,Nerude Mirmire Laghubitta Bittiya Sanstha Limited,Microfinance,Equity,Nepal Rastra Bank,A,2026-08-09
 NNFC,Narayani National Finance Limited,Narayani National Finance Limited,Finance,Equity,Nepal Rastra Bank,D,2026-08-09
-NRIC,Nepal Reinsurance Company Limited,Nepal Reinsurance Company Limited,Others,Equity,N/A,A,2026-08-09
-NRM,Nepal Republic Media Ltd,Nepal Republic Media Limited,Others,Equity,N/A,A,2026-08-09
+NRIC,Nepal Reinsurance Company Limited,Nepal Reinsurance Company Limited,Others,Equity,,A,2026-08-09
+NRM,Nepal Republic Media Ltd,Nepal Republic Media Limited,Others,Equity,,A,2026-08-09
 NRN,NRN Infrastructure and Development Limited,NRN Infrastructure and Development Limited,Investment,Equity,Nepal Rastra Bank,A,2026-08-09
 NSIF2,NMB Capital Ltd.,NMB Sulav Investment Fund - 2,Mutual Fund,Mutual Funds,Nepal Rastra Bank,A,2026-08-09
 NSLB,Naya Sarathi Laghubitta Bittiya Sanstha Limited,Naya Sarathi Laghubitta Bittiya Sanstha Limited,Microfinance,Equity,Nepal Rastra Bank,D,2026-08-09
 NSLMB,Nepal Shree Lanka Merchant Banking & Finance Ltd,Nepal Shree Lanka Merchant Banking & Finance Ltd,Finance,Equity,Nepal Rastra Bank,D,2026-08-09
 NSM,Nepal Share Markets Ltd.,Nepal Share Markets Ltd.,Finance,Equity,Nepal Rastra Bank,S,2026-08-09
 NSY,NEPAL LIFE INSURANCE COMPANY LIMITED,Nepal Life Samriddhi Lagani Yojana,Life Insurance,Mutual Funds,Nepal Insurance Board,A,2026-08-09
-NTC,Nepal Doorsanchar Company Limited,Nepal Doorsanchar Company Limited,Others,Equity,N/A,A,2026-08-09
+NTC,Nepal Doorsanchar Company Limited,Nepal Doorsanchar Company Limited,Others,Equity,,A,2026-08-09
 NTL,Nepal Tading Limited,Nepal Tading Limited,Tradings,Equity,Department of Industry,S,2026-08-09
 NUBL,Nirdhan Utthan Laghubitta Bittiya Sanstha Limited,Nirdhan Utthan Laghubitta Bittiya Sanstha Limited,Microfinance,Equity,Nepal Rastra Bank,A,2026-08-09
 NVG,Nepal Vanaspati Ghee Udhyog Limited,Nepal Vanaspati Ghee Udhyog Limited,Manufacturing And Processing,Equity,Department of Industry,S,2026-08-09
 NWC,Nepal Welfare Company Limited,Nepal Welfare Company Limited,Tradings,Equity,Department of Industry,S,2026-08-09
-NWCL,Nepal Warehousing Company Limited,Nepal Warehousing Company Limited ,Others,Equity,N/A,A,2026-08-09
+NWCL,Nepal Warehousing Company Limited,Nepal Warehousing Company Limited ,Others,Equity,,A,2026-08-09
 NYADI,Nyadi hydropower limited,Nyadi Hydropower Limited,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
 ODBL,Om Development Bank Ltd.,Om Development Bank Ltd.,Development Banks,Equity,Nepal Rastra Bank,D,2026-08-09
 OFL,Om Finance Ltd.,Om Finance Ltd.,Finance,Equity,Nepal Rastra Bank,D,2026-08-09
@@ -450,7 +450,7 @@ PRSF,Prabhu Capital Limited,Prabhu Smart Fund,Mutual Fund,Mutual Funds,Nepal Ras
 PRVU,Prabhu  Bank Limited,Prabhu  Bank Limited,Commercial Banks,Equity,Nepal Rastra Bank,A,2026-08-09
 PSF,Prabhu  Bank Limited,Prabhu Select Fund,Commercial Banks,Mutual Funds,Nepal Rastra Bank,A,2026-08-09
 PURBL,Purnima Bikas Bank Ltd.,Purnima Bikas Bank Ltd.,Development Banks,Equity,Nepal Rastra Bank,D,2026-08-09
-PURE,Pure Energy Limited,Pure Energy Limited,Others,Equity,N/A,A,2026-08-09
+PURE,Pure Energy Limited,Pure Energy Limited,Others,Equity,,A,2026-08-09
 RADHI,Radhi Bidyut Company Ltd,Radhi Bidyut Company Ltd,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
 RARA,Rara Bikas Bank Limited,Rara Bikas Bank Limited,Development Banks,Equity,Nepal Rastra Bank,D,2026-08-09
 RAWA,Rawa Energy Development Ltd.,Rawa Energy Development Limited,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
@@ -613,7 +613,7 @@ TPKHL,Taksar Pikhuwa Khola Hydropower Ltd.,Taksar Pikhuwa Khola Hydropower Limit
 TRH,Taragaon Regency Hotel Limited,Taragaon Regency Hotel Limited,Hotels And Tourism,Equity,Ministry of Tourism,A,2026-08-09
 TRHPR,Taragaon Regency Hotel Limited,Taragaon Regency Hotels Ltd. Preference Share,Hotels And Tourism,Preference Shares,Ministry of Tourism,D,2026-08-09
 TSHL,Three Star Hydropower Ltd,Three Star Hydropower Limited,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
-TTL,Trade Tower Limited,Trade Tower Limited,Others,Equity,N/A,A,2026-08-09
+TTL,Trade Tower Limited,Trade Tower Limited,Others,Equity,,A,2026-08-09
 TVCL,Trishuli Jal Vidhyut Company Limited ,Trishuli Jal Vidhyut Company Limited ,Hydro Power,Equity,Nepal Hydropower Board,A,2026-08-09
 UAIL,United Ajod Insurance Limited,United Ajod Insurance Limited,Non Life Insurance,Equity,Nepal Insurance Board,A,2026-08-09
 UBBL,Udhyam Bikas Bank Limited,Udhyam Bikas Bank Limited,Development Banks,Equity,Nepal Rastra Bank,D,2026-08-09
