@@ -1,11 +1,11 @@
 totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
-317333,17,610,RIDI,Ridi Power Company Limited,supply,2026-08-10T08:15:18+00:00
-307527,9,2933,KEF,Kumari Equity Fund,supply,2026-08-10T08:15:18+00:00
-732815,5,8074,KDBY,Kumari Dhanabriddhi Yojana,supply,2026-08-10T08:15:18+00:00
-705000,7,8106,GIBF1,Global IME Balanced Fund-1,demand,2026-08-10T08:15:18+00:00
-623565,7,9174,PRSF,Prabhu Smart Fund,supply,2026-08-10T08:15:18+00:00
-674506,9,9241,KSY,Kumari Sabal Yojana,demand,2026-08-10T08:15:18+00:00
-857638,10,9245,MNMF1,Muktinath Mutual Fund 1,demand,2026-08-10T08:15:18+00:00
-1110200,12,9259,RSY,Reliable Samriddhi Yojana,demand,2026-08-10T08:15:18+00:00
-698800,5,9269,GBIMESY2,Global IME Sammunat Yojana -2,demand,2026-08-10T08:15:18+00:00
-361760,7,9302,RBBF40,RBB Focus 40,supply,2026-08-10T08:15:18+00:00
+747970,12,245,CFCL,Central Finance Co. Ltd.,demand,2026-08-10T08:57:59+00:00
+813360,18,610,RIDI,Ridi Power Company Limited,supply,2026-08-10T08:57:59+00:00
+320550,9,2933,KEF,Kumari Equity Fund,supply,2026-08-10T08:57:59+00:00
+936115,7,8074,KDBY,Kumari Dhanabriddhi Yojana,supply,2026-08-10T08:57:59+00:00
+628465,7,9174,PRSF,Prabhu Smart Fund,supply,2026-08-10T08:57:59+00:00
+728755,5,9174,PRSF,Prabhu Smart Fund,demand,2026-08-10T08:57:59+00:00
+792481,6,9241,KSY,Kumari Sabal Yojana,demand,2026-08-10T08:57:59+00:00
+1012452,10,9245,MNMF1,Muktinath Mutual Fund 1,demand,2026-08-10T08:57:59+00:00
+1120300,7,9259,RSY,Reliable Samriddhi Yojana,demand,2026-08-10T08:57:59+00:00
+360760,6,9302,RBBF40,RBB Focus 40,supply,2026-08-10T08:57:59+00:00

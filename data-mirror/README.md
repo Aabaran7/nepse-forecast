@@ -14,7 +14,7 @@ permanently. The rows here cannot be re-fetched from upstream.
 CSV rather than parquet so restores need nothing but a text reader,
 and so daily commits stay small.
 
-Last updated: 2026-08-10T08:15:21+00:00
+Last updated: 2026-08-10T08:58:02+00:00
 
 ```
 orderbook/orderbook: 10 rows
