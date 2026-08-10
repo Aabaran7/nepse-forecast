@@ -124,3 +124,37 @@ class TestFreshness:
         out = data.freshness()
         assert out["news"].tz is None
         assert (pd.Timestamp.today().normalize() - out["news"].normalize()).days >= 0
+
+
+class TestJsonSafety:
+    """Every value the export emits must survive json.dumps(allow_nan=False).
+
+    A plain datetime.date is not an instance of datetime.datetime, so it slipped
+    past the type check and reached the encoder. It could only ever fail in
+    production: news.session_for() returns None until a headline's target
+    session has actually traded, so every local run had nulls there and looked
+    fine. The first day headlines resolved to real sessions, CI broke.
+    """
+
+    def test_every_type_the_pipeline_produces_serialises(self):
+        import json
+        import sys
+        from datetime import date, datetime
+        from pathlib import Path
+
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+        import export_dashboard as ed
+
+        for v in (date(2026, 8, 10), datetime(2026, 8, 10, 5, 0),
+                  pd.Timestamp("2026-08-10"), pd.NaT, None,
+                  float("nan"), float("inf"), 3, 3.5, "x", True):
+            json.dumps(ed.clean(v), allow_nan=False)   # must not raise
+
+    def test_a_date_becomes_an_iso_string(self):
+        import sys
+        from datetime import date
+        from pathlib import Path
+
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+        import export_dashboard as ed
+        assert ed.clean(date(2026, 8, 10)) == "2026-08-10"

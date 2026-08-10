@@ -31,7 +31,7 @@ import logging
 import math
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -90,7 +90,15 @@ def clean(v):
         return None
     if isinstance(v, float) and (math.isnan(v) or math.isinf(v)):
         return None
-    if isinstance(v, (pd.Timestamp, datetime)):
+    # `date` before `datetime`, and both here rather than only datetime: a plain
+    # datetime.date is NOT an instance of datetime.datetime, so it fell straight
+    # through to `return v` and json.dumps raised on it.
+    #
+    # This could only surface today. news.session_for() returns a date, and until
+    # a headline's target session had actually traded it returned None -- so
+    # every local run had nulls there and the export looked fine. The first day
+    # headlines resolved to real sessions, CI broke.
+    if isinstance(v, (pd.Timestamp, datetime, date)):
         return None if pd.isna(v) else str(pd.Timestamp(v).date())
     if hasattr(v, "item"):          # numpy scalar
         v = v.item()
