@@ -60,11 +60,11 @@ jobs:
       SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0     # archive_backup.py inspects history before committing
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.10.12"
           cache: pip
@@ -103,7 +103,7 @@ jobs:
         run: python scripts/export_dashboard.py
 
       - name: Upload dashboard data
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: dashboard-data
           path: public/data/dashboard.json
@@ -126,7 +126,7 @@ jobs:
       # --- alarm --------------------------------------------------------
       - name: Raise an issue if the pull failed
         if: failure()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const title = `daily job failed: ${new Date().toISOString().slice(0,10)}`;
@@ -170,14 +170,14 @@ jobs:
       name: github-pages
       url: ${{ steps.pages.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # The data job just committed the fresh JSON. Without this the deploy
           # would check out the commit the workflow STARTED from and publish
           # the previous day's numbers -- silently, and looking perfectly fine.
           ref: ${{ github.ref }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "22"
           cache: npm
@@ -185,9 +185,9 @@ jobs:
       - run: npm ci
       - run: npm run build      # tsc --noEmit runs first; a type error fails here
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
       - id: pages
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
