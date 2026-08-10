@@ -47,7 +47,24 @@ log = logging.getLogger("archive_restore")
 # Mirrors archive_backup.SOURCES / EXTRA_DIRS. Kept as a literal rather than
 # imported so a restore never depends on the backup script parsing cleanly --
 # this is the recovery path, and it should have as few moving parts as possible.
-DATASETS = {"archive": Path("data/archive"), "deep": Path("data/deep")}
+# EVERY store, not just the price archive. This listed only archive and deep
+# until 2026-08-10, and the gap silently destroyed data on every CI run: a
+# runner starts empty, so a job that appends to an unrestored store rebuilds it
+# from that run's rows alone and archive_backup then overwrites the mirror with
+# the shorter table. Three order book captures became one that way. News is the
+# worse case -- the sites do not paginate, so a headline dropped here can never
+# be re-scraped.
+#
+# The order book's raw payloads survived only because they are copied file by
+# file, skipping ones already present. That safeguard is the reason this was
+# caught at all rather than discovered as a hole months later.
+DATASETS = {
+    "archive": Path("data/archive"),
+    "deep": Path("data/deep"),
+    "news": Path("data/news"),
+    "orderbook": Path("data/orderbook"),
+    "fundamentals": Path("data/fundamentals"),
+}
 VERBATIM = {"predictions": Path("predictions")}
 
 class RestoreWouldShrink(RuntimeError):

@@ -18,13 +18,18 @@ on:
   schedule:
     # NEPSE trades 11:00-15:00 NPT = 05:15-09:15 UTC, Mon-Fri
     # (configs/market_params.yaml, effective 2026-04-20).
-    # Five captures spread across the session: a book is a time series inside
-    # the day, and one snapshot at the close throws away its shape.
-    - cron: "30 5 * * 1-5"    # 11:15 NPT, just after the open
-    - cron: "30 6 * * 1-5"    # 12:15
+    #
+    # Every slot is placed with an HOUR of headroom before the close, because
+    # GitHub does not run these on time. Measured 2026-08-10: the 09:05 slot
+    # executed at 09:59 UTC -- 54 minutes late, by which point the market had
+    # shut and the capture was correctly refused. A schedule that only works
+    # when Actions is punctual is a schedule that quietly collects nothing on
+    # busy days, so the late-session slot is gone rather than nominally present.
+    - cron: "20 5 * * 1-5"    # 11:05 NPT, just after the open
+    - cron: "00 6 * * 1-5"    # 11:45
+    - cron: "45 6 * * 1-5"    # 12:30
     - cron: "30 7 * * 1-5"    # 13:15
-    - cron: "30 8 * * 1-5"    # 14:15
-    - cron: "05 9 * * 1-5"    # 14:50, just before the close
+    - cron: "15 8 * * 1-5"    # 14:00 -- still lands inside the session an hour late
   workflow_dispatch:
 
 permissions:
@@ -50,8 +55,14 @@ jobs:
 
       - run: pip install -r requirements.txt
 
-      # The book lives in its own store and does not touch data/archive, so
-      # there is nothing to rehydrate and no risk to the price archive here.
+      # MUST run before the capture. A runner starts empty, so without this the
+      # store is rebuilt from this run's ten rows and archive_backup then
+      # overwrites the mirror with the shorter table -- which is exactly how
+      # three captures on 2026-08-10 became one. Only the raw payloads survived,
+      # because those are copied file by file rather than regenerated.
+      - name: Rehydrate the store
+        run: python scripts/archive_restore.py --from data-mirror
+
       - name: Capture the book
         run: python scripts/snapshot_orderbook.py
 
