@@ -30,6 +30,8 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 841040,7,9174,PRSF,Prabhu Smart Fund,supply,2026-08-11T06:59:51+00:00
 819165,7,9174,PRSF,Prabhu Smart Fund,supply,2026-08-11T07:54:27+00:00
 812665,7,9174,PRSF,Prabhu Smart Fund,supply,2026-08-11T08:31:10+00:00
+25,1,9180,NMBD89/90,NMB Debenture 10.75%-2089/90,demand,2026-08-11T09:15:38+00:00
+25,1,9180,NMBD89/90,NMB Debenture 10.75%-2089/90,supply,2026-08-11T09:15:38+00:00
 593920,8,9198,LVF2,Laxmi Value Fund 2,demand,2026-08-11T06:59:51+00:00
 594520,8,9198,LVF2,Laxmi Value Fund 2,demand,2026-08-11T07:54:27+00:00
 792481,6,9241,KSY,Kumari Sabal Yojana,demand,2026-08-10T08:57:59+00:00
@@ -44,8 +46,11 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 723520,6,9259,RSY,Reliable Samriddhi Yojana,demand,2026-08-11T06:59:51+00:00
 713570,5,9259,RSY,Reliable Samriddhi Yojana,demand,2026-08-11T07:54:27+00:00
 773320,6,9259,RSY,Reliable Samriddhi Yojana,demand,2026-08-11T08:31:10+00:00
+226,3,9289,SBID2090,7% Nepal SBI Bank Debenture 2090,demand,2026-08-11T09:15:38+00:00
 360760,6,9302,RBBF40,RBB Focus 40,supply,2026-08-10T08:57:59+00:00
 374752,10,9302,RBBF40,RBB Focus 40,supply,2026-08-11T06:08:15+00:00
 374952,11,9302,RBBF40,RBB Focus 40,supply,2026-08-11T06:59:51+00:00
 373952,8,9302,RBBF40,RBB Focus 40,supply,2026-08-11T07:54:27+00:00
 383852,8,9302,RBBF40,RBB Focus 40,supply,2026-08-11T08:31:10+00:00
+448100,8,9351,RSY2,Reliable Samriddhi Yojana -2,demand,2026-08-11T09:15:38+00:00
+1700,9,9351,RSY2,Reliable Samriddhi Yojana -2,supply,2026-08-11T09:15:38+00:00
