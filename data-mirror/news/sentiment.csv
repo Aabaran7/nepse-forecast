@@ -1,10 +1,17 @@
 url_hash,scorer_version,source,title,sentiment,score,confidence,company_raw,symbol,model,scored_utc
+1a6c6614642f02fa,gpt4omini-headline-v2,sharesansar,"Best Finance Launches Green Savings Scheme, Plants 600 Trees in Lalitpur",bullish,0.5,0.8,Best Finance,BFC,gpt-4o-mini,2026-08-11T14:35:31+00:00
 12bec66f4de33b4b,gpt4omini-headline-v2,sharesansar,Chilime Hydropower Records Rs. 72 Crore Q4 Profit as Revenue Grows 3.72%,bullish,0.7,0.9,Chilime Hydropower,CHCL,gpt-4o-mini,2026-08-11T10:35:03+00:00
+63cbcec0161ae8af,gpt4omini-headline-v2,sharesansar,Citizen Investment Trust Members to Get Health Care Discounts at Manakamana Hospital,neutral,0.0,0.7,Citizen Investment Trust,CIT,gpt-4o-mini,2026-08-11T14:35:31+00:00
 4355c991fd65b4c6,gpt4omini-headline-v1,sharesansar,"Kumari Bank is Auctioning 3,20,948 Units Promoter Shares from Today",bearish,-0.5,0.8,Kumari Bank,KBL,gpt-4o-mini,2026-08-09T19:30:09+00:00
 4355c991fd65b4c6,gpt4omini-headline-v2,sharesansar,"Kumari Bank is Auctioning 3,20,948 Units Promoter Shares from Today",bearish,-0.5,0.8,Kumari Bank,KBL,gpt-4o-mini,2026-08-09T19:31:27+00:00
+864e0dbaa61b4310,gpt4omini-headline-v2,sharesansar,Kumari Bank Donates Rs. 10 Lakhs to Shahid Gangalal Hospital for Newborn ICU services,neutral,0.0,0.7,Kumari Bank,KBL,gpt-4o-mini,2026-08-11T14:35:31+00:00
 9e68f400109c6139,gpt4omini-headline-v2,sharesansar,Mountain Energy Nepal’s Q4 Profit Surges 29.08% to Rs. 79.70 Crores,bullish,0.8,0.9,Mountain Energy Nepal,MEN,gpt-4o-mini,2026-08-11T10:35:03+00:00
 17c7e76fb64eb38a,gpt4omini-headline-v1,sharesansar,Mahalaxmi Bikas Bank Launches Nursing Care and Day Care Facility for Women Employees,bullish,0.5,0.7,Mahalaxmi Bikas Bank,MLBL,gpt-4o-mini,2026-08-09T19:30:09+00:00
 17c7e76fb64eb38a,gpt4omini-headline-v2,sharesansar,Mahalaxmi Bikas Bank Launches Nursing Care and Day Care Facility for Women Employees,neutral,0.0,0.8,Mahalaxmi Bikas Bank,MLBL,gpt-4o-mini,2026-08-09T19:31:27+00:00
+2880b71fd23be25e,gpt4omini-headline-v2,sharesansar,"Lock-in Period of 2,81,250 Units of Palpa Cements Industries Limited Shares Held by Mutual Funds to Expire on 28th Bhadra",neutral,0.0,0.7,Palpa Cements Industries Limited,None,gpt-4o-mini,2026-08-11T14:35:31+00:00
+519a7b9a4f502110,gpt4omini-headline-v2,sharesansar,Muktinath Bikas Bank Offers Auto Loans at Base Rate for Naima Expo 2026,bullish,0.5,0.8,Muktinath Bikas Bank,None,gpt-4o-mini,2026-08-11T14:35:31+00:00
+7939648e08246aa3,gpt4omini-headline-v2,sharesansar,Global IME Bank Offers Discounted Vehicle Loans at Naima Auto Expo,bullish,0.5,0.8,Global IME Bank,None,gpt-4o-mini,2026-08-11T14:35:31+00:00
+c199d8e571474da4,gpt4omini-headline-v2,sharesansar,Upper Solu Hydroelectric Company Limited (USHEC): A Five-Year Financial Performance Review (Q4 2078/79–Q4 2082/83),neutral,0.0,0.7,Upper Solu Hydroelectric Company Limited,None,gpt-4o-mini,2026-08-11T14:35:31+00:00
 4f6485af1bf0a87a,gpt4omini-headline-v2,himalayantimes,Standard Chartered reaffirms commitment to Nepal's growth during South Asia CEO visit,bullish,0.6,0.8,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
 9027608fbadf8f2b,gpt4omini-headline-v2,himalayantimes,"Standard Chartered, FIU-Nepal hold workshop to strengthen anti-money laundering compliance",neutral,0.0,0.7,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
 aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.38% Surge in Net Profit in Q4 FY 2082/83,bullish,0.8,0.8,Terhathum Power,TPC,gpt-4o-mini,2026-08-10T10:24:29+00:00
@@ -23,9 +30,11 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 4e0c6fd3e5e224a1,gpt4omini-headline-v1,sharesansar,"YADEA Launches GS70, GT70 and GT80 Electric Scooters in Nepal",bullish,0.5,0.7,YADEA,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 4e0c6fd3e5e224a1,gpt4omini-headline-v2,sharesansar,"YADEA Launches GS70, GT70 and GT80 Electric Scooters in Nepal",bullish,0.6,0.8,YADEA,,gpt-4o-mini,2026-08-09T19:31:27+00:00
 4f6485af1bf0a87a,gpt4omini-headline-v1,himalayantimes,Standard Chartered reaffirms commitment to Nepal's growth during South Asia CEO visit,bullish,0.6,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
+56c052d2ccf1dd7c,gpt4omini-headline-v2,sharesansar,NIMB-Smart Telecom Case Raises Questions Over Police and NRB’s Banking Jurisdiction,neutral,0.0,0.6,,,gpt-4o-mini,2026-08-11T14:35:31+00:00
 58697dae0bfd0b56,gpt4omini-headline-v2,himalayantimes,Inside Global IME Bank's approach to CSR and the Sustainable Development Goals,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 58d202d1c2a82fdb,gpt4omini-headline-v1,sharesansar,"BYD Opens Authorized Service Centre in Pokhara, Strengthening EV Support Network",bullish,0.5,0.7,BYD,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 58d202d1c2a82fdb,gpt4omini-headline-v2,sharesansar,"BYD Opens Authorized Service Centre in Pokhara, Strengthening EV Support Network",bullish,0.5,0.8,BYD,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+680b8185056aea37,gpt4omini-headline-v2,sharesansar,ICRA Nepal Places Hotel Sabrina’s B Rating on Notice of Withdrawal,bearish,-0.5,0.8,Hotel Sabrina,,gpt-4o-mini,2026-08-11T14:35:31+00:00
 6a8af42c3177eca2,gpt4omini-headline-v2,sharesansar,"Government Must Focus on Mobility Industry to Boost Growth, Says CNI Chief",neutral,0.0,0.6,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
 7964677bcc37a9d1,gpt4omini-headline-v2,himalayantimes,FM Wagle pushes NRB Act overhaul to strengthen central bank accountability,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
 81e340d9b153878d,gpt4omini-headline-v2,sharesansar,NEPSE Index Edges Up By Minimal Points To Close at 2641.85 Points,bullish,0.5,0.7,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
@@ -47,6 +56,7 @@ cdb2a95cda82c9d9,gpt4omini-headline-v2,sharesansar,NADA Auto Show 2026 to Featur
 d02b4dbf483d03f8,gpt4omini-headline-v2,sharesansar,NEPSE Index Loses 9.02 Points on the First Trading Day of This Week,bearish,-0.6,0.8,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 d02be3b3b2b50c18,gpt4omini-headline-v2,sharesansar,Finance Minister Wagle Urges Multinational Firms to Expand Investment in Nepal,bullish,0.5,0.7,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 d10d7a480d0c0fc5,gpt4omini-headline-v2,sharesansar,Indonesian President Nominates Acting Head to Lead Central Bank,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:48:17+00:00
+e3abf7486307e758,gpt4omini-headline-v2,sharesansar,Crystal Kanchanjungha Securities Launches Margin Trading Facility,bullish,0.5,0.8,Crystal Kanchanjungha Securities,,gpt-4o-mini,2026-08-11T14:35:31+00:00
 e4d2e3c8baa2416e,gpt4omini-headline-v2,sharesansar,MetLife Nepal Inaugurates Gandaki Province Office in Pokhara,neutral,0.0,0.6,MetLife Nepal,,gpt-4o-mini,2026-08-11T10:35:03+00:00
 ea3355d2bedc6b1f,gpt4omini-headline-v1,himalayantimes,CDSC to suspend Mero Share services for accounts with unpaid annual fees,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 ea3355d2bedc6b1f,gpt4omini-headline-v2,himalayantimes,CDSC to suspend Mero Share services for accounts with unpaid annual fees,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:31:27+00:00

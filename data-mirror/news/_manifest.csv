@@ -7,3 +7,5 @@ run_utc,dataset,rows_added,rows_total,conflicts
 2026-08-10T14:36:14+00:00,headlines,0,66,2
 2026-08-11T10:35:02+00:00,headlines,19,85,1
 2026-08-11T10:35:09+00:00,sentiment,11,57,0
+2026-08-11T14:35:30+00:00,headlines,10,95,1
+2026-08-11T14:35:38+00:00,sentiment,10,67,0
