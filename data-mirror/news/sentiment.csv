@@ -5,12 +5,17 @@ url_hash,scorer_version,source,title,sentiment,score,confidence,company_raw,symb
 75b64ed798517919,gpt4omini-headline-v2,sharesansar,"Deprosc Laghubitta Earns Rs. 98.94 Crore Net Profit in Q4; EPS at Rs. 48.15, Net Interest Income Up 15.46%",bullish,0.7,0.9,Deprosc Laghubitta,DDBL,gpt-4o-mini,2026-08-12T10:44:02+00:00
 4355c991fd65b4c6,gpt4omini-headline-v1,sharesansar,"Kumari Bank is Auctioning 3,20,948 Units Promoter Shares from Today",bearish,-0.5,0.8,Kumari Bank,KBL,gpt-4o-mini,2026-08-09T19:30:09+00:00
 4355c991fd65b4c6,gpt4omini-headline-v2,sharesansar,"Kumari Bank is Auctioning 3,20,948 Units Promoter Shares from Today",bearish,-0.5,0.8,Kumari Bank,KBL,gpt-4o-mini,2026-08-09T19:31:27+00:00
+714efb333c72fdfc,gpt4omini-headline-v2,sharesansar,Kumari Bank Hands Over NPR 1 Million Insurance Claim at Gadhwa Branch,neutral,0.0,0.9,Kumari Bank,KBL,gpt-4o-mini,2026-08-13T10:45:18+00:00
 864e0dbaa61b4310,gpt4omini-headline-v2,sharesansar,Kumari Bank Donates Rs. 10 Lakhs to Shahid Gangalal Hospital for Newborn ICU services,neutral,0.0,0.7,Kumari Bank,KBL,gpt-4o-mini,2026-08-11T14:35:31+00:00
 ed7db427c402bf8a,gpt4omini-headline-v2,sharesansar,Laxmi Sunrise Capital Host Financial Awareness Program for Traffic Police,neutral,0.0,0.7,Laxmi Sunrise Capital,LSL,gpt-4o-mini,2026-08-12T10:44:02+00:00
 9e68f400109c6139,gpt4omini-headline-v2,sharesansar,Mountain Energy Nepal’s Q4 Profit Surges 29.08% to Rs. 79.70 Crores,bullish,0.8,0.9,Mountain Energy Nepal,MEN,gpt-4o-mini,2026-08-11T10:35:03+00:00
 17c7e76fb64eb38a,gpt4omini-headline-v1,sharesansar,Mahalaxmi Bikas Bank Launches Nursing Care and Day Care Facility for Women Employees,bullish,0.5,0.7,Mahalaxmi Bikas Bank,MLBL,gpt-4o-mini,2026-08-09T19:30:09+00:00
 17c7e76fb64eb38a,gpt4omini-headline-v2,sharesansar,Mahalaxmi Bikas Bank Launches Nursing Care and Day Care Facility for Women Employees,neutral,0.0,0.8,Mahalaxmi Bikas Bank,MLBL,gpt-4o-mini,2026-08-09T19:31:27+00:00
+f3468a00f6b2cb2e,gpt4omini-headline-v2,sharesansar,Nepal Investment Mega Bank Assures Legal Proceedings Against Top Officials Will Not Affect Banking Operations,neutral,0.0,0.9,Nepal Investment Mega Bank,NIMB,gpt-4o-mini,2026-08-13T10:45:18+00:00
 e7c77710838654bd,gpt4omini-headline-v2,sharesansar,Government Approves IPO of NRN Nepal Development Fund; Rs. 10 Arba Investment Projects to Move Ahead,bullish,0.7,0.8,NRN Nepal Development Fund,NRN,gpt-4o-mini,2026-08-12T10:44:02+00:00
+0dec13d713fb6c41,gpt4omini-headline-v2,sharesansar,Mandu Hydropower Calls AGM on Bhadra 18 to Endorse Dividend; When is the Book Closure Date?,neutral,0.0,0.9,Mandu Hydropower,None,gpt-4o-mini,2026-08-13T10:45:18+00:00
+62056cb60debfce9,gpt4omini-headline-v2,sharesansar,Reliance Spinning Mills’ Revenue From Operation Increased To 10.46 Arba; Net Profit Stands Rs 39.90 Crore,bullish,0.7,0.8,Reliance Spinning Mills,None,gpt-4o-mini,2026-08-13T10:45:18+00:00
+d9cfd7b180a3dbd8,gpt4omini-headline-v2,sharesansar,Sanima Reliance Life Insurance Concludes 'Vision to Value 2083' Event in Pokhara,neutral,0.0,0.9,Sanima Reliance Life Insurance,None,gpt-4o-mini,2026-08-13T10:45:18+00:00
 4f6485af1bf0a87a,gpt4omini-headline-v2,himalayantimes,Standard Chartered reaffirms commitment to Nepal's growth during South Asia CEO visit,bullish,0.6,0.8,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
 9027608fbadf8f2b,gpt4omini-headline-v2,himalayantimes,"Standard Chartered, FIU-Nepal hold workshop to strengthen anti-money laundering compliance",neutral,0.0,0.7,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
 aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.38% Surge in Net Profit in Q4 FY 2082/83,bullish,0.8,0.8,Terhathum Power,TPC,gpt-4o-mini,2026-08-10T10:24:29+00:00
@@ -38,6 +43,7 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 58697dae0bfd0b56,gpt4omini-headline-v2,himalayantimes,Inside Global IME Bank's approach to CSR and the Sustainable Development Goals,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 58d202d1c2a82fdb,gpt4omini-headline-v1,sharesansar,"BYD Opens Authorized Service Centre in Pokhara, Strengthening EV Support Network",bullish,0.5,0.7,BYD,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 58d202d1c2a82fdb,gpt4omini-headline-v2,sharesansar,"BYD Opens Authorized Service Centre in Pokhara, Strengthening EV Support Network",bullish,0.5,0.8,BYD,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+64bf8c6e3b049cc6,gpt4omini-headline-v2,sharesansar,Dhangadhi Transport Office Collects Over Rs 775 Million in Revenue,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-13T10:45:18+00:00
 680b8185056aea37,gpt4omini-headline-v2,sharesansar,ICRA Nepal Places Hotel Sabrina’s B Rating on Notice of Withdrawal,bearish,-0.5,0.8,Hotel Sabrina,,gpt-4o-mini,2026-08-11T14:35:31+00:00
 6a8af42c3177eca2,gpt4omini-headline-v2,sharesansar,"Government Must Focus on Mobility Industry to Boost Growth, Says CNI Chief",neutral,0.0,0.6,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
 7939648e08246aa3,gpt4omini-headline-v2,sharesansar,Global IME Bank Offers Discounted Vehicle Loans at Naima Auto Expo,bullish,0.5,0.8,Global IME Bank,,gpt-4o-mini,2026-08-11T14:35:31+00:00
@@ -45,16 +51,19 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 81e340d9b153878d,gpt4omini-headline-v2,sharesansar,NEPSE Index Edges Up By Minimal Points To Close at 2641.85 Points,bullish,0.5,0.7,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
 8710289ba2c6bc22,gpt4omini-headline-v2,sharesansar,"Indian Ambassador N. Srivastava Meets PM Balendra Shah, Discusses Nepal-India Relations",neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 8837907e80b02899,gpt4omini-headline-v2,sharesansar,Snow Rivers Limited Posts 241.50% Rise in Net Profit in Q4 With an Eps at Rs.11.93,bullish,0.8,0.8,Snow Rivers Limited,,gpt-4o-mini,2026-08-10T10:24:29+00:00
+8bbf214a2c409dcf,gpt4omini-headline-v2,sharesansar,Sher Bahadur Deuba Returns to Nepal After Medical Treatment in Singapore,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-13T10:45:18+00:00
 8e4403896ef2c0d2,gpt4omini-headline-v2,sharesansar,Rotaract Club of Rudramati Supports Students Through “Project Ujjwal Bhavishya” in Baglung,neutral,0.0,0.5,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
 9027608fbadf8f2b,gpt4omini-headline-v1,himalayantimes,"Standard Chartered, FIU-Nepal hold workshop to strengthen anti-money laundering compliance",neutral,0.0,0.7,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 90dc19c62e775009,gpt4omini-headline-v2,himalayantimes,"Nabil Bank wins three Euromoney Awards, named Nepal's Best Bank",bullish,0.7,0.8,Nabil Bank,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 91f801d7fcd7f6dc,gpt4omini-headline-v2,sharesansar,NIC Asia Capital Declares 50% Cash Dividend for Financial Year 2082/83; Calls AGM On Bhadra 26,neutral,0.0,0.8,NIC Asia Capital,,gpt-4o-mini,2026-08-12T10:44:02+00:00
 9bcb0d810b25459c,gpt4omini-headline-v2,sharesansar,Chery Wanda Offers Up to 350 Km Range Electric Vans at NAIMA Nepal Mobility Expo 2026,neutral,0.0,0.5,,,gpt-4o-mini,2026-08-12T10:44:02+00:00
 9bd18724cd37feb0,gpt4omini-headline-v2,sharesansar,"Chitwan Local Administration Steps In to Ease Cooking Gas Shortage, Urges Against Hoarding",neutral,0.0,0.6,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
+9c42e06dfcb19823,gpt4omini-headline-v2,sharesansar,Unilever Nepal’s Profit Falls 19.54% to Rs. 39.08 Crore as Revenue Declines,bearish,-0.7,0.8,Unilever Nepal,,gpt-4o-mini,2026-08-13T10:45:18+00:00
 a2c18eb04c952f60,gpt4omini-headline-v1,sharesansar,NADA Auto Show 2026 to Open in Kathmandu With 50pc Early-Bird Ticket Discount,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 a2c18eb04c952f60,gpt4omini-headline-v2,sharesansar,NADA Auto Show 2026 to Open in Kathmandu With 50pc Early-Bird Ticket Discount,neutral,0.0,0.7,,,gpt-4o-mini,2026-08-09T19:31:27+00:00
 a588bbd2136146bf,gpt4omini-headline-v2,sharesansar,NEPSE Inches Up for Second Straight Session; NRN Leads Turnover,bullish,0.6,0.7,,,gpt-4o-mini,2026-08-12T10:44:02+00:00
 aa1990a73dbba0cf,gpt4omini-headline-v2,sharesansar,National Life Insurance Holds Branch Manager's Conference in Gorkha,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:48:17+00:00
+b3ef06f3e7c35f24,gpt4omini-headline-v2,sharesansar,NEPSE Records Gain For Straight Three Sessions; Edges Up By 8.81 Points,bullish,0.6,0.8,,,gpt-4o-mini,2026-08-13T10:45:18+00:00
 b5b10dd6425d2373,gpt4omini-headline-v2,himalayantimes,Global IME Bank offers auto loans at 5.25% interest,neutral,0.0,0.8,Global IME Bank,,gpt-4o-mini,2026-08-12T10:44:02+00:00
 b9762e6cb01a83f4,gpt4omini-headline-v2,sharesansar,eSewa Celebrates Shrawan with ‘Shrawan ra Shringaar’,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 bb3d796852a1a2e6,gpt4omini-headline-v2,sharesansar,NAIMA Nepal Mobility Expo 2026 Kicks Off at Bhrikutimandap,neutral,0.0,0.5,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
@@ -66,6 +75,7 @@ cdb2a95cda82c9d9,gpt4omini-headline-v2,sharesansar,NADA Auto Show 2026 to Featur
 d02b4dbf483d03f8,gpt4omini-headline-v2,sharesansar,NEPSE Index Loses 9.02 Points on the First Trading Day of This Week,bearish,-0.6,0.8,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 d02be3b3b2b50c18,gpt4omini-headline-v2,sharesansar,Finance Minister Wagle Urges Multinational Firms to Expand Investment in Nepal,bullish,0.5,0.7,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 d10d7a480d0c0fc5,gpt4omini-headline-v2,sharesansar,Indonesian President Nominates Acting Head to Lead Central Bank,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:48:17+00:00
+db89d53d8fb76890,gpt4omini-headline-v2,sharesansar,FNJ demands immediate release of journalist Kishor Shrestha,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-13T10:45:18+00:00
 e29b946531e104f4,gpt4omini-headline-v2,sharesansar,Sudurpaschim Declares Badimalika-Ramaroshan Forest Conservation Area Covering 498.4 Sq. Km.,neutral,0.0,0.5,,,gpt-4o-mini,2026-08-12T10:44:02+00:00
 e3abf7486307e758,gpt4omini-headline-v2,sharesansar,Crystal Kanchanjungha Securities Launches Margin Trading Facility,bullish,0.5,0.8,Crystal Kanchanjungha Securities,,gpt-4o-mini,2026-08-11T14:35:31+00:00
 e4d2e3c8baa2416e,gpt4omini-headline-v2,sharesansar,MetLife Nepal Inaugurates Gandaki Province Office in Pokhara,neutral,0.0,0.6,MetLife Nepal,,gpt-4o-mini,2026-08-11T10:35:03+00:00
