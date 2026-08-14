@@ -154,3 +154,7 @@ run_utc,dataset,rows_added,rows_total,conflicts
 2026-08-14T10:40:20+00:00,market_summary,1,234,0
 2026-08-14T10:40:20+00:00,securities,444,6184,0
 2026-08-14T10:40:20+00:00,today_price,344,77926,0
+2026-08-14T14:30:28+00:00,indices,0,4000,0
+2026-08-14T14:30:28+00:00,market_summary,0,234,0
+2026-08-14T14:30:28+00:00,securities,0,6184,0
+2026-08-14T14:30:28+00:00,today_price,0,77926,0
