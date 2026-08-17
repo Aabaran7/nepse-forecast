@@ -3,6 +3,8 @@ url_hash,scorer_version,source,title,sentiment,score,confidence,company_raw,symb
 12bec66f4de33b4b,gpt4omini-headline-v2,sharesansar,Chilime Hydropower Records Rs. 72 Crore Q4 Profit as Revenue Grows 3.72%,bullish,0.7,0.9,Chilime Hydropower,CHCL,gpt-4o-mini,2026-08-11T10:35:03+00:00
 63cbcec0161ae8af,gpt4omini-headline-v2,sharesansar,Citizen Investment Trust Members to Get Health Care Discounts at Manakamana Hospital,neutral,0.0,0.7,Citizen Investment Trust,CIT,gpt-4o-mini,2026-08-11T14:35:31+00:00
 75b64ed798517919,gpt4omini-headline-v2,sharesansar,"Deprosc Laghubitta Earns Rs. 98.94 Crore Net Profit in Q4; EPS at Rs. 48.15, Net Interest Income Up 15.46%",bullish,0.7,0.9,Deprosc Laghubitta,DDBL,gpt-4o-mini,2026-08-12T10:44:02+00:00
+d8253c5d9213284a,gpt4omini-headline-v2,himalayantimes,"Once a major tyre maker, Gorakhkali Rubber Industry studied for revival",neutral,0.0,0.5,Gorakhkali Rubber Industry,GRU,gpt-4o-mini,2026-08-17T10:16:16+00:00
+3583c389d72a78e8,gpt4omini-headline-v2,sharesansar,Nepal’s Development Banks’ Net Profit Surges 56.98% to NPR 9.42 Arba in Q4 2082/83; Garima Bikas Bank Leads Earnings,bullish,0.8,0.9,Garima Bikas Bank,GSY,gpt-4o-mini,2026-08-17T10:16:16+00:00
 dae785d8606aaf6e,gpt4omini-headline-v2,sharesansar,Himalayan Distillery Reports 28.14% Profit Growth to Rs. 1.21 Arba; EPS Climbs 6.78% to Rs. 32.71,bullish,0.7,0.9,Himalayan Distillery,HDL,gpt-4o-mini,2026-08-14T14:30:36+00:00
 4355c991fd65b4c6,gpt4omini-headline-v1,sharesansar,"Kumari Bank is Auctioning 3,20,948 Units Promoter Shares from Today",bearish,-0.5,0.8,Kumari Bank,KBL,gpt-4o-mini,2026-08-09T19:30:09+00:00
 4355c991fd65b4c6,gpt4omini-headline-v2,sharesansar,"Kumari Bank is Auctioning 3,20,948 Units Promoter Shares from Today",bearish,-0.5,0.8,Kumari Bank,KBL,gpt-4o-mini,2026-08-09T19:31:27+00:00
@@ -14,13 +16,16 @@ ed7db427c402bf8a,gpt4omini-headline-v2,sharesansar,Laxmi Sunrise Capital Host Fi
 17c7e76fb64eb38a,gpt4omini-headline-v2,sharesansar,Mahalaxmi Bikas Bank Launches Nursing Care and Day Care Facility for Women Employees,neutral,0.0,0.8,Mahalaxmi Bikas Bank,MLBL,gpt-4o-mini,2026-08-09T19:31:27+00:00
 f3468a00f6b2cb2e,gpt4omini-headline-v2,sharesansar,Nepal Investment Mega Bank Assures Legal Proceedings Against Top Officials Will Not Affect Banking Operations,neutral,0.0,0.9,Nepal Investment Mega Bank,NIMB,gpt-4o-mini,2026-08-13T10:45:18+00:00
 e7c77710838654bd,gpt4omini-headline-v2,sharesansar,Government Approves IPO of NRN Nepal Development Fund; Rs. 10 Arba Investment Projects to Move Ahead,bullish,0.7,0.8,NRN Nepal Development Fund,NRN,gpt-4o-mini,2026-08-12T10:44:02+00:00
+7dc9e5eefbca6dc5,gpt4omini-headline-v2,sharesansar,Nepal’s Commercial Banks Net Profit Surges 32.33% to NPR 69.78 Arba in Q4 2082/83; Nabil Bank Leads,bullish,0.8,0.9,Nabil Bank,None,gpt-4o-mini,2026-08-17T10:16:16+00:00
 4f6485af1bf0a87a,gpt4omini-headline-v2,himalayantimes,Standard Chartered reaffirms commitment to Nepal's growth during South Asia CEO visit,bullish,0.6,0.8,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
 9027608fbadf8f2b,gpt4omini-headline-v2,himalayantimes,"Standard Chartered, FIU-Nepal hold workshop to strengthen anti-money laundering compliance",neutral,0.0,0.7,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
 aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.38% Surge in Net Profit in Q4 FY 2082/83,bullish,0.8,0.8,Terhathum Power,TPC,gpt-4o-mini,2026-08-10T10:24:29+00:00
 09172dc0b9b874b9,gpt4omini-headline-v1,sharesansar,Gumukhola Bhyakure Hydropower Appoints RBB Merchant Banking as IPO Issue and Sales Manager,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 09172dc0b9b874b9,gpt4omini-headline-v2,sharesansar,Gumukhola Bhyakure Hydropower Appoints RBB Merchant Banking as IPO Issue and Sales Manager,neutral,0.0,0.8,Gumukhola Bhyakure Hydropower,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+096dced82c991f8f,gpt4omini-headline-v2,sharesansar,"Government, Foreign Employment Agencies Agree to Address 15 Demands Within 45 Days",neutral,0.0,0.5,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 0dec13d713fb6c41,gpt4omini-headline-v2,sharesansar,Mandu Hydropower Calls AGM on Bhadra 18 to Endorse Dividend; When is the Book Closure Date?,neutral,0.0,0.9,Mandu Hydropower,,gpt-4o-mini,2026-08-13T10:45:18+00:00
 0f6762fc6db06143,gpt4omini-headline-v2,sharesansar,"Gold Surges to Rs. 307,900 Per Tola; Silver Climbs to Rs. 4,780",neutral,0.0,0.7,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
+0ff933a9793de74e,gpt4omini-headline-v2,sharesansar,"NMB50 Proposes 3.15%, NMBHF2 4.5% and NSIF2 10% Cash Dividend; When is the Book Closure?",neutral,0.0,0.5,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 11fecdf75e5a4702,gpt4omini-headline-v1,merolagani,"डिजिटल भुक्तानीमा गम्भीर जोखिम: केवाईसी प्रमाणित नगरी सेवा दिँदै वालेट कम्पनी, राष्ट्र बैंकले बढायो निगरानी",bearish,-0.6,0.7,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 11fecdf75e5a4702,gpt4omini-headline-v2,merolagani,"डिजिटल भुक्तानीमा गम्भीर जोखिम: केवाईसी प्रमाणित नगरी सेवा दिँदै वालेट कम्पनी, राष्ट्र बैंकले बढायो निगरानी",bearish,-0.6,0.7,,,gpt-4o-mini,2026-08-09T19:31:27+00:00
 123e654fdae45bea,gpt4omini-headline-v2,himalayantimes,"'High remittance, low export are core problems'",neutral,0.0,0.8,,,gpt-4o-mini,2026-08-12T14:35:55+00:00
@@ -37,6 +42,8 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 31ee26464187bfe6,gpt4omini-headline-v2,himalayantimes,From Rs 10 crore loss to Rs 3 crore profit: Nepal Aushadhi Limited's turnaround after 25 years,bullish,0.7,0.9,Nepal Aushadhi Limited,,gpt-4o-mini,2026-08-09T19:31:27+00:00
 3902d8efef8728ac,gpt4omini-headline-v2,sharesansar,NEPSE Falls 7.37 Points Today as Turnover Reaches NPR 4.27 Arba,bearish,-0.6,0.8,,,gpt-4o-mini,2026-08-14T10:40:28+00:00
 3d7642b4d2a858a8,gpt4omini-headline-v2,sharesansar,The Million Rupee Receipt: How a Simple Lottery Could Hand Nepal’s Government Billions in Missing Taxes,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-13T14:36:59+00:00
+46979363e3dd2ba0,gpt4omini-headline-v2,sharesansar,"NAIMA Nepal Mobility Expo 2026 Concludes with Over 180,000 Visitors and 53 New Product Launches",neutral,0.0,0.5,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
+46c5127ae77f9464,gpt4omini-headline-v2,sharesansar,Manpower Agencies Shut Down Nationwide as Dispute with Government Remains Unresolved,bearish,-0.6,0.8,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 4905d693fc9db532,gpt4omini-headline-v2,sharesansar,Proton e.MAS 5 Emerges as Major Attraction at NAIMA Nepal Mobility Expo 2026,neutral,0.0,0.5,,,gpt-4o-mini,2026-08-12T10:44:02+00:00
 4e0c6fd3e5e224a1,gpt4omini-headline-v1,sharesansar,"YADEA Launches GS70, GT70 and GT80 Electric Scooters in Nepal",bullish,0.5,0.7,YADEA,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 4e0c6fd3e5e224a1,gpt4omini-headline-v2,sharesansar,"YADEA Launches GS70, GT70 and GT80 Electric Scooters in Nepal",bullish,0.6,0.8,YADEA,,gpt-4o-mini,2026-08-09T19:31:27+00:00
@@ -66,10 +73,12 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 9bcb0d810b25459c,gpt4omini-headline-v2,sharesansar,Chery Wanda Offers Up to 350 Km Range Electric Vans at NAIMA Nepal Mobility Expo 2026,neutral,0.0,0.5,,,gpt-4o-mini,2026-08-12T10:44:02+00:00
 9bd18724cd37feb0,gpt4omini-headline-v2,sharesansar,"Chitwan Local Administration Steps In to Ease Cooking Gas Shortage, Urges Against Hoarding",neutral,0.0,0.6,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
 9c42e06dfcb19823,gpt4omini-headline-v2,sharesansar,Unilever Nepal’s Profit Falls 19.54% to Rs. 39.08 Crore as Revenue Declines,bearish,-0.7,0.8,Unilever Nepal,,gpt-4o-mini,2026-08-13T10:45:18+00:00
+9e5346fa4a47c9a8,gpt4omini-headline-v2,sharesansar,Machhapuchchhre Capital Limited Proposes 7% Cash Dividend; AGM To Be Convened on Bhadra 24,neutral,0.0,0.5,Machhapuchchhre Capital Limited,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 a18cdc857d2d64ba,gpt4omini-headline-v2,sharesansar,Palpa Cement’s Net Profit Plunges 59% to Rs. 4 Crore in Q4 FY 2082/83 Despite 15.90% Revenue Growth,bearish,-0.7,0.8,Palpa Cement,,gpt-4o-mini,2026-08-14T10:40:28+00:00
 a2c18eb04c952f60,gpt4omini-headline-v1,sharesansar,NADA Auto Show 2026 to Open in Kathmandu With 50pc Early-Bird Ticket Discount,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 a2c18eb04c952f60,gpt4omini-headline-v2,sharesansar,NADA Auto Show 2026 to Open in Kathmandu With 50pc Early-Bird Ticket Discount,neutral,0.0,0.7,,,gpt-4o-mini,2026-08-09T19:31:27+00:00
 a588bbd2136146bf,gpt4omini-headline-v2,sharesansar,NEPSE Inches Up for Second Straight Session; NRN Leads Turnover,bullish,0.6,0.7,,,gpt-4o-mini,2026-08-12T10:44:02+00:00
+a793b52e773f87d0,gpt4omini-headline-v2,sharesansar,"Gold Price Rises by Rs. 1600 Per Tola Today, Crosses Three Lakhs Five Thousand",bearish,-0.5,0.7,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 a975d7be037b2621,gpt4omini-headline-v2,sharesansar,Housing Federation Demands Land Act Revisions to Unblock Stalled Property Transactions,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-13T14:36:59+00:00
 aa1990a73dbba0cf,gpt4omini-headline-v2,sharesansar,National Life Insurance Holds Branch Manager's Conference in Gorkha,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:48:17+00:00
 b3ef06f3e7c35f24,gpt4omini-headline-v2,sharesansar,NEPSE Records Gain For Straight Three Sessions; Edges Up By 8.81 Points,bullish,0.6,0.8,,,gpt-4o-mini,2026-08-13T10:45:18+00:00
@@ -78,10 +87,13 @@ b9762e6cb01a83f4,gpt4omini-headline-v2,sharesansar,eSewa Celebrates Shrawan with
 bb3d796852a1a2e6,gpt4omini-headline-v2,sharesansar,NAIMA Nepal Mobility Expo 2026 Kicks Off at Bhrikutimandap,neutral,0.0,0.5,,,gpt-4o-mini,2026-08-11T10:35:03+00:00
 bc218d8fe73d1a97,gpt4omini-headline-v2,sharesansar,Muktinath Bikas Bank Partners with Lemon Tree Premier and Tesla Diagnostic to Offer Customer Discounts,bullish,0.5,0.7,Muktinath Bikas Bank,,gpt-4o-mini,2026-08-14T10:40:28+00:00
 bd00b3a527e839a7,gpt4omini-headline-v2,sharesansar,"Gold Price Falls Slightly, Silver Rises to Rs. 4670",neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
+be1dda537d6ae6b6,gpt4omini-headline-v2,sharesansar,Proton e.MAS 5 and e.MAS 7 Draw Strong Interest at NAIMA Nepal Mobility Expo 2026,bullish,0.6,0.7,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 c199d8e571474da4,gpt4omini-headline-v2,sharesansar,Upper Solu Hydroelectric Company Limited (USHEC): A Five-Year Financial Performance Review (Q4 2078/79–Q4 2082/83),neutral,0.0,0.7,Upper Solu Hydroelectric Company Limited,,gpt-4o-mini,2026-08-11T14:35:31+00:00
+c2251be3f525197c,gpt4omini-headline-v2,himalayantimes,Nepal Telecom's net profit rises 47.6% to Rs 8.86 billion,bullish,0.7,0.9,Nepal Telecom,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 c7a17333f0524d63,gpt4omini-headline-v1,sharesansar,Hulas Finserv Reports 84.45% Surge in Net Profit to Rs. 398.72 Million,bullish,0.7,0.9,Hulas Finserv,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 c7a17333f0524d63,gpt4omini-headline-v2,sharesansar,Hulas Finserv Reports 84.45% Surge in Net Profit to Rs. 398.72 Million,bullish,0.8,0.9,Hulas Finserv,,gpt-4o-mini,2026-08-09T19:31:27+00:00
 cdb2a95cda82c9d9,gpt4omini-headline-v2,sharesansar,NADA Auto Show 2026 to Feature 200 Stalls in Kathmandu,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
+cfe652c73dd2477c,gpt4omini-headline-v2,sharesansar,Bagmati Province Chief Minister Indra Bahadur Baniya Resigns,bearish,-0.7,0.8,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 d02b4dbf483d03f8,gpt4omini-headline-v2,sharesansar,NEPSE Index Loses 9.02 Points on the First Trading Day of This Week,bearish,-0.6,0.8,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 d02be3b3b2b50c18,gpt4omini-headline-v2,sharesansar,Finance Minister Wagle Urges Multinational Firms to Expand Investment in Nepal,bullish,0.5,0.7,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 d10d7a480d0c0fc5,gpt4omini-headline-v2,sharesansar,Indonesian President Nominates Acting Head to Lead Central Bank,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:48:17+00:00
