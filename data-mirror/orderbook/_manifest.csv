@@ -33,3 +33,4 @@ run_utc,dataset,rows_added,rows_total,conflicts
 2026-08-19T07:25:01+00:00,orderbook,10,311,0
 2026-08-19T08:03:52+00:00,orderbook,10,321,0
 2026-08-19T08:56:21+00:00,orderbook,10,331,0
+2026-08-20T05:50:23+00:00,orderbook,10,341,0
