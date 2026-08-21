@@ -11,6 +11,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 480938,15,152,NHPC,National Hydro Power Company Limited,demand,2026-08-19T08:56:19+00:00
 589756,10,152,NHPC,National Hydro Power Company Limited,demand,2026-08-20T08:58:02+00:00
 242977,7,152,NHPC,National Hydro Power Company Limited,demand,2026-08-21T05:51:34+00:00
+291736,7,152,NHPC,National Hydro Power Company Limited,demand,2026-08-21T06:38:56+00:00
 400777,8,204,GUFL,Gurkhas Finance Ltd.,demand,2026-08-11T06:08:15+00:00
 687659,9,204,GUFL,Gurkhas Finance Ltd.,demand,2026-08-11T08:31:10+00:00
 593426,7,204,GUFL,Gurkhas Finance Ltd.,demand,2026-08-13T08:04:54+00:00
@@ -23,6 +24,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 1443967,9,245,CFCL,Central Finance Co. Ltd.,demand,2026-08-12T08:04:05+00:00
 1086804,13,245,CFCL,Central Finance Co. Ltd.,demand,2026-08-12T08:48:04+00:00
 433245,13,245,CFCL,Central Finance Co. Ltd.,demand,2026-08-18T07:24:16+00:00
+299507,10,245,CFCL,Central Finance Co. Ltd.,supply,2026-08-21T06:38:56+00:00
 390339,12,517,NBL,Nepal Bank Limited,demand,2026-08-17T05:53:56+00:00
 457372,16,517,NBL,Nepal Bank Limited,demand,2026-08-17T06:44:44+00:00
 221432,11,517,NBL,Nepal Bank Limited,supply,2026-08-17T06:44:44+00:00
@@ -78,6 +80,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 241400,25,2867,NMB50,NMB 50,supply,2026-08-18T05:49:21+00:00
 419248,44,2867,NMB50,NMB 50,supply,2026-08-18T06:35:46+00:00
 333100,10,2867,NMB50,NMB 50,demand,2026-08-20T05:50:21+00:00
+261600,6,2867,NMB50,NMB 50,demand,2026-08-21T06:38:56+00:00
 274778,17,2880,HDHPC,Himal Dolakha Hydropower Company Limited,demand,2026-08-18T05:49:21+00:00
 712651,7,2903,LEC,Liberty Energy Company Limited,demand,2026-08-13T06:50:50+00:00
 689341,8,2903,LEC,Liberty Energy Company Limited,demand,2026-08-13T07:20:31+00:00
@@ -177,6 +180,8 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 600185,5,8125,NSIF2,NMB Sulav Investment Fund - 2,supply,2026-08-20T08:05:49+00:00
 594837,5,8125,NSIF2,NMB Sulav Investment Fund - 2,supply,2026-08-20T08:58:02+00:00
 341673,10,8125,NSIF2,NMB Sulav Investment Fund - 2,supply,2026-08-21T05:51:34+00:00
+641400,7,8125,NSIF2,NMB Sulav Investment Fund - 2,demand,2026-08-21T06:38:56+00:00
+590465,10,8125,NSIF2,NMB Sulav Investment Fund - 2,supply,2026-08-21T06:38:56+00:00
 40,3,9152,EBLEB89,"Everest Bank Limited Energy Bond, 2089",supply,2026-08-14T09:29:09+00:00
 334350,7,9154,SFEF,Sunrise Focused Equity Fund,supply,2026-08-11T06:59:51+00:00
 326101,7,9154,SFEF,Sunrise Focused Equity Fund,supply,2026-08-12T08:48:04+00:00
@@ -237,6 +242,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 826645,8,9174,PRSF,Prabhu Smart Fund,supply,2026-08-20T08:05:49+00:00
 827745,10,9174,PRSF,Prabhu Smart Fund,supply,2026-08-20T08:58:02+00:00
 652830,6,9174,PRSF,Prabhu Smart Fund,supply,2026-08-21T05:51:34+00:00
+617830,5,9174,PRSF,Prabhu Smart Fund,supply,2026-08-21T06:38:56+00:00
 25,1,9180,NMBD89/90,NMB Debenture 10.75%-2089/90,demand,2026-08-11T09:15:38+00:00
 25,1,9180,NMBD89/90,NMB Debenture 10.75%-2089/90,supply,2026-08-11T09:15:38+00:00
 1498271,10,9182,SIGS3,Siddhartha Investment Growth Scheme 3,supply,2026-08-18T07:24:16+00:00
@@ -259,6 +265,8 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 579050,7,9182,SIGS3,Siddhartha Investment Growth Scheme 3,supply,2026-08-20T08:58:02+00:00
 740400,6,9182,SIGS3,Siddhartha Investment Growth Scheme 3,demand,2026-08-21T05:51:34+00:00
 473200,6,9182,SIGS3,Siddhartha Investment Growth Scheme 3,supply,2026-08-21T05:51:34+00:00
+830900,15,9182,SIGS3,Siddhartha Investment Growth Scheme 3,demand,2026-08-21T06:38:56+00:00
+484300,5,9182,SIGS3,Siddhartha Investment Growth Scheme 3,supply,2026-08-21T06:38:56+00:00
 593920,8,9198,LVF2,Laxmi Value Fund 2,demand,2026-08-11T06:59:51+00:00
 594520,8,9198,LVF2,Laxmi Value Fund 2,demand,2026-08-11T07:54:27+00:00
 571920,6,9198,LVF2,Laxmi Value Fund 2,demand,2026-08-12T06:47:16+00:00
@@ -266,6 +274,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 547941,7,9198,LVF2,Laxmi Value Fund 2,demand,2026-08-12T08:04:05+00:00
 557741,8,9198,LVF2,Laxmi Value Fund 2,demand,2026-08-12T08:48:04+00:00
 235384,12,9203,MEHL,Manakamana Engineering Hydropower Limited,demand,2026-08-21T05:51:34+00:00
+275895,9,9203,MEHL,Manakamana Engineering Hydropower Limited,demand,2026-08-21T06:38:56+00:00
 792481,6,9241,KSY,Kumari Sabal Yojana,demand,2026-08-10T08:57:59+00:00
 1012452,10,9245,MNMF1,Muktinath Mutual Fund 1,demand,2026-08-10T08:57:59+00:00
 620900,8,9245,MNMF1,Muktinath Mutual Fund 1,demand,2026-08-11T06:08:15+00:00
@@ -378,6 +387,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 368619,9,9302,RBBF40,RBB Focus 40,supply,2026-08-20T08:05:49+00:00
 370119,11,9302,RBBF40,RBB Focus 40,supply,2026-08-20T08:58:02+00:00
 309519,3,9302,RBBF40,RBB Focus 40,supply,2026-08-21T05:51:34+00:00
+309519,3,9302,RBBF40,RBB Focus 40,supply,2026-08-21T06:38:56+00:00
 285006,6,9311,SOHL,Solu Hydropower Limited,demand,2026-08-18T05:49:21+00:00
 161760,19,9311,SOHL,Solu Hydropower Limited,supply,2026-08-18T05:49:21+00:00
 328167,6,9311,SOHL,Solu Hydropower Limited,demand,2026-08-18T06:35:46+00:00
