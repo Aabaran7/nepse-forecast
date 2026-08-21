@@ -40,3 +40,4 @@ run_utc,dataset,rows_added,rows_total,conflicts
 2026-08-20T08:58:04+00:00,orderbook,10,381,0
 2026-08-21T05:51:36+00:00,orderbook,10,391,0
 2026-08-21T06:38:58+00:00,orderbook,10,401,0
+2026-08-21T07:28:48+00:00,orderbook,10,411,0
