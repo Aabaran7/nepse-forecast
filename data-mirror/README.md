@@ -14,7 +14,7 @@ permanently. The rows here cannot be re-fetched from upstream.
 CSV rather than parquet so restores need nothing but a text reader,
 and so daily commits stay small.
 
-Last updated: 2026-08-25T05:51:29+00:00
+Last updated: 2026-08-25T06:39:02+00:00
 
 ```
 archive/company_info: 645 rows
@@ -26,7 +26,7 @@ archive/ticker_history: 1120 rows
 archive/today_price: 80008 rows
 deep/nepse_index_deep: 2434 rows
 deep/reddit_daily: 2376 rows
-orderbook/orderbook: 491 rows
+orderbook/orderbook: 501 rows
 orderbook/_raw: 1 new payload(s)
 fundamentals/dividend_history: 1204 rows
 fundamentals/fundamentals: 278 rows
