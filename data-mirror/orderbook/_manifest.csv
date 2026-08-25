@@ -51,3 +51,4 @@ run_utc,dataset,rows_added,rows_total,conflicts
 2026-08-25T05:51:28+00:00,orderbook,10,491,0
 2026-08-25T06:39:00+00:00,orderbook,10,501,0
 2026-08-25T07:30:28+00:00,orderbook,10,511,0
+2026-08-25T08:07:35+00:00,orderbook,10,521,0
