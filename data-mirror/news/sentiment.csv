@@ -24,7 +24,6 @@ b32d399b5abe8c34,gpt4omini-headline-v2,sharesansar,Shangrila Development Bank Pr
 f3468a00f6b2cb2e,gpt4omini-headline-v2,sharesansar,Nepal Investment Mega Bank Assures Legal Proceedings Against Top Officials Will Not Affect Banking Operations,neutral,0.0,0.9,Nepal Investment Mega Bank,NIMB,gpt-4o-mini,2026-08-13T10:45:18+00:00
 5997b8da3b928c02,gpt4omini-headline-v2,sharesansar,NMB Bank Leads Rs. 44.55 Billion Financing for 440 MW Tila-1 Hydropower Project,bullish,0.6,0.8,NMB Bank,NMB,gpt-4o-mini,2026-08-20T10:06:41+00:00
 e7c77710838654bd,gpt4omini-headline-v2,sharesansar,Government Approves IPO of NRN Nepal Development Fund; Rs. 10 Arba Investment Projects to Move Ahead,bullish,0.7,0.8,NRN Nepal Development Fund,NRN,gpt-4o-mini,2026-08-12T10:44:02+00:00
-1e730b2cca39f2f5,gpt4omini-headline-v2,sharesansar,"Muktinath Bikas Bank Limited Signs Agreement With Sipradi Trading or Tata Pickup, Commercial Vehicle Loans",bullish,0.5,0.8,Muktinath Bikas Bank Limited,None,gpt-4o-mini,2026-08-25T10:07:16+00:00
 5fa6335faa171353,gpt4omini-headline-v2,sharesansar,Manish Kumar Chandna Elected Chairman of Nepal SBI Bank,neutral,0.0,0.9,Nepal SBI Bank,SBI,gpt-4o-mini,2026-08-18T10:04:25+00:00
 817dbdd233c3d289,gpt4omini-headline-v2,sharesansar,"Siddhartha Bank Limited is Auctioning 1,57,479 Units Promoter Shares from Today",neutral,0.0,0.9,Siddhartha Bank Limited,SBL,gpt-4o-mini,2026-08-18T10:04:25+00:00
 4f6485af1bf0a87a,gpt4omini-headline-v2,himalayantimes,Standard Chartered reaffirms commitment to Nepal's growth during South Asia CEO visit,bullish,0.6,0.8,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
@@ -50,6 +49,7 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 1b3b9dfb320841ba,gpt4omini-headline-v2,sharesansar,PM Balen Shah Headed Towards Mustang via Pokhara,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-21T10:07:28+00:00
 1b3eeb669121290f,gpt4omini-headline-v2,sharesansar,Is Liquidity Still High in Nepal’s Financial Market? Central Bank to Absorb NPR 35 Billion Today,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-19T10:04:50+00:00
 1ca70ad67a09a950,gpt4omini-headline-v2,sharesansar,Tata Carnival 4.0 Kicks Off With Exclusive Exchange Offers on Punch EV and Tiago EV,bullish,0.5,0.8,Tata,,gpt-4o-mini,2026-08-19T10:04:50+00:00
+1e730b2cca39f2f5,gpt4omini-headline-v2,sharesansar,"Muktinath Bikas Bank Limited Signs Agreement With Sipradi Trading or Tata Pickup, Commercial Vehicle Loans",bullish,0.5,0.8,Muktinath Bikas Bank Limited,,gpt-4o-mini,2026-08-25T10:07:16+00:00
 1eb0378cb59d2f42,gpt4omini-headline-v1,himalayantimes,Property transaction revenue hits record high ahead of capital gains tax hike,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 1eb0378cb59d2f42,gpt4omini-headline-v2,himalayantimes,Property transaction revenue hits record high ahead of capital gains tax hike,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-09T19:31:27+00:00
 20fa720dfd5c5cf7,gpt4omini-headline-v2,sharesansar,Nerude Mirmire Laghubitta Swings to Rs. 23.59 Crore Profit in Q4 FY 2082/83,bullish,0.6,0.7,Nerude Mirmire Laghubitta,,gpt-4o-mini,2026-08-10T10:24:29+00:00
@@ -76,11 +76,13 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 48d282863e4738a0,gpt4omini-headline-v2,sharesansar,Top 10 Most Bought Companies of the Week: See Which Stocks Investors Bought the Most,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-21T14:06:33+00:00
 4905d693fc9db532,gpt4omini-headline-v2,sharesansar,Proton e.MAS 5 Emerges as Major Attraction at NAIMA Nepal Mobility Expo 2026,neutral,0.0,0.5,,,gpt-4o-mini,2026-08-12T10:44:02+00:00
 49ecfc747360b6ab,gpt4omini-headline-v2,sharesansar,NEPSE Slips 2 .01 Points as Trading Sector Drags Market Down; RSML Leads Turnover at Rs 1.38 Arba,bearish,-0.7,0.8,,,gpt-4o-mini,2026-08-17T14:00:38+00:00
+4c2ac952304c21e8,gpt4omini-headline-v2,sharesansar,NEPSE Extends Losing Streak For Straight Third Session;Turnover Dips Below Rs 4.10 Arba,bearish,-0.7,0.9,,,gpt-4o-mini,2026-08-25T14:12:49+00:00
 4c41e096b2272622,gpt4omini-headline-v2,sharesansar,CIB Freezes Bank Accounts of Stock Trader Deependra Agrawal and Associates,bearish,-0.7,0.9,Deependra Agrawal,,gpt-4o-mini,2026-08-19T14:05:37+00:00
 4d1e5faf452fabba,gpt4omini-headline-v2,sharesansar,"NEPSE Drops Below 2,600 After a Year, Revisiting July 2025 Levels",bearish,-0.7,0.9,,,gpt-4o-mini,2026-08-24T10:22:59+00:00
 4d8016aa15edf1b1,gpt4omini-headline-v2,sharesansar,House of Representatives Meeting Rescheduled for Wednesday,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-25T10:07:16+00:00
 4e0c6fd3e5e224a1,gpt4omini-headline-v1,sharesansar,"YADEA Launches GS70, GT70 and GT80 Electric Scooters in Nepal",bullish,0.5,0.7,YADEA,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 4e0c6fd3e5e224a1,gpt4omini-headline-v2,sharesansar,"YADEA Launches GS70, GT70 and GT80 Electric Scooters in Nepal",bullish,0.6,0.8,YADEA,,gpt-4o-mini,2026-08-09T19:31:27+00:00
+4e7cba5bea8a6540,gpt4omini-headline-v2,himalayantimes,Auto sector contributed Rs 81bn in revenue last year: FNCCI Prez,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-25T14:12:49+00:00
 4f6485af1bf0a87a,gpt4omini-headline-v1,himalayantimes,Standard Chartered reaffirms commitment to Nepal's growth during South Asia CEO visit,bullish,0.6,0.8,,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 4f825ed04118bc8b,gpt4omini-headline-v2,sharesansar,SEBON Holds First Policy Dialogue with Finance Academics on Capital Market Reforms,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-24T10:22:59+00:00
 519a7b9a4f502110,gpt4omini-headline-v2,sharesansar,Muktinath Bikas Bank Offers Auto Loans at Base Rate for Naima Expo 2026,bullish,0.5,0.8,Muktinath Bikas Bank,,gpt-4o-mini,2026-08-11T14:35:31+00:00
@@ -173,6 +175,7 @@ cdb2a95cda82c9d9,gpt4omini-headline-v2,sharesansar,NADA Auto Show 2026 to Featur
 cfe652c73dd2477c,gpt4omini-headline-v2,sharesansar,Bagmati Province Chief Minister Indra Bahadur Baniya Resigns,bearish,-0.7,0.8,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 d02b4dbf483d03f8,gpt4omini-headline-v2,sharesansar,NEPSE Index Loses 9.02 Points on the First Trading Day of This Week,bearish,-0.6,0.8,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
 d02be3b3b2b50c18,gpt4omini-headline-v2,sharesansar,Finance Minister Wagle Urges Multinational Firms to Expand Investment in Nepal,bullish,0.5,0.7,,,gpt-4o-mini,2026-08-10T10:24:29+00:00
+d0771c59998ad8f7,gpt4omini-headline-v2,sharesansar,"Six months of war: 20 dead in 68 incidents near Hormuz, IMO says",neutral,0.0,0.7,,,gpt-4o-mini,2026-08-25T14:12:49+00:00
 d10d7a480d0c0fc5,gpt4omini-headline-v2,sharesansar,Indonesian President Nominates Acting Head to Lead Central Bank,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-10T10:48:17+00:00
 d207f6423a03e718,gpt4omini-headline-v2,sharesansar,SY Panel Nepal’s Net Profit Rises 1.08% to Rs. 6.75 Crore; Investment Surges 917.65%,bullish,0.6,0.7,SY Panel Nepal,,gpt-4o-mini,2026-08-14T10:40:28+00:00
 d20ab8f5942df511,gpt4omini-headline-v2,sharesansar,Finance Minister Wagle Urges Law Alignment to Fix Banking Conflict,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-24T14:09:55+00:00
