@@ -78,6 +78,8 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 596900,5,2770,SEF,Siddhartha Equity Fund,demand,2026-08-20T08:58:02+00:00
 285800,7,2770,SEF,Siddhartha Equity Fund,demand,2026-08-26T06:40:22+00:00
 582024,5,2770,SEF,Siddhartha Equity Fund,supply,2026-08-26T06:40:22+00:00
+298300,9,2770,SEF,Siddhartha Equity Fund,demand,2026-08-26T07:32:22+00:00
+575124,5,2770,SEF,Siddhartha Equity Fund,supply,2026-08-26T07:32:22+00:00
 206078,6,2788,AKJCL,Ankhu Khola Jalvidhyut Company Ltd,supply,2026-08-17T05:53:56+00:00
 184058,11,2788,AKJCL,Ankhu Khola Jalvidhyut Company Ltd,supply,2026-08-25T06:38:58+00:00
 175516,8,2788,AKJCL,Ankhu Khola Jalvidhyut Company Ltd,supply,2026-08-25T08:07:33+00:00
@@ -117,11 +119,13 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 316007,9,2933,KEF,Kumari Equity Fund,supply,2026-08-19T06:37:15+00:00
 328107,7,2933,KEF,Kumari Equity Fund,supply,2026-08-19T07:24:59+00:00
 342607,10,2933,KEF,Kumari Equity Fund,supply,2026-08-19T08:03:50+00:00
+1102950,6,4947,PSF,Prabhu Select Fund,supply,2026-08-26T07:32:22+00:00
 626750,5,4949,NIBSF2,NIBL Samriddhi Fund -2,demand,2026-08-25T05:51:26+00:00
 805600,6,4949,NIBSF2,NIBL Samriddhi Fund -2,demand,2026-08-25T06:38:58+00:00
 794750,5,4949,NIBSF2,NIBL Samriddhi Fund -2,demand,2026-08-25T07:30:26+00:00
 849250,7,4949,NIBSF2,NIBL Samriddhi Fund -2,demand,2026-08-25T08:07:33+00:00
 852350,6,4949,NIBSF2,NIBL Samriddhi Fund -2,demand,2026-08-25T09:01:41+00:00
+312700,9,4949,NIBSF2,NIBL Samriddhi Fund -2,demand,2026-08-26T07:32:22+00:00
 50,1,7986,NICD88,NIC ASIA Rinpatra 2088,demand,2026-08-14T09:29:09+00:00
 70,3,7986,NICD88,NIC ASIA Rinpatra 2088,supply,2026-08-14T09:29:09+00:00
 150,1,8029,ADBLB86,Agricultural Bond (8 Year),supply,2026-08-14T09:29:09+00:00
@@ -175,6 +179,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 302319,6,8074,KDBY,Kumari Dhanabriddhi Yojana,supply,2026-08-25T09:01:41+00:00
 277694,8,8074,KDBY,Kumari Dhanabriddhi Yojana,supply,2026-08-26T05:53:53+00:00
 339894,5,8074,KDBY,Kumari Dhanabriddhi Yojana,supply,2026-08-26T06:40:22+00:00
+309794,5,8074,KDBY,Kumari Dhanabriddhi Yojana,supply,2026-08-26T07:32:22+00:00
 812450,5,8106,GIBF1,Global IME Balanced Fund-1,demand,2026-08-13T08:04:54+00:00
 812950,5,8106,GIBF1,Global IME Balanced Fund-1,demand,2026-08-13T08:51:42+00:00
 744300,8,8106,GIBF1,Global IME Balanced Fund-1,demand,2026-08-14T06:48:01+00:00
@@ -233,6 +238,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 433901,6,8125,NSIF2,NMB Sulav Investment Fund - 2,supply,2026-08-24T08:11:23+00:00
 431201,8,8125,NSIF2,NMB Sulav Investment Fund - 2,supply,2026-08-24T09:06:27+00:00
 341875,7,8125,NSIF2,NMB Sulav Investment Fund - 2,supply,2026-08-26T06:40:22+00:00
+350875,7,8125,NSIF2,NMB Sulav Investment Fund - 2,supply,2026-08-26T07:32:22+00:00
 40,3,9152,EBLEB89,"Everest Bank Limited Energy Bond, 2089",supply,2026-08-14T09:29:09+00:00
 334350,7,9154,SFEF,Sunrise Focused Equity Fund,supply,2026-08-11T06:59:51+00:00
 326101,7,9154,SFEF,Sunrise Focused Equity Fund,supply,2026-08-12T08:48:04+00:00
@@ -253,6 +259,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 478852,7,9173,CITY,City Hotel Limited,demand,2026-08-21T08:59:40+00:00
 332451,15,9173,CITY,City Hotel Limited,demand,2026-08-26T05:53:53+00:00
 342425,15,9173,CITY,City Hotel Limited,demand,2026-08-26T06:40:22+00:00
+350324,16,9173,CITY,City Hotel Limited,demand,2026-08-26T07:32:22+00:00
 728755,5,9174,PRSF,Prabhu Smart Fund,demand,2026-08-10T08:57:59+00:00
 628465,7,9174,PRSF,Prabhu Smart Fund,supply,2026-08-10T08:57:59+00:00
 433955,5,9174,PRSF,Prabhu Smart Fund,demand,2026-08-11T06:08:15+00:00
@@ -327,6 +334,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 291698,10,9174,PRSF,Prabhu Smart Fund,demand,2026-08-26T05:53:53+00:00
 767655,5,9174,PRSF,Prabhu Smart Fund,supply,2026-08-26T05:53:53+00:00
 1391755,5,9174,PRSF,Prabhu Smart Fund,supply,2026-08-26T06:40:22+00:00
+1134555,6,9174,PRSF,Prabhu Smart Fund,supply,2026-08-26T07:32:22+00:00
 25,1,9180,NMBD89/90,NMB Debenture 10.75%-2089/90,demand,2026-08-11T09:15:38+00:00
 25,1,9180,NMBD89/90,NMB Debenture 10.75%-2089/90,supply,2026-08-11T09:15:38+00:00
 1498271,10,9182,SIGS3,Siddhartha Investment Growth Scheme 3,supply,2026-08-18T07:24:16+00:00
@@ -471,6 +479,7 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 551750,6,9269,GBIMESY2,Global IME Sammunat Yojana -2,demand,2026-08-25T07:30:26+00:00
 641600,8,9269,GBIMESY2,Global IME Sammunat Yojana -2,demand,2026-08-25T08:07:33+00:00
 641400,8,9269,GBIMESY2,Global IME Sammunat Yojana -2,demand,2026-08-25T09:01:41+00:00
+331800,9,9269,GBIMESY2,Global IME Sammunat Yojana -2,demand,2026-08-26T07:32:22+00:00
 226,3,9289,SBID2090,7% Nepal SBI Bank Debenture 2090,demand,2026-08-11T09:15:38+00:00
 360760,6,9302,RBBF40,RBB Focus 40,supply,2026-08-10T08:57:59+00:00
 374752,10,9302,RBBF40,RBB Focus 40,supply,2026-08-11T06:08:15+00:00
@@ -549,4 +558,5 @@ totalQuantity,totalOrder,securityId,symbol,securityName,side,captured_utc
 902259,8,9351,RSY2,Reliable Samriddhi Yojana -2,demand,2026-08-25T07:30:26+00:00
 518399,12,9351,RSY2,Reliable Samriddhi Yojana -2,demand,2026-08-25T08:07:33+00:00
 305000,5,9351,RSY2,Reliable Samriddhi Yojana -2,demand,2026-08-26T06:40:22+00:00
+304600,5,9351,RSY2,Reliable Samriddhi Yojana -2,demand,2026-08-26T07:32:22+00:00
 140072,1040,9353,SAPIL,Sarvottam Paints Industries Limited,demand,2026-08-14T09:29:09+00:00
