@@ -55,3 +55,4 @@ run_utc,dataset,rows_added,rows_total,conflicts
 2026-08-26T14:10:57+00:00,sentiment,7,225,0
 2026-08-27T20:01:16+00:00,headlines,10,300,1
 2026-08-27T20:01:23+00:00,sentiment,10,235,0
+2026-08-27T23:01:43+00:00,headlines,0,300,1
