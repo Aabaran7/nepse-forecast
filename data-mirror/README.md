@@ -14,7 +14,7 @@ permanently. The rows here cannot be re-fetched from upstream.
 CSV rather than parquet so restores need nothing but a text reader,
 and so daily commits stay small.
 
-Last updated: 2026-08-27T18:22:43+00:00
+Last updated: 2026-08-27T19:05:27+00:00
 
 ```
 archive/company_info: 645 rows
