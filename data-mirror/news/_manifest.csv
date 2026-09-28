@@ -120,3 +120,5 @@ run_utc,dataset,rows_added,rows_total,conflicts
 2026-09-25T14:45:42+00:00,headlines,3,527,1
 2026-09-25T14:45:46+00:00,sentiment,3,428,0
 2026-09-25T18:01:33+00:00,headlines,0,527,1
+2026-09-28T17:50:12+00:00,headlines,11,538,1
+2026-09-28T17:50:19+00:00,sentiment,10,438,0
