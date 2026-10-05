@@ -51,6 +51,7 @@ d2470169c8f4f5ce,gpt4omini-headline-v2,sharesansar,NIC Asia Becomes First Nepali
 f3468a00f6b2cb2e,gpt4omini-headline-v2,sharesansar,Nepal Investment Mega Bank Assures Legal Proceedings Against Top Officials Will Not Affect Banking Operations,neutral,0.0,0.9,Nepal Investment Mega Bank,NIMB,gpt-4o-mini,2026-08-13T10:45:18+00:00
 5997b8da3b928c02,gpt4omini-headline-v2,sharesansar,NMB Bank Leads Rs. 44.55 Billion Financing for 440 MW Tila-1 Hydropower Project,bullish,0.6,0.8,NMB Bank,NMB,gpt-4o-mini,2026-08-20T10:06:41+00:00
 e7c77710838654bd,gpt4omini-headline-v2,sharesansar,Government Approves IPO of NRN Nepal Development Fund; Rs. 10 Arba Investment Projects to Move Ahead,bullish,0.7,0.8,NRN Nepal Development Fund,NRN,gpt-4o-mini,2026-08-12T10:44:02+00:00
+b63195c2d89db885,gpt4omini-headline-v2,sharesansar,Upper Mai Hydropower Plant Resumes Power Generation After Expansion Joint Repair,bullish,0.5,0.8,Upper Mai Hydropower Plant,None,gpt-4o-mini,2026-10-05T18:51:42+00:00
 b1bdc17ee003598b,gpt4omini-headline-v2,sharesansar,"After Successful Merger Between PFL and SFCL, Shares of Pokhara Finance Limited Listed in NEPSE",bullish,0.7,0.9,Pokhara Finance Limited,PFL,gpt-4o-mini,2026-09-15T14:30:05+00:00
 3aa2abd06ff27e8f,gpt4omini-headline-v2,sharesansar,"ICRA Nepal Downgrades Rating of Prabhu Bank, Withdraws Laxmi Sunrise Bank Rating",bearish,-0.7,0.9,Prabhu Bank,PSF,gpt-4o-mini,2026-09-14T16:00:55+00:00
 5fa6335faa171353,gpt4omini-headline-v2,sharesansar,Manish Kumar Chandna Elected Chairman of Nepal SBI Bank,neutral,0.0,0.9,Nepal SBI Bank,SBI,gpt-4o-mini,2026-08-18T10:04:25+00:00
@@ -59,7 +60,6 @@ b1bdc17ee003598b,gpt4omini-headline-v2,sharesansar,"After Successful Merger Betw
 9027608fbadf8f2b,gpt4omini-headline-v2,himalayantimes,"Standard Chartered, FIU-Nepal hold workshop to strengthen anti-money laundering compliance",neutral,0.0,0.7,Standard Chartered,SCB,gpt-4o-mini,2026-08-09T19:31:27+00:00
 525b4d14f68d4ec4,gpt4omini-headline-v2,sharesansar,9.50% Bonus Share of Salt Trading Corporation Limited Listed on NEPSE,bullish,0.5,0.8,Salt Trading Corporation Limited,STC,gpt-4o-mini,2026-08-19T10:04:50+00:00
 aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.38% Surge in Net Profit in Q4 FY 2082/83,bullish,0.8,0.8,Terhathum Power,TPC,gpt-4o-mini,2026-08-10T10:24:29+00:00
-0a4b0c14073766f6,gpt4omini-headline-v2,himalayantimes,Global IME Bank Limited to hold its 20th AGM today,neutral,0.0,0.9,Global IME Bank Limited,,gpt-4o-mini,2026-10-02T15:59:29+00:00
 006fcde9eed32970,gpt4omini-headline-v2,sharesansar,Esewa Money Transfer Waives Remittance Fees to Support Rasuwa Flood Victims,neutral,0.0,0.8,,,gpt-4o-mini,2026-09-02T13:53:43+00:00
 01ead0be6b35a0a0,gpt4omini-headline-v2,sharesansar,Industry Minister Gauri Kumari Yadav Hands Resignation to PM Balen Shah,neutral,0.0,0.8,,,gpt-4o-mini,2026-09-10T13:50:48+00:00
 028e6832f6496afd,gpt4omini-headline-v2,sharesansar,Nepal Insurance to Host Second Futsal Tournament on 79th Anniversary,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-20T10:06:41+00:00
@@ -77,6 +77,8 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 09172dc0b9b874b9,gpt4omini-headline-v2,sharesansar,Gumukhola Bhyakure Hydropower Appoints RBB Merchant Banking as IPO Issue and Sales Manager,neutral,0.0,0.8,Gumukhola Bhyakure Hydropower,,gpt-4o-mini,2026-08-09T19:31:27+00:00
 092e9af42e751b71,gpt4omini-headline-v2,sharesansar,"Gold Falls by Rs. 2700 Per Tola, Check Today's Trading Rate",neutral,0.0,0.9,,,gpt-4o-mini,2026-08-19T10:04:50+00:00
 096dced82c991f8f,gpt4omini-headline-v2,sharesansar,"Government, Foreign Employment Agencies Agree to Address 15 Demands Within 45 Days",neutral,0.0,0.5,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
+0a4b0c14073766f6,gpt4omini-headline-v2,himalayantimes,Global IME Bank Limited to hold its 20th AGM today,neutral,0.0,0.9,Global IME Bank Limited,,gpt-4o-mini,2026-10-02T15:59:29+00:00
+0a71637a79483fae,gpt4omini-headline-v2,sharesansar,SML Mahindra Free Service Camp Concludes in Pokhara,neutral,0.0,0.9,,,gpt-4o-mini,2026-10-05T18:51:42+00:00
 0aa9e232db4f0bf7,gpt4omini-headline-v2,sharesansar,Niraj Sharma Appointed as CEO of eSewa Limited,neutral,0.0,0.8,eSewa Limited,,gpt-4o-mini,2026-09-28T17:50:13+00:00
 0b604e84c94a87c0,gpt4omini-headline-v2,sharesansar,House of Representatives Likely to Hold Brief Meeting Amid Rasuwa Floods,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-26T10:18:44+00:00
 0b761b0689866509,gpt4omini-headline-v2,sharesansar,PM Balen Shah Submits Medical Report to Wear Dark Glasses in Parliament,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-25T10:07:16+00:00
@@ -152,6 +154,7 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 3b2f33e13d42649a,gpt4omini-headline-v2,sharesansar,Nepal Bank Employees to Receive Life Insurance Coverage from National Life,neutral,0.0,0.9,,,gpt-4o-mini,2026-09-18T13:52:30+00:00
 3b38102d44d4d95a,gpt4omini-headline-v2,sharesansar,Vianet Named Official Internet Partner for PUBG MOBILE Global Open,neutral,0.0,0.8,Vianet,,gpt-4o-mini,2026-09-15T14:30:05+00:00
 3bceed6d41bae5ee,gpt4omini-headline-v2,sharesansar,Shrawan Brings Rs 62.5 Crore in Capital Gains Tax to Government,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-19T14:05:37+00:00
+3c84e6d1cd1197d5,gpt4omini-headline-v2,sharesansar,Dashain Effect on NEPSE: What Does 10 Years of Data Tell Us?,neutral,0.0,0.9,,,gpt-4o-mini,2026-10-05T18:51:42+00:00
 3d048f010639bb25,gpt4omini-headline-v2,sharesansar,Dirghayu Kumar Shrestha Appointed Nepal Electricity Authority Executive Director,neutral,0.0,0.9,Nepal Electricity Authority,,gpt-4o-mini,2026-09-18T13:52:30+00:00
 3d341aca1c5fcf5c,gpt4omini-headline-v2,sharesansar,"Gham Power Unveils Nepal's First Soluble Lead-Flow Battery, Turning Recycled Lead into Clean Energy Storage",bullish,0.7,0.8,Gham Power,,gpt-4o-mini,2026-09-09T13:56:48+00:00
 3d465341f49c4359,gpt4omini-headline-v2,sharesansar,NEPSE Index Slides Down By 9.62 Points ; Only Two Sector Closes at Green,bearish,-0.7,0.9,,,gpt-4o-mini,2026-09-29T16:08:25+00:00
@@ -172,6 +175,7 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 4905d693fc9db532,gpt4omini-headline-v2,sharesansar,Proton e.MAS 5 Emerges as Major Attraction at NAIMA Nepal Mobility Expo 2026,neutral,0.0,0.5,,,gpt-4o-mini,2026-08-12T10:44:02+00:00
 49ca68ac5f66d24c,gpt4omini-headline-v2,sharesansar,Dipak Kumar Sah Recommended as New Industry Minister,neutral,0.0,0.8,,,gpt-4o-mini,2026-09-10T13:50:48+00:00
 49ecfc747360b6ab,gpt4omini-headline-v2,sharesansar,NEPSE Slips 2 .01 Points as Trading Sector Drags Market Down; RSML Leads Turnover at Rs 1.38 Arba,bearish,-0.7,0.8,,,gpt-4o-mini,2026-08-17T14:00:38+00:00
+4b7e4db2f5373e41,gpt4omini-headline-v2,sharesansar,Government Suspends Non-Essential Search and Rescue Operations After Bhotekoshi-Trishuli Floods,neutral,0.0,0.9,,,gpt-4o-mini,2026-10-05T18:51:42+00:00
 4c2ac952304c21e8,gpt4omini-headline-v2,sharesansar,NEPSE Extends Losing Streak For Straight Third Session;Turnover Dips Below Rs 4.10 Arba,bearish,-0.7,0.9,,,gpt-4o-mini,2026-08-25T14:12:49+00:00
 4c41e096b2272622,gpt4omini-headline-v2,sharesansar,CIB Freezes Bank Accounts of Stock Trader Deependra Agrawal and Associates,bearish,-0.7,0.9,Deependra Agrawal,,gpt-4o-mini,2026-08-19T14:05:37+00:00
 4d1e5faf452fabba,gpt4omini-headline-v2,sharesansar,"NEPSE Drops Below 2,600 After a Year, Revisiting July 2025 Levels",bearish,-0.7,0.9,,,gpt-4o-mini,2026-08-24T10:22:59+00:00
@@ -200,10 +204,12 @@ aa10b5afc6c8a605,gpt4omini-headline-v2,sharesansar,Terhathum Power Reports 288.3
 58d202d1c2a82fdb,gpt4omini-headline-v2,sharesansar,"BYD Opens Authorized Service Centre in Pokhara, Strengthening EV Support Network",bullish,0.5,0.8,BYD,,gpt-4o-mini,2026-08-09T19:31:27+00:00
 58fb756be250d294,gpt4omini-headline-v2,sharesansar,SEBON Invites Public Feedback on New Draft Rules for Corporate Bonds and Debentures,neutral,0.0,0.8,,,gpt-4o-mini,2026-08-21T10:07:28+00:00
 5915fc3e618f4c77,gpt4omini-headline-v2,sharesansar,NEPSE Index Loses For Third Consecutive Day; Only One Sector Closes at Green,bearish,-0.7,0.8,,,gpt-4o-mini,2026-08-18T10:04:25+00:00
+5948e107760806e4,gpt4omini-headline-v2,sharesansar,Home Minister Sudan Gurung to Visit India on October 12 for BIMSTEC Meeting,neutral,0.0,0.9,,,gpt-4o-mini,2026-10-05T18:51:42+00:00
 5a24e0989bf82d48,gpt4omini-headline-v2,sharesansar,Government Proposes 6-Month Paid Maternity Leave and 42-Day Paternity Care Leave,neutral,0.0,0.8,,,gpt-4o-mini,2026-09-16T14:23:11+00:00
 5a803b830fee37f7,gpt4omini-headline-v2,sharesansar,"SEBON Plans Major Overhaul of Nepal’s Capital Market, Price Discovery Mechanism in Pipeline",bullish,0.6,0.7,,,gpt-4o-mini,2026-09-07T15:16:49+00:00
 5b1c50fc00dbf677,gpt4omini-headline-v2,sharesansar,Sanima Reliance Life Honors Top Insurance Advisors at Club Achievers Event 2083,neutral,0.0,0.8,Sanima Reliance Life,,gpt-4o-mini,2026-08-19T14:05:37+00:00
 5c47142b809beeaa,gpt4omini-headline-v2,sharesansar,Nepal Insurers Association Contribute Rs.3.47 Crores to Prime Minister’s Disaster Relief Fund,neutral,0.0,0.9,,,gpt-4o-mini,2026-09-03T13:54:02+00:00
+5da1a6030ca8a633,gpt4omini-headline-v2,sharesansar,NEPSE Index Witnessed a Moderate Loss of 20.48 Points; Intraday Turnover At 3.27 Arba,bearish,-0.5,0.8,,,gpt-4o-mini,2026-10-05T18:51:42+00:00
 5da2053f11417611,gpt4omini-headline-v2,sharesansar,NEPSE Index Rises by 7.06 Points ; Overall Turnover Crosses Over 7.05 Arba,bullish,0.7,0.9,,,gpt-4o-mini,2026-09-22T14:12:18+00:00
 5dca7585aef9b67b,gpt4omini-headline-v2,sharesansar,"Australia’s Ambassador Meets PM Shah, Thanks Australia for $11 Million Aid",neutral,0.0,0.5,,,gpt-4o-mini,2026-10-01T16:43:12+00:00
 5e7691d48387361e,gpt4omini-headline-v2,sharesansar,"Rs 1,000 Payment to Prime Minister Relief Fund Earns Customer Rs 100,000 Prize",neutral,0.0,0.9,,,gpt-4o-mini,2026-09-17T14:28:57+00:00
@@ -375,6 +381,7 @@ bd765839e319a227,gpt4omini-headline-v2,sharesansar,Sanima Bank Limited Proposes 
 bdc4a01ff56eff08,gpt4omini-headline-v2,sharesansar,Dipak Kumar Sah Takes Charge as New Industry Minister,neutral,0.0,0.9,,,gpt-4o-mini,2026-09-10T17:04:39+00:00
 be1dda537d6ae6b6,gpt4omini-headline-v2,sharesansar,Proton e.MAS 5 and e.MAS 7 Draw Strong Interest at NAIMA Nepal Mobility Expo 2026,bullish,0.6,0.7,,,gpt-4o-mini,2026-08-17T10:16:16+00:00
 be2893f19901c227,gpt4omini-headline-v2,sharesansar,"Jasmine Paints Announces Festive Season Promotional Campaign, Offers London Tour and Other Prizes",bullish,0.5,0.8,Jasmine Paints,,gpt-4o-mini,2026-08-25T10:07:16+00:00
+c0ffeac5a4742e41,gpt4omini-headline-v2,sharesansar,Five Major Decisions of Today's Cabinet Meeting; Take a Look,neutral,0.0,0.9,,,gpt-4o-mini,2026-10-05T18:51:42+00:00
 c199d8e571474da4,gpt4omini-headline-v2,sharesansar,Upper Solu Hydroelectric Company Limited (USHEC): A Five-Year Financial Performance Review (Q4 2078/79–Q4 2082/83),neutral,0.0,0.7,Upper Solu Hydroelectric Company Limited,,gpt-4o-mini,2026-08-11T14:35:31+00:00
 c1a611482d1159a7,gpt4omini-headline-v2,sharesansar,Rajendra Kumar Poudel Appointed Chairman of Nepal Telecom Board,neutral,0.0,0.9,Nepal Telecom,,gpt-4o-mini,2026-09-10T13:50:48+00:00
 c2251be3f525197c,gpt4omini-headline-v2,himalayantimes,Nepal Telecom's net profit rises 47.6% to Rs 8.86 billion,bullish,0.7,0.9,Nepal Telecom,,gpt-4o-mini,2026-08-17T10:16:16+00:00
@@ -386,6 +393,7 @@ c377655c42e87866,gpt4omini-headline-v2,sharesansar,"Nepal Welcomes 85,444 Intern
 c3b9214159a6d83c,gpt4omini-headline-v2,sharesansar,PM Balendra Shah Meets Opposition Leaders Ahead of UN General Assembly Trip,neutral,0.0,0.9,,,gpt-4o-mini,2026-09-21T16:02:12+00:00
 c50c4b748879c86f,gpt4omini-headline-v2,sharesansar,"Nepal Rastra Bank Cuts Minimum Share Holding Period to 45 Days, Keeps Countercyclical Buffer at Zero",bullish,0.5,0.8,,,gpt-4o-mini,2026-09-25T14:45:43+00:00
 c5728707a248cac3,gpt4omini-headline-v2,sharesansar,NMB 50 Delisted From NEPSE; Fund to Be Matured From Bhadra 12,bearish,-0.6,0.8,NMB,,gpt-4o-mini,2026-08-26T14:10:49+00:00
+c610ff93ddc3ad7d,gpt4omini-headline-v2,sharesansar,TVS Raider 125 Single Seat Launched in Nepal at Rs. 2.79 Lakh,bullish,0.5,0.7,TVS Raider 125,,gpt-4o-mini,2026-10-05T18:51:42+00:00
 c711b431ffcd9b3e,gpt4omini-headline-v2,sharesansar,Xiaomi Nepal Launches Festive Scheme With Thailand Trip,neutral,0.0,0.8,,,gpt-4o-mini,2026-09-29T16:08:25+00:00
 c7a17333f0524d63,gpt4omini-headline-v1,sharesansar,Hulas Finserv Reports 84.45% Surge in Net Profit to Rs. 398.72 Million,bullish,0.7,0.9,Hulas Finserv,,gpt-4o-mini,2026-08-09T19:30:09+00:00
 c7a17333f0524d63,gpt4omini-headline-v2,sharesansar,Hulas Finserv Reports 84.45% Surge in Net Profit to Rs. 398.72 Million,bullish,0.8,0.9,Hulas Finserv,,gpt-4o-mini,2026-08-09T19:31:27+00:00
@@ -413,6 +421,7 @@ d458298a5281e286,gpt4omini-headline-v2,sharesansar,Australia Raises Interest Rat
 d5dcf47949504ef0,gpt4omini-headline-v2,sharesansar,MV Dugar Group Contributes Rs. 1.11 Crore to Flood Relief Fund,neutral,0.0,0.8,,,gpt-4o-mini,2026-09-11T13:50:41+00:00
 d5eab1f39df5b2dd,gpt4omini-headline-v2,sharesansar,"PROTON Donates RM200,000 in Drones for Nepal Flood , Jagdamba Motors Adds Rs 4 Crore",neutral,0.0,0.8,,,gpt-4o-mini,2026-09-10T13:50:48+00:00
 d6883e03241b9777,gpt4omini-headline-v2,sharesansar,Finance Minister Swarnim Wagle Takes Charge as AIIB Vice Chair,neutral,0.0,0.8,,,gpt-4o-mini,2026-09-29T16:08:25+00:00
+d6e3df91a93591b0,gpt4omini-headline-v2,sharesansar,Government Plans One-Window System to Fast-Track Stalled Investment Projects,bullish,0.5,0.7,,,gpt-4o-mini,2026-10-05T18:51:42+00:00
 d6fad0ed5f5b1e21,gpt4omini-headline-v2,sharesansar,President Paudel to Address Nation Following Visit to Flood-Affected Areas,neutral,0.0,0.8,,,gpt-4o-mini,2026-09-07T15:16:49+00:00
 d73c1f748146f3c3,gpt4omini-headline-v2,sharesansar,NVIDIA CEO Jensen Huang Donates US$10 Million to Nepal’s Prime Minister Disaster Relief Fund,neutral,0.0,0.8,,,gpt-4o-mini,2026-09-04T13:48:28+00:00
 d79811b322f79df0,gpt4omini-headline-v2,sharesansar,CCTVs Being Fixed along Nepal - China Border Area,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-31T17:15:11+00:00
@@ -426,6 +435,7 @@ dd4e7cda32092c40,gpt4omini-headline-v2,sharesansar,NEPSE Bounces Back After Six 
 de2778dd217ded7b,gpt4omini-headline-v2,sharesansar,Unveiling Q4 2082/83: A Comprehensive Analysis of Leading Commercial Banks and Key Financial Insights,neutral,0.0,0.9,,,gpt-4o-mini,2026-08-18T14:04:50+00:00
 de7acb9319ef3579,gpt4omini-headline-v2,sharesansar,Three Stocks Get Price Adjustments for Bonus Shares; Here Are the New Rates,neutral,0.0,0.6,,,gpt-4o-mini,2026-09-28T17:50:13+00:00
 dec303e0ce0133ee,gpt4omini-headline-v2,sharesansar,National Life Insurance Honors Top Agents at Annual Chairperson Club Event,neutral,0.0,0.7,National Life Insurance,,gpt-4o-mini,2026-09-22T14:12:18+00:00
+def7c81182c523b3,gpt4omini-headline-v2,sharesansar,"Too Much Money, Too Little Credit: Nepal's Liquidity Puzzle and What It Means for NEPSE",neutral,0.0,0.9,,,gpt-4o-mini,2026-10-05T18:51:42+00:00
 df902ecb13438203,gpt4omini-headline-v2,sharesansar,DDC Begins Exporting Butter (Ghee) to Middle East with Initial Shipment to Dubai,bullish,0.5,0.7,,,gpt-4o-mini,2026-08-21T10:07:28+00:00
 df95d9f968f9fcf2,gpt4omini-headline-v2,sharesansar,Prime Commercial Bank Reports 28.49% Rise in Net Profit to Rs. 4.11 Arba in Q4 FY 2082/83; Impairment Charges Down 36.06%,bullish,0.7,0.8,Prime Commercial Bank,,gpt-4o-mini,2026-08-14T10:40:28+00:00
 dfe918f41ac28841,gpt4omini-headline-v2,sharesansar,NEPSE Index Records Moderate Loss on the Last Trading Day of this Week; Only One Sector Close at Green,bearish,-0.6,0.7,,,gpt-4o-mini,2026-10-02T15:59:29+00:00
