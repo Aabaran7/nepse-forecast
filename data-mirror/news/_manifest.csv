@@ -159,3 +159,5 @@ run_utc,dataset,rows_added,rows_total,conflicts
 2026-10-14T14:42:40+00:00,headlines,12,680,1
 2026-10-14T14:42:53+00:00,sentiment,11,564,0
 2026-10-14T18:06:05+00:00,headlines,0,680,1
+2026-10-15T14:26:11+00:00,headlines,13,693,1
+2026-10-15T14:26:17+00:00,sentiment,11,575,0
