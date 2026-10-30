@@ -14,22 +14,22 @@ permanently. The rows here cannot be re-fetched from upstream.
 CSV rather than parquet so restores need nothing but a text reader,
 and so daily commits stay small.
 
-Last updated: 2026-10-30T15:04:11+00:00
+Last updated: 2026-10-30T16:15:50+00:00
 
 ```
 archive/company_info: 645 rows
 archive/corporate_actions: 171 rows
-archive/indices: 4748 rows
-archive/market_summary: 278 rows
-archive/securities: 30041 rows
+archive/indices: 4765 rows
+archive/market_summary: 279 rows
+archive/securities: 30483 rows
 archive/ticker_history: 1120 rows
-archive/today_price: 93340 rows
+archive/today_price: 93688 rows
 deep/nepse_index_deep: 2434 rows
 deep/reddit_daily: 2376 rows
 orderbook/orderbook: 581 rows
 fundamentals/dividend_history: 1204 rows
 fundamentals/fundamentals: 278 rows
-news/headlines: 758 rows
-news/sentiment: 633 rows
+news/headlines: 770 rows
+news/sentiment: 643 rows
 predictions: 1 file(s)
 ```
