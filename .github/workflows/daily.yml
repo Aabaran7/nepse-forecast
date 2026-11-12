@@ -51,7 +51,7 @@ permissions:
 
 jobs:
   daily:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 45     # NEPSE throttles; a slow run is normal, a stuck one is not
     env:
       TZ: UTC
@@ -161,7 +161,7 @@ jobs:
   # showing yesterday's numbers with a visible stale flag than no page.
   deploy:
     needs: daily
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     # Same group as pages.yml: two deploys landing on Pages at once is a race.
     concurrency:
       group: pages-deploy
